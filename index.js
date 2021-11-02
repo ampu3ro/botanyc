@@ -44,11 +44,11 @@ app.use(
 app.use('/api/farm/auth', loginRequired, authRequired, farmAuthRoutes);
 app.use('/api/farm/admin', loginRequired, adminRequired, farmAdminRoutes);
 
-app.use((req, res, next) => {
-  let err = new Error('Not found');
-  err.status = 404;
-  next(err);
-});
+// app.use((req, res, next) => {
+//   let err = new Error('Not found');
+//   err.status = 404;
+//   next(err);
+// });
 
 app.use(errorHandler);
 
