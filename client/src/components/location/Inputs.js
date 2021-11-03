@@ -15,11 +15,12 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { styled } from '@mui/material/styles';
 
-export const TextForm = ({ name, label, int, adorn, ...props }) => {
+export const TextForm = ({ name, label, helpText, int, adorn, ...props }) => {
   const { control } = useFormContext();
 
   const farmProps = FARM_PROPS[name] || {};
   if (!label) label = farmProps.label;
+  if (!helpText) helpText = farmProps.helpText;
   if (!int) int = farmProps.int;
   if (!adorn) adorn = farmProps.adorn;
 
@@ -40,6 +41,7 @@ export const TextForm = ({ name, label, int, adorn, ...props }) => {
         <TextField
           fullWidth
           label={label}
+          helperText={helpText}
           inputProps={inputProps}
           InputProps={{ ...props?.InputProps, startAdornment }}
           {...field}
@@ -50,13 +52,21 @@ export const TextForm = ({ name, label, int, adorn, ...props }) => {
   );
 };
 
-export const SelectForm = ({ name, label, options, multiple, ...props }) => {
+export const SelectForm = ({
+  name,
+  label,
+  options,
+  multiple,
+  helpText,
+  ...props
+}) => {
   const { control } = useFormContext();
 
   const farmProps = FARM_PROPS[name] || {};
   if (!label) label = farmProps.label;
   if (!options) options = farmProps.options;
   if (!multiple) multiple = farmProps.multiple;
+  if (!helpText) helpText = farmProps.helpText;
 
   const labelId = `${name}-label`;
 
@@ -81,6 +91,7 @@ export const SelectForm = ({ name, label, options, multiple, ...props }) => {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText>{helpText}</FormHelperText>
         </FormControl>
       )}
     />
@@ -119,18 +130,26 @@ export const DateForm = ({
   );
 };
 
-export const NumericGridForm = ({ name, fields, label, ...props }) => {
-  if (!label) label = FARM_FIELDS[name].label;
-  if (!fields) fields = FARM_FIELDS[name].fields;
+export const NumericGridForm = ({ name, title, fields, ...props }) => {
+  const farmFields = FARM_FIELDS[name];
+  if (!title) title = farmFields.title;
+  if (!fields) fields = farmFields.fields;
 
   return (
     <FormControl fullWidth>
-      <FormLabel sx={{ marginBottom: 1 }}>{label}</FormLabel>
+      <FormLabel sx={{ marginBottom: 2 }}>{title}</FormLabel>
       <Grid container spacing={2}>
         {fields.map((d) => {
           return (
             <Grid item key={d.id} xs={12} sm={6} lg={4}>
-              <TextForm name={d.id} label={d.label} int fullWidth {...props} />
+              <TextForm
+                name={d.id}
+                label={d.label}
+                helpText={d.helpText}
+                int
+                fullWidth
+                {...props}
+              />
             </Grid>
           );
         })}

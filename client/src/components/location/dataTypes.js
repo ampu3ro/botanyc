@@ -73,7 +73,8 @@ export const ENVIRONMENTS = {
 
 export const FARM_FIELDS = {
   floors: {
-    label: 'What is the horizontal area of your farm or garden by floor?',
+    label: 'Area',
+    title: 'What is the horizontal area of your farm or garden by floor?',
     fields: [
       { pattern: 'indoor', id: 'areaCellar', label: 'Cellar' },
       {
@@ -88,69 +89,111 @@ export const FARM_FIELDS = {
     ],
   },
   crops: {
-    label:
+    label: 'Production',
+    title:
       'How many pounds of each product/crop below were harvested in the past 3 years?',
     fields: [
       {
         id: 'cropSalad',
-        label: 'Salad greens (lettuce, salad mix, spring mix, arugula)',
+        label: 'Salad greens',
+        helpText: 'Lettuce, salad mix, spring mix, arugula',
       },
       { id: 'cropMicrogreens', label: 'Microgreens' },
-      { id: 'cropLeafy', label: 'Other leafy greens (chard, kale, cabbage)' },
+      {
+        id: 'cropLeafy',
+        label: 'Other leafy greens',
+        helpText: 'Chard, kale, cabbage',
+      },
       {
         id: 'cropHerbs',
-        label: 'Herbs (cut or live; mint, oregano, rosemary)',
+        label: 'Herbs',
+        helpText: 'Cut or live; mint, oregano, rosemary',
       },
       {
         id: 'cropVine',
-        label: 'Vine vegetables (tomatoes, cucumbers, peppers)',
+        label: 'Vine vegetables',
+        helpText: 'Tomatoes, cucumbers, peppers',
       },
       {
         id: 'cropRoot',
-        label: 'Root vegetables (carrots, radishes, beets, kohlrabi)',
+        label: 'Root vegetables',
+        helpText: 'Carrots, radishes, beets, kohlrabi',
       },
       {
         id: 'cropStarch',
-        label: 'Root starch vegetables (potatoes, yams, sweet potatoes)',
+        label: 'Root starch vegetables',
+        helpText: 'Potatoes, yams, sweet potatoes',
       },
-      { id: 'cropCruciferous', label: 'Broccoli or cauliflower' },
-      { id: 'cropGourds', label: 'Squashes or gourds (zucchini, pumpkin)' },
-      { id: 'cropFunghi', label: 'Mushrooms/fungi' },
+      {
+        id: 'cropCruciferous',
+        label: 'Cruciferous vegetables',
+        helpText: 'Broccoli, cauliflower',
+      },
+      {
+        id: 'cropGourds',
+        label: 'Squashes or gourds',
+        helpText: 'Zucchini, pumpkin',
+      },
+      { id: 'cropFunghi', label: 'Fungi', helpText: 'Mushrooms' },
       {
         id: 'cropBerries',
-        label: 'Berries (raspberries, blueberries, strawberries)',
+        label: 'Berries',
+        helpText: 'Raspberries, blueberries, strawberries',
       },
-      { id: 'cropMelons', label: 'Melons (cantaloupe, watermelon)' },
+      { id: 'cropMelons', label: 'Melons', helpText: 'Cantaloupe, watermelon' },
       {
         id: 'cropFruits',
-        label: 'Tree fruits (apples, pears, peaches, nectarines, cherries)',
+        label: 'Tree fruits',
+        helpText: 'Apples, pears, peaches, nectarines, cherries',
       },
-      { id: 'cropNuts', label: 'Tree nuts (almonds, pistachios, walnuts)' },
+      {
+        id: 'cropNuts',
+        label: 'Tree nuts',
+        helpText: 'Almonds, pistachios, walnuts',
+      },
       { id: 'cropEggs', label: 'Chicken eggs' },
-      { id: 'cropChicken', label: 'Other products from chickens' },
+      {
+        id: 'cropChicken',
+        label: 'Chicken products',
+        helpText: 'Other products from chickens',
+      },
       {
         id: 'cropLivestock',
-        label:
+        label: 'Livestock products',
+        helpText:
           'Products from cows, sheep, goats, or other traditional livestock',
       },
-      { id: 'cropFish', label: 'Fish, shellfish, or snails' },
-      { id: 'cropInsects', label: 'Insects (crickets, black soldier fly)' },
-      { id: 'cropMicroalgae', label: 'Microalgae (Spirulina)' },
+      { id: 'cropFish', label: 'Fish', helpText: 'Fish, shellfish, or snails' },
+      {
+        id: 'cropInsects',
+        label: 'Insects',
+        helpText: 'Crickets, black soldier fly',
+      },
+      { id: 'cropMicroalgae', label: 'Microalgae', helpText: 'Spirulina' },
       { id: 'cropStarts', label: 'Nursery starts' },
-      { id: 'cropOrnamentals', label: 'Ornamental plants (flowers)' },
+      {
+        id: 'cropOrnamentals',
+        label: 'Ornamental plants',
+        helpText: 'Flowers',
+      },
       { id: 'cropCannabis', label: 'Cannabis' },
       { id: 'cropOther', label: 'Other' },
     ],
   },
   distros: {
-    label:
+    label: 'Distribution',
+    title:
       'How many pounds did you sell or distribute through the following market channels in the last three years?',
     fields: [
-      { id: 'distroBox', label: 'Big box store (e.g., Target, Costco)' },
+      { id: 'distroBox', label: 'Big box store', helpText: 'Target, Costco' },
       { id: 'distroCorner', label: 'Bodega/corner store' },
-      { id: 'distroSuper', label: 'Supermarket (e.g., Key Food, Whole Foods)' },
+      {
+        id: 'distroSuper',
+        label: 'Supermarket',
+        helpText: 'Key Food, Whole Foods',
+      },
       { id: 'distroRestaurant', label: 'Restaurants' },
-      { id: 'distroWeb', label: 'Farm or garden website' },
+      { id: 'distroWeb', label: 'Farm/garden website' },
       { id: 'distroCSA', label: 'CSA' },
       { id: 'distroMarket', label: 'Farmers markets' },
       { id: 'distroOnsite', label: 'On-site market' },
@@ -163,32 +206,37 @@ export const FARM_FIELDS = {
 };
 
 export const FARM_PROPS = {
+  name: { label: 'Name', helpText: 'What is the name of the farm or garden?' },
   address: {
-    label: "What is the address of this farm or garden's location?",
+    label: 'Address',
+    helpText: "What is the address of this farm or garden's location?",
   },
-  name: { label: 'What is the name of the farm or garden?' },
   locations: { default: [] },
   type: {
-    label: 'How would you describe your farm or garden?',
+    label: 'Type',
+    helpText: 'How would you describe your farm or garden?',
     options: AG_TYPES.filter((d) => d.select).map((d) => d.option),
   },
   environments: {
-    label: 'Where is your farm or garden situated?',
+    label: 'Environment',
+    helpText: 'Where is your farm or garden situated?',
     options: Object.keys(ENVIRONMENTS),
     multiple: true,
   },
-  enviroDetails: { default: [] },
+  enviroDetails: { label: 'Environment detail', default: [] },
   indoorFloors: { default: [] },
   orgName: {
-    label:
+    label: 'Organization',
+    helpText:
       'What is the name of the supporting organization, agency, or company (if not the same as the farm or garden)?',
   },
   orgType: {
-    label:
+    label: 'Org structure',
+    helpText:
       'What is the corporate or organizational structure of your farm or garden?',
     options: ['C corp', 'S corp', 'LLC', 'Not-for-profit'],
   },
-  bCorp: { default: false },
+  bCorp: { label: 'B corporation', default: false },
   area: {},
   areaCellar: {},
   areaGround: {},
@@ -196,9 +244,10 @@ export const FARM_PROPS = {
   areaFloor2: {},
   areaOther: {},
   areaRoof: {},
-  percentFood: { default: 80 },
+  percentFood: { label: 'Food share', default: 80 },
   priorities: {
-    label:
+    label: 'Priorities',
+    helpText:
       "Please rank the following in order of priority based on the farm or garden's mission statement",
     options: [
       'Growing and selling food for profit',
@@ -212,7 +261,8 @@ export const FARM_PROPS = {
     multiple: true,
   },
   accessibility: {
-    label: 'Is your farm or garden accessible by the public?',
+    label: 'Accessibility',
+    helpText: 'Is your farm or garden accessible by the public?',
     options: [
       'Yes, during operational hours',
       'Yes, by tour/reservation only',
@@ -220,7 +270,8 @@ export const FARM_PROPS = {
     ],
   },
   adModes: {
-    label: 'How can members of the community find your farm or garden?',
+    label: 'Promotion',
+    helpText: 'How can members of the community find your farm or garden?',
     options: [
       'Signage in front of farm or garden',
       'We do outreach to community so they know where we are',
@@ -230,7 +281,8 @@ export const FARM_PROPS = {
     multiple: true,
   },
   growMethods: {
-    label: 'Which of the following methods do you use?',
+    label: 'Methods',
+    helpText: 'Which of the following methods do you use?',
     options: [
       'Raised beds (soil)',
       'Container (soil)',
@@ -244,7 +296,8 @@ export const FARM_PROPS = {
     multiple: true,
   },
   aquaType: {
-    label:
+    label: 'Aquaculture',
+    helpText:
       'Does the farm or garden uses a recirculating aquaculture system (RAS) or non-recirculating system?',
     options: [
       'Recirculating aquaculture system (RAS)',
@@ -252,7 +305,9 @@ export const FARM_PROPS = {
     ],
   },
   ponicType: {
-    label: 'Which of the following technologies are used for food production?',
+    label: 'Aquaponics',
+    helpText:
+      'Which of the following technologies are used for food production?',
     options: [
       'Nutrient film technique (NFT)',
       'Vertical tower',
@@ -263,11 +318,13 @@ export const FARM_PROPS = {
     ],
   },
   waterType: {
-    label: 'How do you water your plants?',
+    label: 'Watering',
+    helpText: 'How do you water your plants?',
     options: ['Surface	subsurface', 'Sprinklers', 'Drip'],
   },
   iotTypes: {
-    label:
+    label: 'IoT',
+    helpText:
       "What kinds of 'smart' (Internet-of-Things enabled) sensors do you use if any?",
     options: [
       'Smart EC (electrical conductivity) sensor',
@@ -284,11 +341,13 @@ export const FARM_PROPS = {
     multiple: true,
   },
   pestManagement: {
-    label: 'What pest management method do you use?',
+    label: 'Pest management',
+    helpText: 'What pest management method do you use?',
     options: ['Chemical', 'IPM (integrated pest management)', 'Technological'],
   },
   usdaOrganic: {
-    label: 'Are you USDA organic certified?',
+    label: 'Organic',
+    helpText: 'Are you USDA organic certified?',
     options: [
       'Yes',
       'No',
@@ -297,11 +356,13 @@ export const FARM_PROPS = {
     ],
   },
   compost: {
-    label: 'How do you compost?',
+    label: 'Compost',
+    helpText: 'How do you compost?',
     options: ['On-site', 'Off-site', 'Do not compost'],
   },
   compostOffsite: {
-    label: 'What is your composting arrangement?',
+    label: 'Compost arrangement',
+    helpText: 'What is your composting arrangement?',
     options: [
       'Third-party contractor (private)',
       'Municipal pick-up (curbside)',
@@ -310,11 +371,13 @@ export const FARM_PROPS = {
     ],
   },
   compostOnsite: {
-    label: 'What type of composting system do you use?',
+    label: 'Compost type',
+    helpText: 'What type of composting system do you use?',
     options: ['Aerobic', 'Anaerobic', 'Vermicomposting', 'Other'],
   },
   dischargeMethods: {
-    label: 'How do you manage any wastewater?',
+    label: 'Wastewater',
+    helpText: 'How do you manage any wastewater?',
     options: [
       'Discharge to sanitary sewer (e.g., directly down the drain)',
       'Discharge to sanitary sewer after on-site filtration (e.g., UV treatment, reverse osmosis)',
@@ -322,11 +385,13 @@ export const FARM_PROPS = {
     multiple: true,
   },
   dischargePermit: {
-    label: 'Are you required to maintain sewer discharge permits?',
+    label: 'Sewer discharge',
+    helpText: 'Are you required to maintain sewer discharge permits?',
     options: ['Yes', 'No', "I don't know"],
   },
   distroRegion: {
-    label: 'Where is most of your food distributed?',
+    label: 'Distribution region',
+    helpText: 'Where is most of your food distributed?',
     options: [
       'Locally (within your neighborhood)',
       'Within county/borough',
@@ -372,11 +437,13 @@ export const FARM_PROPS = {
   distroPersonal: {},
   distroOther: {},
   founding: {
-    label: 'What year was the farm or garden founded?',
+    label: 'Founded',
+    helpText: 'What year was the farm or garden founded?',
     default: null,
   },
   ownership: {
-    label: 'Who owns the land the farm or garden is operating on?',
+    label: 'Ownership',
+    helpText: 'Who owns the land the farm or garden is operating on?',
     options: [
       'The farm or garden itself',
       'An individual',
@@ -387,7 +454,8 @@ export const FARM_PROPS = {
     ],
   },
   zoning: {
-    label:
+    label: 'Zoning',
+    helpText:
       "What is the zone type based on the zoning code for the farm or garden's location?",
     options: [
       'Residential (begins with R)',
@@ -398,41 +466,50 @@ export const FARM_PROPS = {
   leaseStart: { label: 'Start date', default: null },
   leaseEnd: { label: 'End date', default: null },
   rent: {
-    label: 'What is your monthly cost for land (rent or mortgage)?',
+    label: 'Rent/mortgage',
+    helpText: 'What is your monthly cost for land (rent or mortgage)?',
     int: true,
     adorn: '$',
   },
   landValue: {
-    label: 'How much is your land worth?',
+    label: 'Land value',
+    helpText: 'How much is your land worth?',
     int: true,
     adorn: '$',
   },
   positions: { default: [] },
   wages: { default: [] },
   employees: {
-    label: 'How many people have you employed in the past three years?',
+    label: 'Employees',
+    helpText: 'How many people have you employed in the past three years?',
     int: true,
   },
   volunteers: {
-    label: 'How many volunteers worked for you in the past three years?',
+    label: 'Volunteer',
+    helpText: 'How many volunteers worked for you in the past three years?',
     int: true,
   },
   volunteerHours: {
-    label: 'How many volunteers worked for you in the past three years?',
+    label: 'Volunteer hours',
+    helpText:
+      'How many hours of labor were produced by volunteers in the past three years',
     int: true,
   },
   outreachHours: {
-    label:
+    label: 'Outreach hours',
+    helpText:
       'How many hours annually farm or garden employees spend on unpaid community outreach',
     int: true,
   },
   localWorkers: {
-    label:
+    label: 'Local workers',
+    helpText:
       'How many of your workers come from the general neighborhood in which the farm or garden is situated?',
     options: ['All', 'Most', 'Some', 'Few', 'None'],
   },
   studentPrograms: {
-    label:
+    label: 'Student programs',
+    helpText:
       'Do you offer programming for K–12 students? If yes, what services or programs do you offer?',
     options: [
       'No, we do not offer any K–12 student programming',
@@ -445,7 +522,8 @@ export const FARM_PROPS = {
     multiple: true,
   },
   skillsPrograms: {
-    label:
+    label: 'Skills programs',
+    helpText:
       'Do you offer classes, job training, or skills building opportunities? If yes, what are they?',
     options: [
       'No, we do not offer any classes, training, or workshops',
