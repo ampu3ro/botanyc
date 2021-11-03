@@ -1,5 +1,5 @@
 import { apiCall } from '../../services/api';
-import { SET_LOCATIONS } from '../actionTypes';
+import { SET_LOCATIONS, SET_SELECTED } from '../actionTypes';
 import { setAlert } from './alert';
 
 export function setLocations(data) {
@@ -18,5 +18,12 @@ export function fetchLocations() {
       dispatch(setLocations({ data: null }));
       dispatch(setAlert({ severity: 'error', message: err.message }));
     }
+  };
+}
+
+export function setSelected(data) {
+  return {
+    type: SET_SELECTED,
+    data,
   };
 }

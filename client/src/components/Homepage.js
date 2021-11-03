@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Map from './map/Map';
 import Search from './map/Search';
 import Filters from './map/Filters';
+import Sidebar from './map/Sidebar';
 import Header from './Header';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -34,6 +35,7 @@ const Homepage = () => {
           <div style={{ position: 'relative' }}>
             <Map />
             <Search />
+            <Sidebar />
           </div>
           <FormControlLabel
             control={

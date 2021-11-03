@@ -1,10 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 /* eslint import/no-webpack-loader-syntax: off */
 import mapboxgl from '!mapbox-gl';
-import Popup from './Popup';
 import { AG_TYPES } from '../location/dataTypes';
+import { setSelected } from '../../store/actions/locations';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
@@ -15,14 +14,17 @@ const PAINT_COLOR = [
   '#ccc',
 ];
 
+let selectedId = null;
+
 const Map = () => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
-  const popupRef = useRef(new mapboxgl.Popup({ offset: 15 }));
 
   const locations = useSelector((state) => state.locations);
   const filters = useSelector((state) => state.filters);
   const search = useSelector((state) => state.search);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!Object.keys(locations).length) return;
@@ -62,24 +64,42 @@ const Map = () => {
           'circle-opacity': {
             base: 2.72,
             stops: [
-              [10, 0.6],
-              [15, 1],
+              [8, 0.6],
+              [14, 1],
             ],
           },
+          'circle-stroke-width': [
+            'case',
+            ['boolean', ['feature-state', 'selected'], false],
+            1.5,
+            0,
+          ],
+          'circle-stroke-color': '#000',
         },
       });
 
       map.on('click', 'points-layer', (e) => {
+        e.preventDefault();
         if (!e.features.length) return;
 
         const feature = e.features[0];
-        const popupNode = document.createElement('div');
-        ReactDOM.render(<Popup properties={feature.properties} />, popupNode);
+        const { id, properties } = feature;
+        selectedId = id;
 
-        popupRef.current
-          .setLngLat(feature.geometry.coordinates)
-          .setDOMContent(popupNode)
-          .addTo(map);
+        map.setFeatureState({ source: 'points-data', id }, { selected: true });
+
+        dispatch(setSelected(properties));
+      });
+
+      map.on('click', (e) => {
+        if (e.defaultPrevented === true || selectedId === null) return;
+
+        map.setFeatureState(
+          { source: 'points-data', id: selectedId },
+          { selected: false }
+        );
+
+        dispatch(setSelected(null));
       });
 
       map.on('mouseenter', 'points-layer', (e) => {
@@ -96,7 +116,7 @@ const Map = () => {
     });
 
     return () => map.remove();
-  }, [locations]);
+  }, [locations, dispatch]);
 
   useEffect(() => {
     if (!mapBase || !filters.types || !filters.environments) return;
@@ -111,20 +131,20 @@ const Map = () => {
   }, [filters, mapBase]);
 
   useEffect(() => {
-    if (!mapBase || !search || !search.locations) return;
+    if (!mapBase || search === null) return;
 
-    const { lon, lat } = search.locations[0];
-    const center = [lon, lat];
+    const { id, center, ...properties } = search;
+    selectedId = id;
 
     mapBase.flyTo({
       center,
       zoom: 14,
     });
 
-    const popupNode = document.createElement('div');
-    ReactDOM.render(<Popup properties={search} />, popupNode);
-    popupRef.current.setLngLat(center).setDOMContent(popupNode).addTo(mapBase);
-  }, [search, mapBase]);
+    mapBase.setFeatureState({ source: 'points-data', id }, { selected: true });
+
+    dispatch(setSelected(properties));
+  }, [search, mapBase, dispatch]);
 
   return (
     <div>

@@ -8,6 +8,7 @@ import filters from './filters';
 import users from './users';
 import search from './search';
 import approvals from './approvals';
+import selected from './selected';
 
 const rootReducer = combineReducers({
   currentUser,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   users,
   search,
   approvals,
+  selected,
 });
 
 export default rootReducer;

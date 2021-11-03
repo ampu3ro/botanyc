@@ -7,3 +7,4 @@ export const SET_FILTERS = 'SET_FILTERS';
 export const SET_USERS = 'SET_USERS';
 export const SET_SEARCH = 'SET_SEARCH';
 export const SET_APPROVALS = 'SET_APPROVALS';
+export const SET_SELECTED = 'SET_SELECTED';

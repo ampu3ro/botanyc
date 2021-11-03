@@ -50,7 +50,11 @@ const Search = () => {
   const { features } = locations;
   const options = features
     ? features
-        .map((d) => d.properties)
+        .map((d) => ({
+          ...d.properties,
+          center: d.geometry.coordinates,
+          id: d.id,
+        }))
         .filter((d, i, a) => a.findIndex((t) => t.label === d.label) === i) // remove duplicates
     : [];
 

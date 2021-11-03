@@ -5,23 +5,25 @@ exports.fetchLocations = async (req, res, next) => {
     const farms = await db.Farm.find({ needsApproval: false }).lean();
 
     const features = farms
-      .map((farm) => {
-        let { _id, environments, ...properties } = farm;
-        properties.id = _id;
-        properties.environments = environments.join(','); // mapbox filter expressions don't seem to work with arrays
-        return farm.locations.map((loc) => {
+      .map((farm, id) => {
+        let { _id, environments, locations, ...data } = farm;
+        data.id = _id;
+        if (environments) {
+          data.environments = environments.join(','); // mapbox filter expressions don't seem to work with arrays
+        }
+        return locations.map((loc) => {
           const { address, lat, lon } = loc;
           const tag = address === '' ? `${lat}, ${lon}` : address;
           const label = `${farm.name} (${tag})`;
-          properties.address = address;
-          properties.label = label;
+
           return {
             type: 'Feature',
+            id,
             geometry: {
               type: 'Point',
               coordinates: [lon, lat],
             },
-            properties,
+            properties: { ...data, address, label },
           };
         });
       })
