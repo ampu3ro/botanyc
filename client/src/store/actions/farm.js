@@ -1,6 +1,6 @@
 import { apiCall } from '../../services/api';
 import { fetchLocations } from './locations';
-import { SET_BULK_EDIT, SET_APPROVALS } from '../actionTypes';
+import { SET_EDIT, SET_BULK_EDIT, SET_APPROVALS } from '../actionTypes';
 import { setAlert } from './alert';
 
 export function submitOne(data) {
@@ -13,6 +13,13 @@ export function submitOne(data) {
     } catch (err) {
       dispatch(setAlert({ severity: 'error', message: err.message }));
     }
+  };
+}
+
+export function setEdit(data) {
+  return {
+    type: SET_EDIT,
+    data,
   };
 }
 

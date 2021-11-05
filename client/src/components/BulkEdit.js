@@ -15,7 +15,7 @@ const BulkEdit = () => {
   const [loaded, setLoaded] = useState([]);
   const [open, setOpen] = useState(false);
   const currentUser = useSelector((state) => state.currentUser);
-  const edits = useSelector((state) => state.edits);
+  const bulkEdits = useSelector((state) => state.bulkEdits);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -41,10 +41,10 @@ const BulkEdit = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(edits).length) {
+    if (Object.keys(bulkEdits).length) {
       setOpen(true);
     }
-  }, [edits]);
+  }, [bulkEdits]);
 
   const handleClose = () => {
     setOpen(false);
@@ -72,18 +72,18 @@ const BulkEdit = () => {
       >
         Write!
       </Button>
-      {!!Object.keys(edits).length && (
+      {!!Object.keys(bulkEdits).length && (
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Bulk upload results</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {`${edits.nInserted} inserted`}
+              {`${bulkEdits.nInserted} inserted`}
               <br />
-              {`${edits.nModified} updated`}
+              {`${bulkEdits.nModified} updated`}
               <br />
-              {`${edits.nRemoved} removed`}
+              {`${bulkEdits.nRemoved} removed`}
               <br />
-              {`${edits.writeErrors?.length} errors`}
+              {`${bulkEdits.writeErrors?.length} errors`}
             </DialogContentText>
           </DialogContent>
         </Dialog>

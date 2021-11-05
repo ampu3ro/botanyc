@@ -3,7 +3,8 @@ import currentUser from './currentUser';
 import alert from './alert';
 import locations from './locations';
 import geocoded from './geocoded';
-import edits from './edits';
+import edit from './edit';
+import bulkEdits from './bulkEdits';
 import filters from './filters';
 import users from './users';
 import search from './search';
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   alert,
   locations,
   geocoded,
-  edits,
+  edit,
+  bulkEdits,
   filters,
   users,
   search,

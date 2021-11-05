@@ -142,7 +142,7 @@ export const NumericGridForm = ({ name, title, fields, adorn, ...props }) => {
       <Grid container spacing={2}>
         {fields.map((d) => {
           return (
-            <Grid item key={d.id} xs={12} sm={6} lg={4}>
+            <Grid item key={d.name} xs={12} sm={6} lg={4}>
               <TextForm
                 name={d.name}
                 label={d.label}

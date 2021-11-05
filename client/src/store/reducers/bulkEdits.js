@@ -1,6 +1,6 @@
 import { SET_BULK_EDIT } from '../actionTypes';
 
-const edits = (state = {}, action) => {
+const bulkEdits = (state = {}, action) => {
   switch (action.type) {
     case SET_BULK_EDIT:
       return action.result;
@@ -9,4 +9,4 @@ const edits = (state = {}, action) => {
   }
 };
 
-export default edits;
+export default bulkEdits;

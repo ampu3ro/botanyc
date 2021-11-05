@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSearch } from '../../store/actions/search';
+import { setSelected, setSearch } from '../../store/actions/locations';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
@@ -53,10 +53,15 @@ const Search = () => {
         .map((d) => ({
           ...d.properties,
           center: d.geometry.coordinates,
-          id: d.id,
+          featureId: d.id,
         }))
         .filter((d, i, a) => a.findIndex((t) => t.label === d.label) === i) // remove duplicates
     : [];
+
+  const handleSearch = (event, value) => {
+    dispatch(setSearch(value));
+    dispatch(setSelected(value));
+  };
 
   if (!options.length) return <div />;
 
@@ -75,7 +80,7 @@ const Search = () => {
         onClose={() => setOpen(false)}
         onInputChange={(e, v) => setOpen(v !== '')}
         value={search}
-        onChange={(e, v) => dispatch(setSearch(v))}
+        onChange={handleSearch}
         renderInput={(params) => (
           <TextField
             {...params}

@@ -3,12 +3,18 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { geocode, setGeocoded } from '../../store/actions/maps';
-import { submitOne, editOne, deleteOne } from '../../store/actions/farm';
+import {
+  submitOne,
+  setEdit,
+  editOne,
+  deleteOne,
+} from '../../store/actions/farm';
+import { setSelected, setSearch } from '../../store/actions/locations';
 import { FARM_PROPS, FARM_DEFAULT, ENVIRONMENTS } from './dataTypes';
 import Header from '../Header';
 import SectionHeader from './SectionHeader';
 import { TextForm, SelectForm, DateForm, NumericGridForm } from './Inputs';
-import { SelectDialog, DeleteDialog } from './Dialogs';
+import { VerifyDialog, DeleteDialog } from './Dialogs';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import FormControl from '@mui/material/FormControl';
@@ -25,12 +31,10 @@ import Switch from '@mui/material/Switch';
 import Slider from '@mui/material/Slider';
 
 const FarmForm = () => {
-  const [search, setSearch] = useState('');
-  const [match, setMatch] = useState({});
-  const [selected, setSelected] = useState('');
-  const [verified, setVerified] = useState('');
+  const [formatted, setFormatted] = useState(''); // current selection in formatted address verification dialog
+  const [verified, setVerified] = useState(''); // verified address from dialog selection
   const [openVerify, setOpenVerify] = useState(false);
-  const [edit, setEdit] = useState(false);
+  const [push, setPush] = useState(false); // push edit/submission to db
   const [openDelete, setOpenDelete] = useState(false);
   const [positions, setPositions] = useState({});
   const [wages, setWages] = useState({});
@@ -39,6 +43,7 @@ const FarmForm = () => {
   const currentUser = useSelector((state) => state.currentUser);
   const locations = useSelector((state) => state.locations);
   const geocoded = useSelector((state) => state.geocoded);
+  const edit = useSelector((state) => state.edit);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -53,7 +58,18 @@ const FarmForm = () => {
   const { features } = locations;
   let searchOptions = features
     ? features
-        .map((d) => d.properties)
+        .map((d) => {
+          let { properties } = d;
+          const { environments } = properties;
+          if (typeof environments === 'string') {
+            properties.environments = environments.split(','); // string for mapbox data filtering
+          }
+          return {
+            ...properties,
+            center: d.geometry.coordinates,
+            featureId: d.id,
+          };
+        })
         .filter((d, i, a) => a.findIndex((t) => t.label === d.label) === i) // remove duplicates
     : [];
   if (!currentUser.isAdmin && searchOptions) {
@@ -63,27 +79,15 @@ const FarmForm = () => {
   }
 
   const handleSearch = (event, value) => {
-    setSearch(value);
-    let match = {};
-    if (value && value.id !== '') {
-      const matches = searchOptions.filter((d) => d.id === value.id);
-
-      if (matches.length) {
-        match = matches[0];
-        const { environments } = match;
-        if (typeof environments === 'string') {
-          match.environments = environments ? environments.split(',') : [];
-        }
-        Object.entries(match).forEach(([k, v]) => setValue(k, v));
-      }
-    } else {
-      reset();
+    dispatch(setEdit(value));
+    console.log(value);
+    if (value) {
+      Object.entries(value).forEach(([k, v]) => setValue(k, v));
     }
-    setMatch(match);
   };
 
   const handleClear = () => {
-    setSearch('');
+    dispatch(setEdit(''));
     setJobsCount(1);
     reset();
   };
@@ -97,29 +101,29 @@ const FarmForm = () => {
 
   const onSubmit = (data) => {
     const { address } = data;
-    if (!match || match.address !== address) {
-      setEdit(false);
+    if (!edit || edit.address !== address) {
+      setPush(false);
       dispatch(geocode({ address }));
     } else {
-      setEdit(true);
+      setPush(true);
     }
   };
 
-  const handleSelect = () => {
-    setVerified(selected);
+  const handleVerify = () => {
+    setVerified(formatted);
     setOpenVerify(false);
-    setEdit(true);
+    setPush(true);
   };
 
   useEffect(() => {
     if (geocoded.length) {
-      setSelected(geocoded[0].formattedAddress);
+      setFormatted(geocoded[0].formattedAddress);
       setOpenVerify(true);
     }
   }, [geocoded]);
 
   useEffect(() => {
-    if (!edit) return;
+    if (!push) return;
 
     let data = getValues();
 
@@ -157,16 +161,18 @@ const FarmForm = () => {
 
     if (
       currentUser.isAdmin ||
-      (match.authEmails && match.authEmails.includes(currentUser.user.email))
+      (edit && edit.authEmails.includes(currentUser.user.email))
     ) {
       dispatch(editOne({ currentUser, data }));
+      dispatch(setSelected(edit));
     } else {
       dispatch(submitOne(data));
     }
+    dispatch(setSearch(''));
     history.push('/');
   }, [
+    push,
     edit,
-    match,
     getValues,
     dispatch,
     history,
@@ -196,10 +202,9 @@ const FarmForm = () => {
       {!!searchOptions.length && (
         <FormControl fullWidth>
           <Autocomplete
-            id="search"
             options={searchOptions}
             freeSolo
-            value={search}
+            value={edit}
             onChange={handleSearch}
             renderInput={(params) => (
               <TextField
@@ -222,7 +227,7 @@ const FarmForm = () => {
       </Grid>
       <Stack spacing={2} sx={{ maxWidth: '90%' }}>
         <SectionHeader text="Farm/Garden Characteristics" />
-        <TextForm name="address" match={match} />
+        <TextForm name="address" />
         <TextForm name="name" />
         <TextForm name="orgName" />
         <SelectForm name="type" />
@@ -379,7 +384,7 @@ const FarmForm = () => {
           </Stack>
         )}
         <Stack direction="row" spacing={2}>
-          {!!Object.keys(match).length && (
+          {!!edit && (
             <Button
               variant="outlined"
               color="error"
@@ -393,12 +398,12 @@ const FarmForm = () => {
           </Button>
         </Stack>
       </Stack>
-      <SelectDialog
+      <VerifyDialog
         open={openVerify}
-        selected={selected}
-        setSelected={setSelected}
+        formatted={formatted}
+        setFormatted={setFormatted}
         handleClose={() => setOpenVerify(false)}
-        handleSelect={handleSelect}
+        handleVerify={handleVerify}
       />
       <DeleteDialog
         open={openDelete}

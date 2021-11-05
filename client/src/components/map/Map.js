@@ -14,17 +14,17 @@ const PAINT_COLOR = [
   '#ccc',
 ];
 
-let selectedId = null;
-
 const Map = () => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
 
   const locations = useSelector((state) => state.locations);
   const filters = useSelector((state) => state.filters);
-  const search = useSelector((state) => state.search);
+  const selected = useSelector((state) => state.selected);
 
   const dispatch = useDispatch();
+
+  const selectedId = useRef();
 
   useEffect(() => {
     if (!Object.keys(locations).length) return;
@@ -84,21 +84,21 @@ const Map = () => {
 
         const feature = e.features[0];
         const { id, properties } = feature;
-        selectedId = id;
-
-        map.setFeatureState({ source: 'points-data', id }, { selected: true });
+        properties.featureId = id;
+        properties.center = undefined; // prevent from flying
 
         dispatch(setSelected(properties));
       });
 
       map.on('click', (e) => {
-        if (e.defaultPrevented === true || selectedId === null) return;
+        if (e.defaultPrevented === true || !selectedId.current) return;
 
         map.setFeatureState(
-          { source: 'points-data', id: selectedId },
+          { source: 'points-data', id: selectedId.current },
           { selected: false }
         );
 
+        selectedId.current = null;
         dispatch(setSelected(null));
       });
 
@@ -126,25 +126,25 @@ const Map = () => {
       ['in', 'type', ...filters.types],
       ['in', 'environments', ...filters.environments],
     ];
-
     mapBase.setFilter('points-layer', pointFilters);
   }, [filters, mapBase]);
 
   useEffect(() => {
-    if (!mapBase || search === null) return;
-
-    const { id, center, ...properties } = search;
-    selectedId = id;
-
-    mapBase.flyTo({
-      center,
-      zoom: 14,
-    });
-
-    mapBase.setFeatureState({ source: 'points-data', id }, { selected: true });
-
-    dispatch(setSelected(properties));
-  }, [search, mapBase, dispatch]);
+    if (!mapBase || !selected) return;
+    if (selected.center) {
+      mapBase.flyTo({
+        center: selected.center,
+        zoom: 14,
+      });
+    }
+    if (selected.featureId) {
+      selectedId.current = selected.featureId;
+      mapBase.setFeatureState(
+        { source: 'points-data', id: selected.featureId },
+        { selected: true }
+      );
+    }
+  }, [selected, mapBase]);
 
   return (
     <div>

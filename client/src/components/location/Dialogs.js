@@ -10,12 +10,12 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 
-export const SelectDialog = ({
+export const VerifyDialog = ({
   open,
-  selected,
-  setSelected,
+  formatted,
+  setFormatted,
   handleClose,
-  handleSelect,
+  handleVerify,
 }) => {
   const geocoded = useSelector((state) => state.geocoded);
 
@@ -31,8 +31,8 @@ export const SelectDialog = ({
             : 'Is this the correct location?'}
         </DialogContentText>
         <RadioGroup
-          value={selected}
-          onChange={(e) => setSelected(e.target.value)}
+          value={formatted}
+          onChange={(e) => setFormatted(e.target.value)}
         >
           {geocoded.map((d) => (
             <FormControlLabel
@@ -46,7 +46,7 @@ export const SelectDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSelect}>Select</Button>
+        <Button onClick={handleVerify}>Select</Button>
       </DialogActions>
     </Dialog>
   );

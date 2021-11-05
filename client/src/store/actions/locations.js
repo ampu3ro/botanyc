@@ -1,5 +1,5 @@
 import { apiCall } from '../../services/api';
-import { SET_LOCATIONS, SET_SELECTED } from '../actionTypes';
+import { SET_LOCATIONS, SET_SELECTED, SET_SEARCH } from '../actionTypes';
 import { setAlert } from './alert';
 
 export function setLocations(data) {
@@ -27,3 +27,8 @@ export function setSelected(data) {
     data,
   };
 }
+
+export const setSearch = (payload) => ({
+  type: SET_SEARCH,
+  payload,
+});
