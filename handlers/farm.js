@@ -35,6 +35,7 @@ exports.bulkFarms = async (req, res, next) => {
         area: area ? parseFloat(area) : undefined,
         authEmails: fromString(authEmails),
         modifiedBy: req.body.currentUser.user.email,
+        needsApproval: false,
       };
       if (lat && lon) {
         lat = parseFloat(lat);
