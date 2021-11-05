@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { FARM_PROPS, FARM_FIELDS } from './dataTypes';
+import { FARM_PROPS } from './dataTypes';
 import Grid from '@mui/material/Grid';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
@@ -130,10 +130,11 @@ export const DateForm = ({
   );
 };
 
-export const NumericGridForm = ({ name, title, fields, ...props }) => {
-  const farmFields = FARM_FIELDS[name];
-  if (!title) title = farmFields.title;
-  if (!fields) fields = farmFields.fields;
+export const NumericGridForm = ({ name, title, fields, adorn, ...props }) => {
+  const farmProps = FARM_PROPS[name] || {};
+  if (!title) title = farmProps.title;
+  if (!fields) fields = farmProps.fields;
+  if (!adorn) adorn = farmProps.adorn;
 
   return (
     <FormControl fullWidth>
@@ -143,11 +144,11 @@ export const NumericGridForm = ({ name, title, fields, ...props }) => {
           return (
             <Grid item key={d.id} xs={12} sm={6} lg={4}>
               <TextForm
-                name={d.id}
+                name={d.name}
                 label={d.label}
                 helpText={d.helpText}
                 int
-                fullWidth
+                adorn={adorn}
                 {...props}
               />
             </Grid>

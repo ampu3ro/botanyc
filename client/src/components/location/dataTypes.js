@@ -71,141 +71,8 @@ export const ENVIRONMENTS = {
   ],
 };
 
-export const FARM_FIELDS = {
-  floors: {
-    label: 'Area',
-    title: 'What is the horizontal area of your farm or garden by floor?',
-    fields: [
-      { pattern: 'indoor', id: 'areaCellar', label: 'Cellar' },
-      {
-        pattern: 'ground|garden-specific|other',
-        id: 'areaGround',
-        label: 'Ground',
-      },
-      { pattern: 'indoor', id: 'areaFloor1', label: '1st floor' },
-      { pattern: 'indoor', id: 'areaFloor2', label: '2nd floor' },
-      { pattern: '.', id: 'areaOther', label: 'Other' },
-      { pattern: 'roof', id: 'areaRoof', label: 'Roof' },
-    ],
-  },
-  crops: {
-    label: 'Production',
-    title:
-      'How many pounds of each product/crop below were harvested in the past 3 years?',
-    fields: [
-      {
-        id: 'cropSalad',
-        label: 'Salad greens',
-        helpText: 'Lettuce, salad mix, spring mix, arugula',
-      },
-      { id: 'cropMicrogreens', label: 'Microgreens' },
-      {
-        id: 'cropLeafy',
-        label: 'Other leafy greens',
-        helpText: 'Chard, kale, cabbage',
-      },
-      {
-        id: 'cropHerbs',
-        label: 'Herbs',
-        helpText: 'Cut or live; mint, oregano, rosemary',
-      },
-      {
-        id: 'cropVine',
-        label: 'Vine vegetables',
-        helpText: 'Tomatoes, cucumbers, peppers',
-      },
-      {
-        id: 'cropRoot',
-        label: 'Root vegetables',
-        helpText: 'Carrots, radishes, beets, kohlrabi',
-      },
-      {
-        id: 'cropStarch',
-        label: 'Root starch vegetables',
-        helpText: 'Potatoes, yams, sweet potatoes',
-      },
-      {
-        id: 'cropCruciferous',
-        label: 'Cruciferous vegetables',
-        helpText: 'Broccoli, cauliflower',
-      },
-      {
-        id: 'cropGourds',
-        label: 'Squashes or gourds',
-        helpText: 'Zucchini, pumpkin',
-      },
-      { id: 'cropFunghi', label: 'Fungi', helpText: 'Mushrooms' },
-      {
-        id: 'cropBerries',
-        label: 'Berries',
-        helpText: 'Raspberries, blueberries, strawberries',
-      },
-      { id: 'cropMelons', label: 'Melons', helpText: 'Cantaloupe, watermelon' },
-      {
-        id: 'cropFruits',
-        label: 'Tree fruits',
-        helpText: 'Apples, pears, peaches, nectarines, cherries',
-      },
-      {
-        id: 'cropNuts',
-        label: 'Tree nuts',
-        helpText: 'Almonds, pistachios, walnuts',
-      },
-      { id: 'cropEggs', label: 'Chicken eggs' },
-      {
-        id: 'cropChicken',
-        label: 'Chicken products',
-        helpText: 'Other products from chickens',
-      },
-      {
-        id: 'cropLivestock',
-        label: 'Livestock products',
-        helpText:
-          'Products from cows, sheep, goats, or other traditional livestock',
-      },
-      { id: 'cropFish', label: 'Fish', helpText: 'Fish, shellfish, or snails' },
-      {
-        id: 'cropInsects',
-        label: 'Insects',
-        helpText: 'Crickets, black soldier fly',
-      },
-      { id: 'cropMicroalgae', label: 'Microalgae', helpText: 'Spirulina' },
-      { id: 'cropStarts', label: 'Nursery starts' },
-      {
-        id: 'cropOrnamentals',
-        label: 'Ornamental plants',
-        helpText: 'Flowers',
-      },
-      { id: 'cropCannabis', label: 'Cannabis' },
-      { id: 'cropOther', label: 'Other' },
-    ],
-  },
-  distros: {
-    label: 'Distribution',
-    title:
-      'How many pounds did you sell or distribute through the following market channels in the last three years?',
-    fields: [
-      { id: 'distroBox', label: 'Big box store', helpText: 'Target, Costco' },
-      { id: 'distroCorner', label: 'Bodega/corner store' },
-      {
-        id: 'distroSuper',
-        label: 'Supermarket',
-        helpText: 'Key Food, Whole Foods',
-      },
-      { id: 'distroRestaurant', label: 'Restaurants' },
-      { id: 'distroWeb', label: 'Farm/garden website' },
-      { id: 'distroCSA', label: 'CSA' },
-      { id: 'distroMarket', label: 'Farmers markets' },
-      { id: 'distroOnsite', label: 'On-site market' },
-      { id: 'distroDonation', label: 'Donation' },
-      { id: 'distroHub', label: 'Aggregator/food processor/food hub' },
-      { id: 'distroPersonal', label: 'Personal consumption' },
-      { id: 'distroOther', label: 'Other' },
-    ],
-  },
-};
-
 export const FARM_PROPS = {
+  // order matters for sidebar display
   name: { label: 'Name', helpText: 'What is the name of the farm or garden?' },
   address: {
     label: 'Address',
@@ -224,7 +91,26 @@ export const FARM_PROPS = {
     multiple: true,
   },
   enviroDetails: { label: 'Environment detail', default: [] },
+  area: { label: 'Area (sqft)', int: true },
   indoorFloors: { default: [] },
+  floors: {
+    label: 'Area',
+    adorn: 'sqft',
+    title: 'What is the horizontal area of your farm or garden by floor?',
+    fields: [
+      { pattern: 'indoor', name: 'areaCellar', label: 'Cellar' },
+      {
+        pattern: 'ground|garden-specific|other',
+        name: 'areaGround',
+        label: 'Ground',
+      },
+      { pattern: 'indoor', name: 'areaFloor1', label: '1st floor' },
+      { pattern: 'indoor', name: 'areaFloor2', label: '2nd floor' },
+      { pattern: '.', name: 'areaOther', label: 'Other' },
+      { pattern: 'roof', name: 'areaRoof', label: 'Roof' },
+    ],
+  },
+  percentFood: { label: 'Food share', default: 80 },
   orgName: {
     label: 'Organization',
     helpText:
@@ -237,14 +123,6 @@ export const FARM_PROPS = {
     options: ['C corp', 'S corp', 'LLC', 'Not-for-profit'],
   },
   bCorp: { label: 'B corporation', default: false },
-  area: {},
-  areaCellar: {},
-  areaGround: {},
-  areaFloor1: {},
-  areaFloor2: {},
-  areaOther: {},
-  areaRoof: {},
-  percentFood: { label: 'Food share', default: 80 },
   priorities: {
     label: 'Priorities',
     helpText:
@@ -400,42 +278,131 @@ export const FARM_PROPS = {
       'Outside of NY State',
     ],
   },
-  cropSalad: {},
-  cropMicrogreens: {},
-  cropLeafy: {},
-  cropHerbs: {},
-  cropVine: {},
-  cropRoot: {},
-  cropCruciferous: {},
-  cropStarch: {},
-  cropGourds: {},
-  cropFunghi: {},
-  cropMelons: {},
-  cropBerries: {},
-  cropFruits: {},
-  cropNuts: {},
-  cropEggs: {},
-  cropChicken: {},
-  cropLivestock: {},
-  cropFish: {},
-  cropInsects: {},
-  cropMicroalgae: {},
-  cropStarts: {},
-  cropOrnamentals: {},
-  cropCannabis: {},
-  cropOther: {},
-  distroBox: {},
-  distroCorner: {},
-  distroSuper: {},
-  distroRestaurant: {},
-  distroWeb: {},
-  distroCSA: {},
-  distroMarket: {},
-  distroOnsite: {},
-  distroDonation: {},
-  distroHub: {},
-  distroPersonal: {},
-  distroOther: {},
+  crops: {
+    label: 'Production',
+    adorn: 'lbs',
+    title:
+      'How many pounds of each product/crop below were harvested in the past 3 years?',
+    fields: [
+      {
+        name: 'cropSalad',
+        label: 'Salad greens',
+        helpText: 'Lettuce, salad mix, spring mix, arugula',
+      },
+      { name: 'cropMicrogreens', label: 'Microgreens' },
+      {
+        name: 'cropLeafy',
+        label: 'Other leafy greens',
+        helpText: 'Chard, kale, cabbage',
+      },
+      {
+        name: 'cropHerbs',
+        label: 'Herbs',
+        helpText: 'Cut or live; mint, oregano, rosemary',
+      },
+      {
+        name: 'cropVine',
+        label: 'Vine vegetables',
+        helpText: 'Tomatoes, cucumbers, peppers',
+      },
+      {
+        name: 'cropRoot',
+        label: 'Root vegetables',
+        helpText: 'Carrots, radishes, beets, kohlrabi',
+      },
+      {
+        name: 'cropStarch',
+        label: 'Root starch vegetables',
+        helpText: 'Potatoes, yams, sweet potatoes',
+      },
+      {
+        name: 'cropCruciferous',
+        label: 'Cruciferous vegetables',
+        helpText: 'Broccoli, cauliflower',
+      },
+      {
+        name: 'cropGourds',
+        label: 'Squashes or gourds',
+        helpText: 'Zucchini, pumpkin',
+      },
+      { name: 'cropFunghi', label: 'Fungi', helpText: 'Mushrooms' },
+      {
+        name: 'cropBerries',
+        label: 'Berries',
+        helpText: 'Raspberries, blueberries, strawberries',
+      },
+      {
+        name: 'cropMelons',
+        label: 'Melons',
+        helpText: 'Cantaloupe, watermelon',
+      },
+      {
+        name: 'cropFruits',
+        label: 'Tree fruits',
+        helpText: 'Apples, pears, peaches, nectarines, cherries',
+      },
+      {
+        name: 'cropNuts',
+        label: 'Tree nuts',
+        helpText: 'Almonds, pistachios, walnuts',
+      },
+      { name: 'cropEggs', label: 'Chicken eggs' },
+      {
+        name: 'cropChicken',
+        label: 'Chicken products',
+        helpText: 'Other products from chickens',
+      },
+      {
+        name: 'cropLivestock',
+        label: 'Livestock products',
+        helpText:
+          'Products from cows, sheep, goats, or other traditional livestock',
+      },
+      {
+        name: 'cropFish',
+        label: 'Fish',
+        helpText: 'Fish, shellfish, or snails',
+      },
+      {
+        name: 'cropInsects',
+        label: 'Insects',
+        helpText: 'Crickets, black soldier fly',
+      },
+      { name: 'cropMicroalgae', label: 'Microalgae', helpText: 'Spirulina' },
+      { name: 'cropStarts', label: 'Nursery starts' },
+      {
+        name: 'cropOrnamentals',
+        label: 'Ornamental plants',
+        helpText: 'Flowers',
+      },
+      { name: 'cropCannabis', label: 'Cannabis' },
+      { name: 'cropOther', label: 'Other' },
+    ],
+  },
+  distros: {
+    label: 'Distribution',
+    adorn: 'lbs',
+    title:
+      'How many pounds did you sell or distribute through the following market channels in the last three years?',
+    fields: [
+      { name: 'distroBox', label: 'Big box store', helpText: 'Target, Costco' },
+      { name: 'distroCorner', label: 'Bodega/corner store' },
+      {
+        name: 'distroSuper',
+        label: 'Supermarket',
+        helpText: 'Key Food, Whole Foods',
+      },
+      { name: 'distroRestaurant', label: 'Restaurants' },
+      { name: 'distroWeb', label: 'Farm/garden website' },
+      { name: 'distroCSA', label: 'CSA' },
+      { name: 'distroMarket', label: 'Farmers markets' },
+      { name: 'distroOnsite', label: 'On-site market' },
+      { name: 'distroDonation', label: 'Donation' },
+      { name: 'distroHub', label: 'Aggregator/food processor/food hub' },
+      { name: 'distroPersonal', label: 'Personal consumption' },
+      { name: 'distroOther', label: 'Other' },
+    ],
+  },
   founding: {
     label: 'Founded',
     helpText: 'What year was the farm or garden founded?',
@@ -538,13 +505,20 @@ export const FARM_PROPS = {
     multiple: true,
   },
   authEmails: {},
+  updatedAt: { label: 'Last updated' },
 };
 
 export const FARM_DEFAULT = Object.fromEntries(
-  Object.entries(FARM_PROPS).map(([k, v]) => {
-    const d = v.default !== undefined ? v.default : v.multiple ? [] : '';
-    return [k, d];
-  })
+  Object.entries(FARM_PROPS)
+    .map(([k, v]) => {
+      const data = v.fields ? v.fields : [v];
+      return data.map((d) => {
+        const name = v.fields ? d.name : k;
+        const def = d.default !== undefined ? d.default : d.multiple ? [] : '';
+        return [name, def];
+      });
+    })
+    .flat()
 );
 
 export const FILTER_DEFAULT = {

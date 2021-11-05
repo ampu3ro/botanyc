@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { geocode, setGeocoded } from '../../store/actions/maps';
 import { submitOne, editOne, deleteOne } from '../../store/actions/farm';
-import { FARM_DEFAULT, ENVIRONMENTS, FARM_FIELDS } from './dataTypes';
+import { FARM_PROPS, FARM_DEFAULT, ENVIRONMENTS } from './dataTypes';
 import Header from '../Header';
 import SectionHeader from './SectionHeader';
 import { TextForm, SelectForm, DateForm, NumericGridForm } from './Inputs';
@@ -177,7 +177,7 @@ const FarmForm = () => {
     verified,
   ]);
 
-  const floors = FARM_FIELDS.floors.fields.filter((d) => {
+  const floors = FARM_PROPS.floors.fields.filter((d) => {
     let re = new RegExp(d.pattern, 'i');
     return (
       watchEnviro.some((x) => re.test(x)) ||
