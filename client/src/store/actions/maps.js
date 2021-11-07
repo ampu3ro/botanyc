@@ -23,7 +23,7 @@ export function geocode(data) {
         );
       }
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err.message }));
     }
   };
 }

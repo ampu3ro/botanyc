@@ -452,7 +452,7 @@ export const FARM_PROPS = {
     int: true,
   },
   volunteers: {
-    label: 'Volunteer',
+    label: 'Volunteers',
     helpText: 'How many volunteers worked for you in the past three years?',
     int: true,
   },

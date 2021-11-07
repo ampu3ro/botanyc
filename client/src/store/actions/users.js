@@ -15,7 +15,7 @@ export function fetchUsers() {
       const users = await apiCall('get', '/api/user/fetch');
       dispatch(setUsers(users));
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }
@@ -32,7 +32,7 @@ export function editUser(user) {
         })
       );
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }

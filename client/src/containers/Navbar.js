@@ -52,67 +52,61 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <Box sx={{ flexGrow: 1, marginBottom: 10 }}>
-        <AppBar
-          position="fixed"
-          sx={{ backgroundColor: 'white', opacity: 0.95 }}
-        >
-          <Toolbar sx={{ justifyContent: 'space-between' }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 8 }}>
+      <AppBar position="fixed" sx={{ backgroundColor: 'white', opacity: 0.95 }}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <div>
+            <MenuButton
+              edge="start"
+              variant="text"
+              aria-label="menu"
+              onClick={recordButtonPosition}
+            >
+              <MenuIcon />
+            </MenuButton>
+            <HomeButton variant="text" onClick={() => history.push('/')}>
+              {'bot\u0101NYC'}
+            </HomeButton>
+          </div>
+          {currentUser.isAuthenticated ? (
             <div>
-              <MenuButton
-                edge="start"
-                variant="text"
-                aria-label="menu"
-                onClick={recordButtonPosition}
+              <Button variant="text" onClick={clickLogout}>
+                Logout
+              </Button>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                open={menuOpen}
+                onClose={closeMenu}
               >
-                <MenuIcon />
-              </MenuButton>
-              <HomeButton variant="text" onClick={() => history.push('/')}>
-                {'bot\u0101NYC'}
-              </HomeButton>
-            </div>
-            {currentUser.isAuthenticated ? (
-              <div>
-                <Button variant="text" onClick={clickLogout}>
-                  Logout
-                </Button>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  open={menuOpen}
-                  onClose={closeMenu}
-                >
-                  <MenuItem onClick={() => clickMenu('/farm')}>
-                    Farm/Garden Form
+                <MenuItem onClick={() => clickMenu('/farm')}>
+                  Farm/Garden Form
+                </MenuItem>
+                {currentUser.isAdmin && (
+                  <MenuItem onClick={() => clickMenu('/bulk')}>
+                    Bulk Upload
                   </MenuItem>
-                  {currentUser.isAdmin && (
-                    <MenuItem onClick={() => clickMenu('/bulk')}>
-                      Bulk Upload
-                    </MenuItem>
-                  )}
-                  {currentUser.isAdmin && (
-                    <MenuItem onClick={() => clickMenu('/admin')}>
-                      Admin Settings
-                    </MenuItem>
-                  )}
-                </Menu>
-              </div>
-            ) : (
-              <div>
-                <Button variant="text" onClick={() => history.push('/signup')}>
-                  Sign Up
-                </Button>
-                <Button variant="text" onClick={() => history.push('/signin')}>
-                  Login
-                </Button>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
-      </Box>
-      <br />
-    </div>
+                )}
+                {currentUser.isAdmin && (
+                  <MenuItem onClick={() => clickMenu('/admin')}>
+                    Admin Settings
+                  </MenuItem>
+                )}
+              </Menu>
+            </div>
+          ) : (
+            <div>
+              <Button variant="text" onClick={() => history.push('/signup')}>
+                Sign Up
+              </Button>
+              <Button variant="text" onClick={() => history.push('/signin')}>
+                Login
+              </Button>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 

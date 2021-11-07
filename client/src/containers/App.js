@@ -4,6 +4,7 @@ import Main from './Main';
 import theme from '../theme';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
 
 const App = () => {
   return (
@@ -11,7 +12,9 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navbar />
-        <Main />
+        <Box sx={{ padding: 2 }}>
+          <Main />
+        </Box>
       </ThemeProvider>
     </div>
   );

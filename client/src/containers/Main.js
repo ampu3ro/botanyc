@@ -10,6 +10,7 @@ import AuthForm from '../components/AuthForm';
 import BulkEdit from '../components/BulkEdit';
 import FarmForm from '../components/location/FarmForm';
 import AdminForm from '../components/AdminForm';
+import Box from '@mui/material/Box';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
@@ -35,36 +36,38 @@ const Main = () => {
         <Route exact path="/">
           <Homepage />
         </Route>
-        <Route exact path="/signin">
-          <AuthForm
-            authType="signin"
-            buttonText="Log in"
-            heading="Welcome back"
-          />
-        </Route>
-        <Route exact path="/signup">
-          <AuthForm
-            authType="signup"
-            buttonText="Sign me up!"
-            heading="Join the botaNYC community"
-          />
-        </Route>
-        <Route path="/reset/:token">
-          <AuthForm
-            authType="reset"
-            buttonText="Update"
-            heading="Reset your password"
-          />
-        </Route>
-        <Route exact path="/farm">
-          <FarmForm />
-        </Route>
-        <Route exact path="/bulk">
-          <BulkEdit />
-        </Route>
-        <Route exact path="/admin">
-          <AdminForm />
-        </Route>
+        <Box sx={{ paddingLeft: 4, paddingRight: 4 }}>
+          <Route exact path="/signin">
+            <AuthForm
+              authType="signin"
+              buttonText="Log in"
+              heading="Welcome back"
+            />
+          </Route>
+          <Route exact path="/signup">
+            <AuthForm
+              authType="signup"
+              buttonText="Sign me up!"
+              heading="Join the botaNYC community"
+            />
+          </Route>
+          <Route path="/reset/:token">
+            <AuthForm
+              authType="reset"
+              buttonText="Update"
+              heading="Reset your password"
+            />
+          </Route>
+          <Route exact path="/farm">
+            <FarmForm />
+          </Route>
+          <Route exact path="/bulk">
+            <BulkEdit />
+          </Route>
+          <Route exact path="/admin">
+            <AdminForm />
+          </Route>
+        </Box>
       </Switch>
       <Snackbar
         open={alert.isActive}
@@ -73,7 +76,7 @@ const Main = () => {
       >
         <Alert
           onClose={handleClose}
-          severity={alert.payload.severity}
+          severity={alert.payload.severity || 'error'}
           variant="filled"
         >
           {alert.payload.message}

@@ -13,10 +13,10 @@ export function fetchLocations() {
   return async (dispatch) => {
     try {
       const data = await apiCall('get', '/api/loc/fetch');
-      dispatch(setLocations(data));
+      return dispatch(setLocations(data));
     } catch (err) {
-      dispatch(setLocations({ data: null }));
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
+      return dispatch(setLocations({}));
     }
   };
 }

@@ -43,7 +43,7 @@ export function authUser(type, email, password, resetToken) {
       }
       dispatch(setAlert(alert));
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }
@@ -59,7 +59,7 @@ export function forgotPassword(email) {
         })
       );
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message.response }));
+      dispatch(setAlert({ message: err?.message.response }));
     }
   };
 }
@@ -69,15 +69,10 @@ export function checkToken(token) {
     try {
       const result = await apiCall('get', `/api/auth/reset/${token}`);
       if (!result.email) {
-        dispatch(
-          setAlert({
-            severity: 'error',
-            message: 'Invalid/expired reset token',
-          })
-        );
+        dispatch(setAlert({ message: 'Invalid/expired reset token' }));
       }
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }

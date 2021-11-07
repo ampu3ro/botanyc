@@ -9,9 +9,9 @@ export function submitOne(data) {
       const result = await apiCall('post', '/api/farm/approval/submit', data);
       const message = `Successfully submitted ${result.name} for review!`;
       dispatch(setAlert({ severity: 'success', message }));
-      dispatch(fetchLocations());
+      return dispatch(fetchLocations());
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }
@@ -32,9 +32,9 @@ export function editOne(data) {
         : 'inserted';
       const message = `Successfully ${verb} ${result.value.name}!`;
       dispatch(setAlert({ severity: 'success', message }));
-      dispatch(fetchLocations());
+      return dispatch(fetchLocations());
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }
@@ -51,12 +51,12 @@ export function editBulk(data) {
     try {
       const result = await apiCall('post', '/api/farm/admin/bulk', data);
       dispatch(setBulkEdit(result));
-      dispatch(fetchLocations());
       dispatch(
         setAlert({ severity: 'success', message: 'Bulk write finished!' })
       );
+      return dispatch(fetchLocations());
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }
@@ -66,10 +66,10 @@ export function deleteOne(data) {
     try {
       await apiCall('post', '/api/farm/auth/delete', data);
       const message = `Successfully deleted ${data.name}!`;
-      dispatch(fetchLocations());
       dispatch(setAlert({ severity: 'success', message }));
+      return dispatch(fetchLocations());
     } catch (err) {
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }
@@ -87,8 +87,8 @@ export function fetchApprovals() {
       const data = await apiCall('get', '/api/farm/admin/approvals');
       dispatch(setApprovals(data));
     } catch (err) {
-      dispatch(setApprovals({ data: null }));
-      dispatch(setAlert({ severity: 'error', message: err.message }));
+      dispatch(setApprovals({}));
+      dispatch(setAlert({ message: err?.message }));
     }
   };
 }

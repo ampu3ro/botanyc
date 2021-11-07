@@ -17,6 +17,7 @@ const PAINT_COLOR = [
 const Map = () => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
+  const selectedId = useRef();
 
   const locations = useSelector((state) => state.locations);
   const filters = useSelector((state) => state.filters);
@@ -24,11 +25,7 @@ const Map = () => {
 
   const dispatch = useDispatch();
 
-  const selectedId = useRef();
-
   useEffect(() => {
-    if (!Object.keys(locations).length) return;
-
     const map = new mapboxgl.Map({
       container: mapRef.current,
       style: 'mapbox://styles/ampu3ro/cktki8cej537c17mikqn1tp1n',
@@ -41,7 +38,7 @@ const Map = () => {
     map.on('load', () => {
       map.addSource('points-data', {
         type: 'geojson',
-        data: locations,
+        data: {},
       });
 
       const areaRoot = ['sqrt', ['number', ['get', 'area'], 10000]];
@@ -91,7 +88,7 @@ const Map = () => {
       });
 
       map.on('click', (e) => {
-        if (e.defaultPrevented === true || !selectedId.current) return;
+        if (e.defaultPrevented || !selectedId.current) return;
 
         map.setFeatureState(
           { source: 'points-data', id: selectedId.current },
@@ -114,9 +111,12 @@ const Map = () => {
 
       setMapBase(map);
     });
+  }, [dispatch]);
 
-    return () => map.remove();
-  }, [locations, dispatch]);
+  useEffect(() => {
+    if (!mapBase || !locations.features) return;
+    mapBase.getSource('points-data').setData(locations);
+  }, [locations, mapBase]);
 
   useEffect(() => {
     if (!mapBase || !filters.types || !filters.environments) return;
@@ -131,18 +131,19 @@ const Map = () => {
 
   useEffect(() => {
     if (!mapBase || !selected) return;
-    if (selected.center) {
-      mapBase.flyTo({
-        center: selected.center,
-        zoom: 14,
-      });
-    }
+
     if (selected.featureId) {
       selectedId.current = selected.featureId;
       mapBase.setFeatureState(
         { source: 'points-data', id: selected.featureId },
         { selected: true }
       );
+    }
+    if (selected.center) {
+      mapBase.flyTo({
+        center: selected.center,
+        zoom: 14,
+      });
     }
   }, [selected, mapBase]);
 
