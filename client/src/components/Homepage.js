@@ -13,7 +13,7 @@ import Switch from '@mui/material/Switch';
 const Homepage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const currentUser = useSelector((state) => state.currentUser);
-  const locations = useSelector((state) => state.locations);
+  const location = useSelector((state) => state.location);
 
   return (
     <div>
@@ -30,7 +30,7 @@ const Homepage = () => {
           </Typography>
         </div>
       )}
-      {locations && (
+      {location.data && (
         <div>
           <div style={{ position: 'relative' }}>
             <Map />

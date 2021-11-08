@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import currentUser from './currentUser';
 import alert from './alert';
-import locations from './locations';
+import location from './location';
 import geocoded from './geocoded';
 import edit from './edit';
 import bulkEdits from './bulkEdits';
@@ -14,7 +14,7 @@ import selected from './selected';
 const rootReducer = combineReducers({
   currentUser,
   alert,
-  locations,
+  location,
   geocoded,
   edit,
   bulkEdits,

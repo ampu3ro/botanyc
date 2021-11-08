@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState, useCallback, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
@@ -41,7 +41,7 @@ const FarmForm = () => {
   const [jobsCount, setJobsCount] = useState(1);
 
   const currentUser = useSelector((state) => state.currentUser);
-  const locations = useSelector((state) => state.locations);
+  const location = useSelector((state) => state.location);
   const geocoded = useSelector((state) => state.geocoded);
   const edit = useSelector((state) => state.edit);
 
@@ -55,43 +55,20 @@ const FarmForm = () => {
   const watchGrowMethods = watch('growMethods', []);
   const watchCompost = watch('compost', '');
 
-  const { features } = locations;
-  let searchOptions = features
-    ? features
-        .map((d) => {
-          let { properties } = d;
-          const { environments } = properties;
-          if (typeof environments === 'string') {
-            properties.environments = environments.split(','); // string for mapbox data filtering
-          }
-          return {
-            ...properties,
-            center: d.geometry.coordinates,
-            featureId: d.id,
-          };
-        })
-        .filter((d, i, a) => a.findIndex((t) => t.label === d.label) === i) // remove duplicates
-    : [];
+  let searchOptions = location.options;
   if (!currentUser.isAdmin && searchOptions) {
     searchOptions = searchOptions.filter((d) =>
       d.authEmails.includes(currentUser.user.email)
     );
   }
 
-  const handleSearch = (event, value) => {
-    dispatch(setEdit(value));
-    if (value) {
-      Object.entries(value).forEach(([k, v]) => setValue(k, v));
-    }
-  };
-
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setPush(false);
     dispatch(setEdit(''));
     dispatch(setGeocoded([]));
     setJobsCount(1);
     reset();
-  };
+  }, [dispatch, reset]);
 
   const handleDelete = () => {
     const data = getValues();
@@ -117,6 +94,12 @@ const FarmForm = () => {
   };
 
   useEffect(() => {
+    if (edit) {
+      Object.entries(edit).forEach(([k, v]) => setValue(k, v));
+    }
+  }, [edit, setValue]);
+
+  useEffect(() => {
     if (geocoded.length) {
       setFormatted(geocoded[0].formattedAddress);
       setOpenVerify(true);
@@ -136,7 +119,7 @@ const FarmForm = () => {
       (parseInt(data.areaRoof) || 0) +
       (parseInt(data.areaOther) || 0);
     if (area > 0) {
-      data.area = String(area); // handler filters fields with 0 length
+      data.area = String(area); // filtering fields with 0 length below
     }
 
     data.positions = Object.values(positions).filter((d) => d !== '');
@@ -158,6 +141,13 @@ const FarmForm = () => {
         },
       ];
     }
+
+    data = Object.keys(data)
+      .filter((k) => data[k] && data[k].length)
+      .reduce((a, k) => Object.assign(a, { [k]: data[k] }), {});
+
+    console.log(data);
+
     if (
       currentUser.isAdmin ||
       (edit && edit.authEmails.includes(currentUser.user.email))
@@ -168,6 +158,7 @@ const FarmForm = () => {
     } else {
       dispatch(submitOne(data));
     }
+
     dispatch(setSearch(''));
     handleClear();
     history.push('/');
@@ -181,6 +172,7 @@ const FarmForm = () => {
     geocoded,
     verified,
     dispatch,
+    handleClear,
     history,
   ]);
 
@@ -207,7 +199,7 @@ const FarmForm = () => {
               options={searchOptions}
               freeSolo
               value={edit}
-              onChange={handleSearch}
+              onChange={(e, v) => dispatch(setEdit(v))}
               renderInput={(params) => (
                 <TextField
                   {...params}

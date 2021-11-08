@@ -85,14 +85,9 @@ exports.editFarm = async (req, res, next) => {
     if (!currentUser.isAdmin) {
       delete update.authEmails;
     }
-    update = Object.keys(update)
-      .filter((k) => update[k] && update[k].length)
-      .reduce((a, k) => Object.assign(a, { [k]: update[k] }), {});
-
     if (!Object.keys(update).length) {
       return res.status(204).json('No content');
     }
-
     const result = await db.Farm.findOneAndUpdate(
       {
         _id:

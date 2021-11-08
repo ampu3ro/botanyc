@@ -42,28 +42,18 @@ const AutoSearch = styled(Autocomplete)(({ theme }) => ({
 const Search = () => {
   const [open, setOpen] = React.useState(false);
 
-  const locations = useSelector((state) => state.locations);
+  const location = useSelector((state) => state.location);
   const search = useSelector((state) => state.search);
 
   const dispatch = useDispatch();
-
-  const { features } = locations;
-  const options = features
-    ? features
-        .map((d) => ({
-          ...d.properties,
-          center: d.geometry.coordinates,
-          featureId: d.id,
-        }))
-        .filter((d, i, a) => a.findIndex((t) => t.label === d.label) === i) // remove duplicates
-    : [];
 
   const handleSearch = (event, value) => {
     dispatch(setSearch(value));
     dispatch(setSelected(value));
   };
 
-  if (!options.length) return <div />;
+  const { options } = location;
+  if (!options) return <div />;
 
   const startAdornment = (
     <InputAdornment position="start">

@@ -14,7 +14,7 @@ import { AG_TYPES, ENVIRONMENTS } from '../location/dataTypes';
 const Filters = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
-  const locations = useSelector((state) => state.locations);
+  const location = useSelector((state) => state.location);
 
   const handleChecks = (event, key) => {
     const { name, checked } = event.target;
@@ -27,20 +27,13 @@ const Filters = () => {
     dispatch(setFilters({ [key]: values }));
   };
 
-  const data = locations.features
-    .map((d) => {
-      const { authorized, ...props } = d.properties;
-      const [lat, lon] = d.geometry.coordinates;
-      return { ...props, lat, lon };
-    })
-    .filter((d) => {
-      return (
-        (filters.types ? filters.types.includes(d.type) : true) &&
-        (filters.environments
-          ? filters.environments.includes(d.environments)
-          : true)
-      );
-    });
+  const data = location.data.features.map((d) => {
+    const { authEmails, modifiedBy, needsApproval, enviroStr, ...props } =
+      d.properties;
+    const [lat, lon] = d.geometry.coordinates;
+    return { ...props, lat, lon };
+  });
+  console.log(data);
 
   return (
     <div>

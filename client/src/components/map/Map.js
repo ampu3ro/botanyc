@@ -17,9 +17,10 @@ const PAINT_COLOR = [
 const Map = () => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
+  const [featureId, setFeatureId] = useState('');
   const selectedId = useRef();
 
-  const locations = useSelector((state) => state.locations);
+  const location = useSelector((state) => state.location);
   const filters = useSelector((state) => state.filters);
   const selected = useSelector((state) => state.selected);
 
@@ -38,7 +39,7 @@ const Map = () => {
     map.on('load', () => {
       map.addSource('points-data', {
         type: 'geojson',
-        data: {},
+        data: null,
       });
 
       const areaRoot = ['sqrt', ['number', ['get', 'area'], 10000]];
@@ -78,23 +79,17 @@ const Map = () => {
       map.on('click', 'points-layer', (e) => {
         e.preventDefault();
         if (!e.features.length) return;
-
-        const feature = e.features[0];
-        const { id, properties } = feature;
-        properties.featureId = id;
-        properties.center = undefined; // prevent from flying
-
-        dispatch(setSelected(properties));
+        const { id } = e.features[0];
+        selectedId.current = id;
+        setFeatureId(id);
       });
 
       map.on('click', (e) => {
         if (e.defaultPrevented || !selectedId.current) return;
-
         map.setFeatureState(
           { source: 'points-data', id: selectedId.current },
           { selected: false }
         );
-
         selectedId.current = null;
         dispatch(setSelected(null));
       });
@@ -114,9 +109,25 @@ const Map = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!mapBase || !locations.features) return;
-    mapBase.getSource('points-data').setData(locations);
-  }, [locations, mapBase]);
+    const { options } = location;
+    if (options && featureId) {
+      const clicked = options.filter((d) => d.featureId === featureId)[0];
+      const { center, ...rest } = clicked; // avoid flying
+      dispatch(setSelected(rest));
+    }
+  }, [location, featureId, dispatch]);
+
+  useEffect(() => {
+    let { data } = location;
+    if (!mapBase || !data) return;
+
+    data.features = data.features.map((d) => {
+      let { properties } = d;
+      properties.environments = String(properties.environments); // mapbox won't filter an array
+      return { ...d, properties };
+    });
+    mapBase.getSource('points-data').setData(data);
+  }, [location, mapBase]);
 
   useEffect(() => {
     if (!mapBase || !filters.types || !filters.environments) return;

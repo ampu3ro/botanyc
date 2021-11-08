@@ -1,17 +1,24 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { setSelected } from '../../store/actions/locations';
+import { setEdit } from '../../store/actions/farm';
 import { FARM_PROPS } from '../location/dataTypes';
 import Bar from './Bar';
 import Drawer from '@mui/material/Drawer';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 
 const Sidebar = () => {
   const selected = useSelector((state) => state.selected);
+  const currentUser = useSelector((state) => state.currentUser);
+
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const closeDrawer = (event) => {
     if (
@@ -20,6 +27,12 @@ const Sidebar = () => {
     )
       return;
     dispatch(setSelected(null));
+  };
+
+  const handleEdit = () => {
+    console.log(selected);
+    dispatch(setEdit(selected));
+    history.push('/farm');
   };
 
   if (selected === null) return <div />;
@@ -53,19 +66,34 @@ const Sidebar = () => {
               }
               let v = selected[k];
               if (!label || !v) return undefined;
-
+              if (k === 'name') {
+                return (
+                  <Typography variant="h4" key={k}>
+                    {v}
+                    {currentUser.isAdmin && (
+                      <IconButton
+                        sx={{
+                          display: 'inline-flex',
+                          verticalAlign: 'middle',
+                        }}
+                        onClick={handleEdit}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    )}
+                  </Typography>
+                );
+              }
+              const time = k === 'updatedAt';
               if (v[0] === '[' && v.at(-1) === ']') {
                 // mapbox stores arrays as strings
                 v = JSON.parse(v).join(', ');
               }
-              const name = k === 'name';
-              const time = k === 'updatedAt';
-
               return (
                 <Stack key={k}>
                   {time && <Divider sx={{ marginBottom: 2 }} />}
-                  {!name && <Typography>{label}</Typography>}
-                  <Typography variant={name ? 'h4' : 'h6'}>
+                  <Typography>{label}</Typography>
+                  <Typography variant="h6">
                     {time
                       ? new Date(v).toDateString()
                       : int
