@@ -27,19 +27,23 @@ const Filters = () => {
     dispatch(setFilters({ [key]: values }));
   };
 
-  const data = location.data.features
-    .map((d) => {
-      const { authEmails, modifiedBy, needsApproval, ...props } = d.properties;
-      return props;
-    })
+  const features = location.data.features
     .filter((d) => {
+      const { type, environments } = d.properties;
       return (
-        (filters.types ? filters.types.includes(d.type) : true) &&
-        (filters.environments && d.environments
-          ? d.environments.some((e) => filters.environments.includes(e))
+        (filters.types ? filters.types.includes(type) : true) &&
+        (filters.environments && environments
+          ? environments.some((e) => filters.environments.includes(e))
           : true)
       );
+    })
+    .map((d) => {
+      const { authEmails, modifiedBy, needsApproval, ...properties } =
+        d.properties;
+      return { ...d, properties };
     });
+
+  const properties = features.map((d) => d.properties);
 
   return (
     <div>
@@ -89,15 +93,28 @@ const Filters = () => {
           </FormControl>
         </Grid>
       </Grid>
-      <Button
-        variant="contained"
-        startIcon={<DownloadIcon />}
-        sx={{ marginTop: 1 }}
-      >
-        <CSVDownloader data={data} filename="botanyc">
-          Data
-        </CSVDownloader>
-      </Button>
+      <Grid container sx={{ marginTop: 1 }} spacing={2}>
+        <Grid item>
+          <Button variant="contained" startIcon={<DownloadIcon />}>
+            <CSVDownloader data={properties} filename="botanyc">
+              CSV
+            </CSVDownloader>
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="contained"
+            startIcon={<DownloadIcon />}
+            href={
+              'data:text/json;charset=utf-8,' +
+              encodeURIComponent(JSON.stringify({ ...location.data, features }))
+            }
+            download="botanyc.json"
+          >
+            json
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 };
