@@ -27,13 +27,19 @@ const Filters = () => {
     dispatch(setFilters({ [key]: values }));
   };
 
-  const data = location.data.features.map((d) => {
-    const { authEmails, modifiedBy, needsApproval, enviroStr, ...props } =
-      d.properties;
-    const [lat, lon] = d.geometry.coordinates;
-    return { ...props, lat, lon };
-  });
-  console.log(data);
+  const data = location.data.features
+    .map((d) => {
+      const { authEmails, modifiedBy, needsApproval, ...props } = d.properties;
+      return props;
+    })
+    .filter((d) => {
+      return (
+        (filters.types ? filters.types.includes(d.type) : true) &&
+        (filters.environments && d.environments
+          ? d.environments.some((e) => filters.environments.includes(e))
+          : true)
+      );
+    });
 
   return (
     <div>

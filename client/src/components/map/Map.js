@@ -118,15 +118,16 @@ const Map = () => {
   }, [location, featureId, dispatch]);
 
   useEffect(() => {
-    let { data } = location;
-    if (!mapBase || !data) return;
+    let mapData = JSON.parse(JSON.stringify(location.data)); // deep copy for mutation below
+    if (!mapBase || !mapData) return;
 
-    data.features = data.features.map((d) => {
+    mapData.features = mapData.features.map((d) => {
       let { properties } = d;
       properties.environments = String(properties.environments); // mapbox won't filter an array
       return { ...d, properties };
     });
-    mapBase.getSource('points-data').setData(data);
+
+    mapBase.getSource('points-data').setData(mapData);
   }, [location, mapBase]);
 
   useEffect(() => {
