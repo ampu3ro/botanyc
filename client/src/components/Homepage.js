@@ -15,6 +15,7 @@ import Switch from '@mui/material/Switch';
 const Homepage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showLayers, setShowLayers] = useState(false);
+  const [showPantries, setShowPantries] = useState(false);
   const currentUser = useSelector((state) => state.currentUser);
   const location = useSelector((state) => state.location);
 
@@ -36,7 +37,7 @@ const Homepage = () => {
       {location.data && (
         <div>
           <div style={{ position: 'relative' }}>
-            <Map showLayers={showLayers} />
+            <Map {...{ showLayers, showPantries }} />
             <Search />
             <Sidebar />
           </div>
@@ -49,7 +50,18 @@ const Homepage = () => {
                     onChange={() => setShowFilters(!showFilters)}
                   />
                 }
-                label="Show filters"
+                label="Show farm/garden filters"
+              />
+            </Grid>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={showPantries}
+                    onChange={() => setShowPantries(!showPantries)}
+                  />
+                }
+                label="Show food pantries"
               />
             </Grid>
             <Grid item>
@@ -60,7 +72,7 @@ const Homepage = () => {
                     onChange={() => setShowLayers(!showLayers)}
                   />
                 }
-                label="Show layers"
+                label="Show socioeconomic layers"
               />
             </Grid>
           </Grid>

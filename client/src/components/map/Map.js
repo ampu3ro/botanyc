@@ -4,11 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import mapboxgl from '!mapbox-gl';
 import { AG_TYPES, LAYER_SLIDERS } from '../data';
 import { setSelected } from '../../store/actions/locations';
+import './styles.css';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
-const LAYERS_URL =
+const SOCIOECONOMIC_URL =
   'https://gist.githubusercontent.com/ampu3ro/34609e91dedb19591e3d57203c9b4162/raw/c9fc9c2bf756f3e160e2f865b2ceba16c79f10d8/nyc_socio_economic.geojson';
+
+const PANTRY_URL =
+  'https://gist.githubusercontent.com/ampu3ro/1cc8e3347805d344c1b3a3638d25caa1/raw/8d76a1d543551097559e2bdcf4566f20262bd313/nyc_pantries.geojson';
 
 const PAINT_COLOR = [
   ...AG_TYPES.filter((d) => d.label)
@@ -17,7 +21,7 @@ const PAINT_COLOR = [
   '#ccc',
 ];
 
-const Map = ({ showLayers }) => {
+const Map = ({ showLayers, showPantries }) => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
   const [featureId, setFeatureId] = useState('');
@@ -38,17 +42,24 @@ const Map = ({ showLayers }) => {
       zoom: 10,
     });
 
+    const popup = new mapboxgl.Popup();
+
+    const hoverPopup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
+
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
     map.on('load', () => {
-      map.addSource('polygon-data', {
+      map.addSource('socioeconomic-data', {
         type: 'geojson',
-        data: LAYERS_URL,
+        data: SOCIOECONOMIC_URL,
       });
 
       map.addLayer({
-        id: 'polygon-layer',
-        source: 'polygon-data',
+        id: 'socioeconomic-layer',
+        source: 'socioeconomic-data',
         type: 'fill',
         paint: {
           'fill-color': '#8900e1',
@@ -56,7 +67,22 @@ const Map = ({ showLayers }) => {
         },
       });
 
-      map.addSource('points-data', {
+      map.addSource('pantry-data', {
+        type: 'geojson',
+        data: PANTRY_URL,
+      });
+
+      map.addLayer({
+        id: 'pantry-layer',
+        source: 'pantry-data',
+        type: 'symbol',
+        layout: {
+          'icon-image': 'convenience',
+          visibility: 'none',
+        },
+      });
+
+      map.addSource('farms-data', {
         type: 'geojson',
         data: null,
       });
@@ -64,8 +90,8 @@ const Map = ({ showLayers }) => {
       const areaRoot = ['sqrt', ['number', ['get', 'area'], 10000]];
 
       map.addLayer({
-        id: 'points-layer',
-        source: 'points-data',
+        id: 'farms-layer',
+        source: 'farms-data',
         type: 'circle',
         paint: {
           'circle-radius': [
@@ -95,7 +121,7 @@ const Map = ({ showLayers }) => {
         },
       });
 
-      map.on('click', 'points-layer', (e) => {
+      map.on('click', 'farms-layer', (e) => {
         e.preventDefault();
         if (!e.features.length) return;
         const { id } = e.features[0];
@@ -106,21 +132,47 @@ const Map = ({ showLayers }) => {
       map.on('click', (e) => {
         if (e.defaultPrevented || !selectedId.current) return;
         map.setFeatureState(
-          { source: 'points-data', id: selectedId.current },
+          { source: 'farms-data', id: selectedId.current },
           { selected: false }
         );
         selectedId.current = null;
         dispatch(setSelected(null));
       });
 
-      map.on('mouseenter', 'points-layer', (e) => {
+      map.on('mouseenter', 'farms-layer', (e) => {
         if (e.features.length) {
           map.getCanvas().style.cursor = 'pointer';
+          const { coordinates } = e.features[0].geometry;
+          const { name } = e.features[0].properties;
+          hoverPopup.setLngLat(coordinates).setHTML(name).addTo(map);
         }
       });
 
-      map.on('mouseleave', 'points-layer', () => {
+      map.on('mouseleave', 'farms-layer', () => {
         map.getCanvas().style.cursor = '';
+        hoverPopup.remove();
+      });
+
+      map.on('mouseenter', 'pantry-layer', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+        const { coordinates } = e.features[0].geometry;
+        const { Name } = e.features[0].properties;
+        hoverPopup.setLngLat(coordinates).setHTML(Name).addTo(map);
+      });
+
+      map.on('mouseleave', 'pantry-layer', () => {
+        map.getCanvas().style.cursor = '';
+        hoverPopup.remove();
+      });
+
+      map.on('click', 'pantry-layer', (e) => {
+        map.getCanvas().style.cursor = 'pointer';
+        const { coordinates } = e.features[0].geometry;
+        const { Lat, Lon, Zipcode, ...fields } = e.features[0].properties;
+        const html = Object.entries(fields)
+          .map(([k, v]) => `<b>${k}</b>: ${v}`)
+          .join('<br>');
+        popup.setLngLat(coordinates).setHTML(html).addTo(map);
       });
 
       setMapBase(map);
@@ -146,7 +198,7 @@ const Map = ({ showLayers }) => {
       return { ...d, properties };
     });
 
-    mapBase.getSource('points-data').setData(mapData);
+    mapBase.getSource('farms-data').setData(mapData);
   }, [location, mapBase]);
 
   useEffect(() => {
@@ -157,8 +209,26 @@ const Map = ({ showLayers }) => {
       ['in', 'type', ...filters.types],
       ['in', 'environments', ...filters.environments],
     ];
-    mapBase.setFilter('points-layer', pointFilters);
+    mapBase.setFilter('farms-layer', pointFilters);
   }, [filters, mapBase]);
+
+  useEffect(() => {
+    if (!mapBase || !selected) return;
+
+    if (selected.featureId) {
+      selectedId.current = selected.featureId;
+      mapBase.setFeatureState(
+        { source: 'farms-data', id: selected.featureId },
+        { selected: true }
+      );
+    }
+    if (selected.center) {
+      mapBase.flyTo({
+        center: selected.center,
+        zoom: 14,
+      });
+    }
+  }, [selected, mapBase]);
 
   useEffect(() => {
     if (!mapBase) return;
@@ -174,30 +244,21 @@ const Map = ({ showLayers }) => {
     } else {
       opacity = 0;
     }
-    mapBase.setPaintProperty('polygon-layer', 'fill-opacity', opacity);
+    mapBase.setPaintProperty('socioeconomic-layer', 'fill-opacity', opacity);
   }, [layers, showLayers, mapBase]);
 
   useEffect(() => {
-    if (!mapBase || !selected) return;
-
-    if (selected.featureId) {
-      selectedId.current = selected.featureId;
-      mapBase.setFeatureState(
-        { source: 'points-data', id: selected.featureId },
-        { selected: true }
-      );
-    }
-    if (selected.center) {
-      mapBase.flyTo({
-        center: selected.center,
-        zoom: 14,
-      });
-    }
-  }, [selected, mapBase]);
+    if (!mapBase) return;
+    mapBase.setLayoutProperty(
+      'pantry-layer',
+      'visibility',
+      showPantries ? 'visible' : 'none'
+    );
+  }, [showPantries, mapBase]);
 
   return (
     <div>
-      <div ref={mapRef} style={{ height: '75vh' }} />
+      <div ref={mapRef} style={{ height: '70vh' }} />
     </div>
   );
 };
