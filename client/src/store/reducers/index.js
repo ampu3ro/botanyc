@@ -11,6 +11,9 @@ import users from './users';
 import search from './search';
 import approvals from './approvals';
 import selected from './selected';
+import poi from './poi';
+import colorBy from './colorBy';
+import sizeBy from './sizeBy';
 
 const rootReducer = combineReducers({
   currentUser,
@@ -25,6 +28,9 @@ const rootReducer = combineReducers({
   search,
   approvals,
   selected,
+  poi,
+  colorBy,
+  sizeBy,
 });
 
 export default rootReducer;

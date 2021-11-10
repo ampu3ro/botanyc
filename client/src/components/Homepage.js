@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Map from './map/Map';
 import Search from './map/Search';
+import Toggles from './map/Toggles';
 import Filters from './map/Filters';
 import Layers from './map/Layers';
 import Sidebar from './map/Sidebar';
@@ -15,7 +16,7 @@ import Switch from '@mui/material/Switch';
 const Homepage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showLayers, setShowLayers] = useState(false);
-  const [showPantries, setShowPantries] = useState(false);
+  const [showToggles, setShowToggles] = useState(false);
   const currentUser = useSelector((state) => state.currentUser);
   const location = useSelector((state) => state.location);
 
@@ -37,11 +38,22 @@ const Homepage = () => {
       {location.data && (
         <div>
           <div style={{ position: 'relative' }}>
-            <Map {...{ showLayers, showPantries }} />
+            <Map {...{ showLayers, showToggles }} />
             <Search />
             <Sidebar />
           </div>
           <Grid container spacing={2} sx={{ marginTop: 2 }}>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={showToggles}
+                    onChange={() => setShowToggles(!showToggles)}
+                  />
+                }
+                label="Show data toggles"
+              />
+            </Grid>
             <Grid item>
               <FormControlLabel
                 control={
@@ -57,17 +69,6 @@ const Homepage = () => {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={showPantries}
-                    onChange={() => setShowPantries(!showPantries)}
-                  />
-                }
-                label="Show food pantries"
-              />
-            </Grid>
-            <Grid item>
-              <FormControlLabel
-                control={
-                  <Switch
                     checked={showLayers}
                     onChange={() => setShowLayers(!showLayers)}
                   />
@@ -76,6 +77,7 @@ const Homepage = () => {
               />
             </Grid>
           </Grid>
+          {showToggles && <Toggles />}
           {showFilters && <Filters />}
           {showLayers && <Layers />}
         </div>

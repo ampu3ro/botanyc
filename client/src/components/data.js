@@ -566,3 +566,24 @@ export const LAYER_SLIDERS = [
     format: (v) => v.toLocaleString('en'),
   },
 ];
+
+export const PAINT_COLOR = {
+  type: [
+    ...AG_TYPES.filter((d) => d.label)
+      .map((d) => [d.option, d.color])
+      .flat(),
+    '#ccc',
+  ],
+};
+
+const GIST_REPO = 'https://gist.githubusercontent.com/ampu3ro';
+
+export const POI_PROPS = [
+  {
+    name: 'pantry',
+    url: `${GIST_REPO}/1cc8e3347805d344c1b3a3638d25caa1/raw/8d76a1d543551097559e2bdcf4566f20262bd313/nyc_pantries.geojson`,
+    symbol: 'convenience',
+  },
+];
+
+export const SOCIOECONOMIC_URL = `${GIST_REPO}/34609e91dedb19591e3d57203c9b4162/raw/c9fc9c2bf756f3e160e2f865b2ceba16c79f10d8/nyc_socio_economic.geojson`;

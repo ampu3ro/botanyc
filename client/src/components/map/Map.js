@@ -2,26 +2,18 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 /* eslint import/no-webpack-loader-syntax: off */
 import mapboxgl from '!mapbox-gl';
-import { AG_TYPES, LAYER_SLIDERS } from '../data';
+import {
+  POI_PROPS,
+  SOCIOECONOMIC_URL,
+  LAYER_SLIDERS,
+  PAINT_COLOR,
+} from '../data';
 import { setSelected } from '../../store/actions/locations';
 import './styles.css';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
-const SOCIOECONOMIC_URL =
-  'https://gist.githubusercontent.com/ampu3ro/34609e91dedb19591e3d57203c9b4162/raw/c9fc9c2bf756f3e160e2f865b2ceba16c79f10d8/nyc_socio_economic.geojson';
-
-const PANTRY_URL =
-  'https://gist.githubusercontent.com/ampu3ro/1cc8e3347805d344c1b3a3638d25caa1/raw/8d76a1d543551097559e2bdcf4566f20262bd313/nyc_pantries.geojson';
-
-const PAINT_COLOR = [
-  ...AG_TYPES.filter((d) => d.label)
-    .map((d) => [d.option, d.color])
-    .flat(),
-  '#ccc',
-];
-
-const Map = ({ showLayers, showPantries }) => {
+const Map = ({ showLayers }) => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
   const [featureId, setFeatureId] = useState('');
@@ -31,6 +23,9 @@ const Map = ({ showLayers, showPantries }) => {
   const filters = useSelector((state) => state.filters);
   const layers = useSelector((state) => state.layers);
   const selected = useSelector((state) => state.selected);
+  const colorBy = useSelector((state) => state.colorBy);
+  const sizeBy = useSelector((state) => state.sizeBy);
+  const poi = useSelector((state) => state.poi);
 
   const dispatch = useDispatch();
 
@@ -67,19 +62,46 @@ const Map = ({ showLayers, showPantries }) => {
         },
       });
 
-      map.addSource('pantry-data', {
-        type: 'geojson',
-        data: PANTRY_URL,
-      });
+      POI_PROPS.forEach((d) => {
+        const sourceId = `${d.name}-data`;
+        const layerId = `${d.name}-layer`;
 
-      map.addLayer({
-        id: 'pantry-layer',
-        source: 'pantry-data',
-        type: 'symbol',
-        layout: {
-          'icon-image': 'convenience',
-          visibility: 'none',
-        },
+        map.addSource(sourceId, {
+          type: 'geojson',
+          data: d.url,
+        });
+
+        map.addLayer({
+          id: layerId,
+          source: sourceId,
+          type: 'symbol',
+          layout: {
+            'icon-image': d.symbol,
+            visibility: 'none',
+          },
+        });
+
+        map.on('mouseenter', layerId, (e) => {
+          map.getCanvas().style.cursor = 'pointer';
+          const { coordinates } = e.features[0].geometry;
+          const { Name } = e.features[0].properties;
+          hoverPopup.setLngLat(coordinates).setHTML(Name).addTo(map);
+        });
+
+        map.on('mouseleave', layerId, () => {
+          map.getCanvas().style.cursor = '';
+          hoverPopup.remove();
+        });
+
+        map.on('click', layerId, (e) => {
+          map.getCanvas().style.cursor = 'pointer';
+          const { coordinates } = e.features[0].geometry;
+          const { Lat, Lon, Zipcode, ...fields } = e.features[0].properties;
+          const html = Object.entries(fields)
+            .map(([k, v]) => `<b>${k}</b>: ${v}`)
+            .join('<br>');
+          popup.setLngLat(coordinates).setHTML(html).addTo(map);
+        });
       });
 
       map.addSource('farms-data', {
@@ -87,23 +109,11 @@ const Map = ({ showLayers, showPantries }) => {
         data: null,
       });
 
-      const areaRoot = ['sqrt', ['number', ['get', 'area'], 10000]];
-
       map.addLayer({
         id: 'farms-layer',
         source: 'farms-data',
         type: 'circle',
         paint: {
-          'circle-radius': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            10,
-            ['/', areaRoot, 20],
-            15,
-            ['/', areaRoot, 10],
-          ],
-          'circle-color': ['match', ['get', 'type'], ...PAINT_COLOR],
           'circle-opacity': {
             base: 2.72,
             stops: [
@@ -151,28 +161,6 @@ const Map = ({ showLayers, showPantries }) => {
       map.on('mouseleave', 'farms-layer', () => {
         map.getCanvas().style.cursor = '';
         hoverPopup.remove();
-      });
-
-      map.on('mouseenter', 'pantry-layer', (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-        const { coordinates } = e.features[0].geometry;
-        const { Name } = e.features[0].properties;
-        hoverPopup.setLngLat(coordinates).setHTML(Name).addTo(map);
-      });
-
-      map.on('mouseleave', 'pantry-layer', () => {
-        map.getCanvas().style.cursor = '';
-        hoverPopup.remove();
-      });
-
-      map.on('click', 'pantry-layer', (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-        const { coordinates } = e.features[0].geometry;
-        const { Lat, Lon, Zipcode, ...fields } = e.features[0].properties;
-        const html = Object.entries(fields)
-          .map(([k, v]) => `<b>${k}</b>: ${v}`)
-          .join('<br>');
-        popup.setLngLat(coordinates).setHTML(html).addTo(map);
       });
 
       setMapBase(map);
@@ -232,6 +220,38 @@ const Map = ({ showLayers, showPantries }) => {
 
   useEffect(() => {
     if (!mapBase) return;
+    let color = '#28811e';
+    if (colorBy !== 'none') {
+      color = ['match', ['get', colorBy], ...PAINT_COLOR[colorBy]];
+    }
+    mapBase.setPaintProperty('farms-layer', 'circle-color', color);
+  }, [colorBy, mapBase]);
+
+  useEffect(() => {
+    if (!mapBase) return;
+
+    let step1 = 4;
+    let step2 = 8;
+    if (sizeBy === 'area') {
+      const sizeRoot = ['sqrt', ['number', ['get', sizeBy], 10000]];
+      step1 = ['/', sizeRoot, 20];
+      step2 = ['/', sizeRoot, 10];
+    }
+    const radius = ['interpolate', ['linear'], ['zoom'], 10, step1, 15, step2];
+    mapBase.setPaintProperty('farms-layer', 'circle-radius', radius);
+  }, [sizeBy, mapBase]);
+
+  useEffect(() => {
+    if (!mapBase) return;
+
+    Object.entries(poi).forEach(([k, v]) => {
+      const vis = v ? 'visible' : 'none';
+      mapBase.setLayoutProperty(`${k}-layer`, 'visibility', vis);
+    });
+  }, [poi, mapBase]);
+
+  useEffect(() => {
+    if (!mapBase) return;
     let opacity;
     if (showLayers && Object.keys(layers).length) {
       const x = 1 / LAYER_SLIDERS.length;
@@ -246,15 +266,6 @@ const Map = ({ showLayers, showPantries }) => {
     }
     mapBase.setPaintProperty('socioeconomic-layer', 'fill-opacity', opacity);
   }, [layers, showLayers, mapBase]);
-
-  useEffect(() => {
-    if (!mapBase) return;
-    mapBase.setLayoutProperty(
-      'pantry-layer',
-      'visibility',
-      showPantries ? 'visible' : 'none'
-    );
-  }, [showPantries, mapBase]);
 
   return (
     <div>
