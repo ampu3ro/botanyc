@@ -130,7 +130,7 @@ const farmSchema = new Schema(
       type: [String],
       default: undefined,
     },
-    authEmails: {
+    authUsers: {
       type: [String],
       default: undefined,
     },

@@ -26,12 +26,12 @@ exports.authRequired = function (req, res, next) {
     message: 'Unauthorized',
   };
   try {
-    const token = req.headers.authorization.split(' ')[1]; // Bearer lsdfjldfkjlsdjlf
+    const token = req.headers.authorization.split(' ')[1];
     jwt.verify(token, keys.secretKey, function (e, decoded) {
-      const { authEmails } = req.body.data;
+      const { authUsers } = req.body.data;
       const authorized =
         decoded &&
-        (decoded.admin || (authEmails && authEmails.includes(decoded.email)));
+        (decoded.admin || (authUsers && authUsers.includes(decoded.username)));
       if (authorized) {
         return next();
       } else {
@@ -49,7 +49,7 @@ exports.adminRequired = function (req, res, next) {
     message: 'Unauthorized',
   };
   try {
-    const token = req.headers.authorization.split(' ')[1]; // Bearer lsdfjldfkjlsdjlf
+    const token = req.headers.authorization.split(' ')[1];
     jwt.verify(token, keys.secretKey, function (e, decoded) {
       if (decoded && decoded.admin) {
         return next();

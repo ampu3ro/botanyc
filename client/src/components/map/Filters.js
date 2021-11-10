@@ -39,7 +39,7 @@ const Filters = () => {
       );
     })
     .map((d) => {
-      const { authEmails, modifiedBy, needsApproval, ...properties } =
+      const { authUsers, modifiedBy, needsApproval, ...properties } =
         d.properties;
       return { ...d, properties };
     });

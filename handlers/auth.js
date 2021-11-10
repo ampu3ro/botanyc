@@ -5,20 +5,25 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 
+const NO_USER = { status: 400, message: 'User not found in database' };
+
 exports.signIn = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    let user = await db.User.findOne({ email });
+    const { username, password } = req.body;
+    let user = await db.User.findOne({ username });
+    if (!user) {
+      return next(NO_USER);
+    }
     const isMatch = await user.comparePassword(password);
     if (isMatch) {
       const { id, email, admin } = user;
-      const userData = { id, email, admin };
+      const userData = { id, username, email, admin };
       const token = jwt.sign(userData, keys.secretKey);
       return res.status(200).json({ ...userData, token });
     } else {
       return next({
         status: 400,
-        message: 'Invalid email/password.',
+        message: 'Invalid password',
       });
     }
   } catch (err) {
@@ -32,13 +37,13 @@ exports.signIn = async (req, res, next) => {
 exports.signUp = async (req, res, next) => {
   try {
     let user = await db.User.create(req.body);
-    const { id, email, admin } = user;
-    const userData = { id, email, admin };
+    const { id, username, email, admin } = user;
+    const userData = { id, username, email, admin };
     const token = jwt.sign(userData, keys.secretKey);
     return res.status(200).json({ ...userData, token });
   } catch (err) {
     if (err.code === 11000) {
-      err.message = 'Sorry that email is taken';
+      err.message = 'Sorry that username is taken';
     }
     return next({
       status: 400,
@@ -49,15 +54,17 @@ exports.signUp = async (req, res, next) => {
 
 exports.forgotPassword = async (req, res, next) => {
   try {
-    const { email } = req.body;
+    const { username } = req.body;
     const resetToken = crypto.randomBytes(20).toString('hex');
     const update = {
       resetToken,
       resetExpires: new Date(Date.now() + 1000 * 60 * 60),
     };
-    let user = await db.User.findOneAndUpdate({ email }, update, { new: true });
+    let user = await db.User.findOneAndUpdate({ username }, update, {
+      new: true,
+    });
     if (!user) {
-      return next({ status: 400, message: 'Email not in database' });
+      return next(NO_USER);
     }
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -68,7 +75,7 @@ exports.forgotPassword = async (req, res, next) => {
     });
     const mailOptions = {
       from: keys.emailAddress,
-      to: email,
+      to: user.email,
       subject: 'Link to reset your botaNYC password',
       text: `You are receiving this because you have requested a password reset.
       Please click on the link below to complete the reset within one hour of receiving this email\n\n
@@ -127,15 +134,12 @@ exports.resetPassword = async (req, res, next) => {
       new: true,
     });
     if (user) {
-      const { id, email, admin } = user;
-      const userData = { id, email, admin };
+      const { id, username, email, admin } = user;
+      const userData = { id, username, email, admin };
       const token = jwt.sign(userData, keys.secretKey);
       return res.status(200).json({ ...userData, token });
     } else {
-      return next({
-        status: 400,
-        message: 'Email not found in database',
-      });
+      return next(NO_USER);
     }
   } catch (err) {
     return next({

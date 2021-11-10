@@ -23,25 +23,33 @@ export function logout() {
   };
 }
 
-export function authUser(type, email, password, resetToken) {
+export function authUser(type, username, password, email, resetToken) {
   return async (dispatch) => {
     try {
-      const { token, ...user } = await apiCall('post', `/api/auth/${type}`, {
-        email,
+      const userData = {
+        username,
         password,
+        email,
         resetToken,
-      });
+      };
+      const { token, ...user } = await apiCall(
+        'post',
+        `/api/auth/${type}`,
+        userData
+      );
       localStorage.setItem('jwtToken', token);
       setAuthorizationToken(token);
       dispatch(setCurrentUser(user));
-      let alert = {};
-      if (type === 'reset') {
-        alert = {
+      if (type !== 'signin') {
+        const alert = {
           severity: 'success',
-          message: 'Password updated successfully',
+          message:
+            type === 'reset'
+              ? 'Password updated successfully'
+              : `User:${username} created successfully`,
         };
+        dispatch(setAlert(alert));
       }
-      dispatch(setAlert(alert));
     } catch (err) {
       dispatch(setAlert({ message: err?.message }));
     }

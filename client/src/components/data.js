@@ -504,7 +504,7 @@ export const FARM_PROPS = {
     ],
     multiple: true,
   },
-  authEmails: {},
+  authUsers: {},
   updatedAt: { label: 'Last updated' },
 };
 

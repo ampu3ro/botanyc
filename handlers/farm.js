@@ -15,7 +15,7 @@ exports.bulkFarms = async (req, res, next) => {
         environments,
         enviroDetails,
         area,
-        authEmails,
+        authUsers,
       } = d;
       if (id === '') {
         id = undefined;
@@ -33,7 +33,7 @@ exports.bulkFarms = async (req, res, next) => {
         environments: fromString(environments),
         enviroDetails: fromString(enviroDetails),
         area: area ? parseFloat(area) : undefined,
-        authEmails: fromString(authEmails),
+        authUsers: fromString(authUsers),
         modifiedBy: req.body.currentUser.user.email,
         needsApproval: false,
       };
@@ -83,7 +83,7 @@ exports.editFarm = async (req, res, next) => {
     const { currentUser, data } = req.body;
     let { id, ...update } = data;
     if (!currentUser.isAdmin) {
-      delete update.authEmails;
+      delete update.authUsers;
     }
     if (!Object.keys(update).length) {
       return res.status(204).json('No content');

@@ -58,7 +58,7 @@ const FarmForm = () => {
   let searchOptions = location.options;
   if (!currentUser.isAdmin && searchOptions) {
     searchOptions = searchOptions.filter((d) =>
-      d.authEmails.includes(currentUser.user.email)
+      d.authUsers.includes(currentUser.user.username)
     );
   }
 
@@ -150,7 +150,7 @@ const FarmForm = () => {
 
     if (
       currentUser.isAdmin ||
-      (edit && edit.authEmails.includes(currentUser.user.email))
+      (edit && edit.authUsers.includes(currentUser.user.username))
     ) {
       dispatch(editOne({ currentUser, data })).then(() => {
         dispatch(setSelected({ ...edit, ...data }));
@@ -377,7 +377,7 @@ const FarmForm = () => {
           {currentUser.isAdmin && (
             <Stack spacing={2}>
               <SectionHeader text="Database Admin" />
-              <TextForm name="authEmails" label="Emails Authorized to Edit" />
+              <TextForm name="authUsers" label="Users Authorized to Edit" />
             </Stack>
           )}
           <Stack direction="row" spacing={2}>

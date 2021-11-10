@@ -11,9 +11,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 const AuthForm = ({ authType, buttonText, heading }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [email, setEmail] = useState('');
   const currentUser = useSelector((state) => state.currentUser);
 
   const history = useHistory();
@@ -21,7 +22,7 @@ const AuthForm = ({ authType, buttonText, heading }) => {
   const resetToken = useParams().token;
 
   const handleSubmit = () => {
-    dispatch(authUser(authType, email, password, resetToken));
+    dispatch(authUser(authType, username, password, email, resetToken));
   };
 
   const handleReset = () => {
@@ -49,27 +50,33 @@ const AuthForm = ({ authType, buttonText, heading }) => {
           <Stack spacing={2}>
             {authType !== 'reset' && (
               <TextField
-                id="email"
-                label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             )}
-            <TextField
-              type="password"
-              id="password"
-              label="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {authType !== 'signin' && (
+            {authType !== 'reset' && (
+              <TextField
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            )}
+            {authType === 'signup' && (
               <TextField
                 type="password"
-                id="passwordConfirm"
                 label="Confirm Password"
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
                 error={password !== passwordConfirm}
+              />
+            )}
+            {authType !== 'signin' && (
+              <TextField
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             )}
           </Stack>
@@ -79,8 +86,9 @@ const AuthForm = ({ authType, buttonText, heading }) => {
           <Button
             variant="contained"
             disabled={
+              (authType !== 'signin' && !validate(email)) ||
               (authType !== 'reset' &&
-                (!validate(email) || password.length === 0)) ||
+                (username.length <= 3 || password.length <= 3)) ||
               (authType === 'signup' && password !== passwordConfirm)
             }
             onClick={handleSubmit}
