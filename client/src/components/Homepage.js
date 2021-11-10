@@ -4,14 +4,17 @@ import { useSelector } from 'react-redux';
 import Map from './map/Map';
 import Search from './map/Search';
 import Filters from './map/Filters';
+import Layers from './map/Layers';
 import Sidebar from './map/Sidebar';
 import Header from './Header';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 const Homepage = () => {
   const [showFilters, setShowFilters] = useState(false);
+  const [showLayers, setShowLayers] = useState(false);
   const currentUser = useSelector((state) => state.currentUser);
   const location = useSelector((state) => state.location);
 
@@ -33,21 +36,36 @@ const Homepage = () => {
       {location.data && (
         <div>
           <div style={{ position: 'relative' }}>
-            <Map />
+            <Map showLayers={showLayers} />
             <Search />
             <Sidebar />
           </div>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={showFilters}
-                onChange={() => setShowFilters(!showFilters)}
+          <Grid container spacing={2} sx={{ marginTop: 2 }}>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={showFilters}
+                    onChange={() => setShowFilters(!showFilters)}
+                  />
+                }
+                label="Show filters"
               />
-            }
-            label="Show filters"
-            sx={{ marginTop: 2 }}
-          />
+            </Grid>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={showLayers}
+                    onChange={() => setShowLayers(!showLayers)}
+                  />
+                }
+                label="Show layers"
+              />
+            </Grid>
+          </Grid>
           {showFilters && <Filters />}
+          {showLayers && <Layers />}
         </div>
       )}
     </div>

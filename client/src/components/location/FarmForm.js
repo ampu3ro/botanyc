@@ -10,7 +10,7 @@ import {
   submitOne,
 } from '../../store/actions/farm';
 import { setSelected, setSearch } from '../../store/actions/locations';
-import { FARM_PROPS, FARM_DEFAULT, ENVIRONMENTS } from './dataTypes';
+import { FARM_PROPS, FARM_DEFAULT, ENVIRONMENTS } from '../data';
 import Header from '../Header';
 import SectionHeader from './SectionHeader';
 import { TextForm, SelectForm, DateForm, NumericGridForm } from './Inputs';

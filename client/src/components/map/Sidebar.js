@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { setSelected } from '../../store/actions/locations';
 import { setEdit } from '../../store/actions/farm';
-import { FARM_PROPS } from '../location/dataTypes';
+import { FARM_PROPS } from '../data';
 import Bar from './Bar';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';

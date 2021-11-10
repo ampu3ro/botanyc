@@ -9,3 +9,5 @@ export const SET_USERS = 'SET_USERS';
 export const SET_SEARCH = 'SET_SEARCH';
 export const SET_APPROVALS = 'SET_APPROVALS';
 export const SET_SELECTED = 'SET_SELECTED';
+export const SET_LAYERS = 'SET_LAYERS';
+export const CLEAR_LAYERS = 'CLEAR_LAYERS';

@@ -2,10 +2,13 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 /* eslint import/no-webpack-loader-syntax: off */
 import mapboxgl from '!mapbox-gl';
-import { AG_TYPES } from '../location/dataTypes';
+import { AG_TYPES, LAYER_SLIDERS } from '../data';
 import { setSelected } from '../../store/actions/locations';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
+
+const LAYERS_URL =
+  'https://gist.githubusercontent.com/ampu3ro/34609e91dedb19591e3d57203c9b4162/raw/c9fc9c2bf756f3e160e2f865b2ceba16c79f10d8/nyc_socio_economic.geojson';
 
 const PAINT_COLOR = [
   ...AG_TYPES.filter((d) => d.label)
@@ -14,7 +17,7 @@ const PAINT_COLOR = [
   '#ccc',
 ];
 
-const Map = () => {
+const Map = ({ showLayers }) => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
   const [featureId, setFeatureId] = useState('');
@@ -22,6 +25,7 @@ const Map = () => {
 
   const location = useSelector((state) => state.location);
   const filters = useSelector((state) => state.filters);
+  const layers = useSelector((state) => state.layers);
   const selected = useSelector((state) => state.selected);
 
   const dispatch = useDispatch();
@@ -37,6 +41,21 @@ const Map = () => {
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
     map.on('load', () => {
+      map.addSource('polygon-data', {
+        type: 'geojson',
+        data: LAYERS_URL,
+      });
+
+      map.addLayer({
+        id: 'polygon-layer',
+        source: 'polygon-data',
+        type: 'fill',
+        paint: {
+          'fill-color': '#8900e1',
+          'fill-opacity': 0,
+        },
+      });
+
       map.addSource('points-data', {
         type: 'geojson',
         data: null,
@@ -140,6 +159,23 @@ const Map = () => {
     ];
     mapBase.setFilter('points-layer', pointFilters);
   }, [filters, mapBase]);
+
+  useEffect(() => {
+    if (!mapBase) return;
+    let opacity;
+    if (showLayers && Object.keys(layers).length) {
+      const x = 1 / LAYER_SLIDERS.length;
+      const add = Object.entries(layers).map(([k, v]) => {
+        const feature = ['to-number', ['get', k]];
+        const between = ['all', ['>=', feature, v[0]], ['<=', feature, v[1]]];
+        return ['case', between, x, 0];
+      });
+      opacity = ['+', ...add];
+    } else {
+      opacity = 0;
+    }
+    mapBase.setPaintProperty('polygon-layer', 'fill-opacity', opacity);
+  }, [layers, showLayers, mapBase]);
 
   useEffect(() => {
     if (!mapBase || !selected) return;

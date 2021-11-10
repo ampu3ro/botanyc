@@ -525,3 +525,44 @@ export const FILTER_DEFAULT = {
   types: AG_TYPES.filter((d) => d.checked).map((d) => d.option),
   environments: Object.keys(ENVIRONMENTS),
 };
+
+export const LAYER_SLIDERS = [
+  {
+    name: 'cdc_mental',
+    label: 'Poor mental health',
+    max: 30,
+  },
+  {
+    name: 'cdc_physical',
+    label: 'Poor physical health',
+    max: 30,
+  },
+  {
+    name: 'acs_income',
+    label: 'Median household income',
+    min: 5000,
+    max: 300000,
+    step: 5000,
+    format: (v) => `$${v.toLocaleString('en')}`,
+  },
+  {
+    name: 'acs_bachelors',
+    label: "At least bachelor's",
+  },
+  { name: 'acs_hs', label: 'At least high school' },
+  { name: 'acs_foreign', label: 'Foreign born' },
+  { name: 'acs_white', label: 'White' },
+  { name: 'acs_child', label: 'Has child' },
+  { name: 'acs_alone', label: 'Living alone' },
+  {
+    name: 'acs_participation',
+    label: 'Labor force participation',
+  },
+  {
+    name: 'population',
+    label: 'Population',
+    max: 30000,
+    step: 1000,
+    format: (v) => v.toLocaleString('en'),
+  },
+];

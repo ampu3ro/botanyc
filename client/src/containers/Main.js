@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchLocations } from '../store/actions/locations';
 import { setAlert } from '../store/actions/alert';
 import { setFilters } from '../store/actions/filters';
-import { FILTER_DEFAULT } from '../components/location/dataTypes';
+import { FILTER_DEFAULT } from '../components/data';
 import Homepage from '../components/Homepage';
 import AuthForm from '../components/AuthForm';
 import BulkEdit from '../components/BulkEdit';

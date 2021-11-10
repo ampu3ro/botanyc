@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFilters } from '../../store/actions/filters';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
@@ -9,7 +10,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import DownloadIcon from '@mui/icons-material/Download';
 import { CSVDownloader } from 'react-papaparse';
-import { AG_TYPES, ENVIRONMENTS } from '../location/dataTypes';
+import { AG_TYPES, ENVIRONMENTS } from '../data';
 
 const Filters = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const Filters = () => {
   const properties = features.map((d) => d.properties);
 
   return (
-    <div>
+    <Box sx={{ padding: 2 }}>
       <Grid container spacing={2}>
         <Grid item>
           <FormControl>
@@ -109,13 +110,13 @@ const Filters = () => {
               'data:text/json;charset=utf-8,' +
               encodeURIComponent(JSON.stringify({ ...location.data, features }))
             }
-            download="botanyc.json"
+            download="botanyc.geojson"
           >
             json
           </Button>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };
 
