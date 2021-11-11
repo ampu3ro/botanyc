@@ -30,7 +30,6 @@ const Sidebar = () => {
   };
 
   const handleEdit = () => {
-    console.log(selected);
     dispatch(setEdit(selected));
     history.push('/farm');
   };

@@ -82,12 +82,13 @@ exports.editFarm = async (req, res, next) => {
   try {
     const { currentUser, data } = req.body;
     let { id, ...update } = data;
-    if (!currentUser.isAdmin) {
-      delete update.authUsers;
-    }
     if (!Object.keys(update).length) {
       return res.status(204).json('No content');
     }
+    if (!currentUser.isAdmin) {
+      delete update.authUsers;
+    }
+    update.needsApproval = false;
     const result = await db.Farm.findOneAndUpdate(
       {
         _id:

@@ -65,7 +65,7 @@ export function deleteOne(data) {
   return async (dispatch) => {
     try {
       await apiCall('post', '/api/farm/auth/delete', data);
-      const message = `Successfully deleted ${data.name}!`;
+      const message = `Successfully deleted ${data.data.name}!`;
       dispatch(setAlert({ severity: 'success', message }));
       return dispatch(fetchLocations());
     } catch (err) {

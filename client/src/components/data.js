@@ -37,12 +37,21 @@ export const AG_TYPES = [
     checked: true,
   },
   {
+    option:
+      'Organization not specifically dedicated to urban ag that operates a farm or garden (e.g., nonprofit, hospital, culinary institution, prison)',
+    select: true,
+    label: 'Institutional Garden',
+    color: deepOrange[500],
+    checked: true,
+  },
+  {
     option: 'School farm or garden (including universities)',
     select: true,
     label: 'School Garden',
     color: amber[500],
     checked: true,
   },
+  { option: 'Home garden', select: true },
   {
     option: 'Potential community farm or garden',
     select: false,
@@ -50,12 +59,6 @@ export const AG_TYPES = [
     color: teal[500],
     checked: false,
   },
-  {
-    option:
-      'Organization not specifically dedicated to urban ag that operates a farm or garden (e.g., nonprofit, hospital, culinary institution, prison)',
-    select: true,
-  },
-  { option: 'Home garden', select: true },
   { option: 'Other', select: true },
 ];
 

@@ -151,8 +151,11 @@ const FarmForm = () => {
       currentUser.isAdmin ||
       (edit && edit.authUsers.includes(currentUser.user.username))
     ) {
-      dispatch(editOne({ currentUser, data })).then(() => {
-        dispatch(setSelected({ ...edit, ...data, fly: true }));
+      dispatch(editOne({ currentUser, data })).then(({ features }) => {
+        const featureId = edit
+          ? features.filter((d) => d.properties.id === edit.id)[0].featureId
+          : undefined;
+        dispatch(setSelected({ featureId, ...edit, ...data, fly: true }));
       });
     } else {
       dispatch(submitOne(data));

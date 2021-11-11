@@ -201,10 +201,11 @@ const Map = ({ showLayers }) => {
 
   useEffect(() => {
     if (!mapBase || !selected) return;
-    if (selected.featureId !== undefined) {
-      selectedId.current = selected.featureId;
+    const { featureId } = selected;
+    if (featureId !== undefined) {
+      selectedId.current = featureId;
       mapBase.setFeatureState(
-        { source: 'farms-data', id: selected.featureId },
+        { source: 'farms-data', id: featureId },
         { selected: true }
       );
     }
@@ -214,7 +215,7 @@ const Map = ({ showLayers }) => {
         zoom: 14,
       });
     }
-  }, [selected, mapBase]);
+  }, [selected, location, mapBase]);
 
   useEffect(() => {
     if (!mapBase) return;
@@ -232,8 +233,8 @@ const Map = ({ showLayers }) => {
     let step2 = 8;
     if (sizeBy === 'area') {
       const sizeRoot = ['sqrt', ['number', ['get', sizeBy], 10000]];
-      step1 = ['/', sizeRoot, 20];
-      step2 = ['/', sizeRoot, 10];
+      step1 = ['max', ['/', sizeRoot, 20], 2];
+      step2 = ['max', ['/', sizeRoot, 10], 4];
     }
     const radius = ['interpolate', ['linear'], ['zoom'], 10, step1, 15, step2];
     mapBase.setPaintProperty('farms-layer', 'circle-radius', radius);
