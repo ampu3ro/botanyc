@@ -11,8 +11,12 @@ import BulkEdit from '../components/BulkEdit';
 import FarmForm from '../components/location/FarmForm';
 import AdminForm from '../components/AdminForm';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
+import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
+import cuspLogo from '../images/cusp_logo.png';
+import csbLogo from '../images/csb_logo.png';
 
 const Main = () => {
   const alert = useSelector((state) => state.alert);
@@ -69,6 +73,27 @@ const Main = () => {
           </Route>
         </Box>
       </Switch>
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="center"
+        sx={{ marginTop: 10 }}
+      >
+        <Grid item>
+          <Button
+            startIcon={<img src={cuspLogo} alt="CUSP logo" width="200" />}
+            href="https://cusp.nyu.edu/"
+            target="_blank"
+          />
+        </Grid>
+        <Grid item>
+          <Button
+            startIcon={<img src={csbLogo} alt="CSB logo" width="200" />}
+            href="https://www.stern.nyu.edu/experience-stern/about/departments-centers-initiatives/centers-of-research/center-sustainable-business"
+            target="_blank"
+          />
+        </Grid>
+      </Grid>
       <Snackbar
         open={alert.isActive}
         autoHideDuration={5000}

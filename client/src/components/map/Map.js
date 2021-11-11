@@ -178,7 +178,7 @@ const Map = ({ showLayers }) => {
 
   useEffect(() => {
     let mapData = JSON.parse(JSON.stringify(location.data)); // deep copy for mutation below
-    if (!mapBase || !mapData) return;
+    if (!mapBase || !mapData || !mapData.features) return;
 
     mapData.features = mapData.features.map((d) => {
       let { properties } = d;

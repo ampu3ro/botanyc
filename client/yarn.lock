@@ -1344,6 +1344,16 @@
     "minimatch" "^3.0.4"
     "strip-json-comments" "^3.1.1"
 
+"@fontsource/frank-ruhl-libre@^4.5.0":
+  "integrity" "sha512-Zrm5Rn9f/K2nTz2tBLdEYNJHrGlpWxSoyJf5CWWOnIrsE75U8Nb9UalMtViHAOf4UBD97zfN9QQEXixKtsliSg=="
+  "resolved" "https://registry.npmjs.org/@fontsource/frank-ruhl-libre/-/frank-ruhl-libre-4.5.0.tgz"
+  "version" "4.5.0"
+
+"@fontsource/montserrat@^4.5.1":
+  "integrity" "sha512-xdMkzsnFlzDt5Vj9+AWuUp4Vd9F3hYN2I0GTZZYscWN/bQ20wVOGtdWLO8Okfv7SZ9t/z39/EayAAt+f/8tAvw=="
+  "resolved" "https://registry.npmjs.org/@fontsource/montserrat/-/montserrat-4.5.1.tgz"
+  "version" "4.5.1"
+
 "@fontsource/open-sans@^4.5.1":
   "integrity" "sha512-Zvse9PG3XU+gfa44i4ENXvZi28X0RTtuc/b1v4AaqrSpSf2OALN2QrBf91BOC5gXU1Y6xW/S0To5wz8EraLPlQ=="
   "resolved" "https://registry.npmjs.org/@fontsource/open-sans/-/open-sans-4.5.1.tgz"
