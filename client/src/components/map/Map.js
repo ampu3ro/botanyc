@@ -171,8 +171,7 @@ const Map = ({ showLayers }) => {
     const { options } = location;
     if (options && featureId) {
       const clicked = options.filter((d) => d.featureId === featureId)[0];
-      const { center, ...rest } = clicked; // avoid flying
-      dispatch(setSelected(rest));
+      dispatch(setSelected({ ...clicked, fly: false }));
     }
   }, [location, featureId, dispatch]);
 
@@ -202,15 +201,14 @@ const Map = ({ showLayers }) => {
 
   useEffect(() => {
     if (!mapBase || !selected) return;
-
-    if (selected.featureId) {
+    if (selected.featureId !== undefined) {
       selectedId.current = selected.featureId;
       mapBase.setFeatureState(
         { source: 'farms-data', id: selected.featureId },
         { selected: true }
       );
     }
-    if (selected.center) {
+    if (selected.fly && selected.center) {
       mapBase.flyTo({
         center: selected.center,
         zoom: 14,

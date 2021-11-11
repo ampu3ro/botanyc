@@ -140,20 +140,19 @@ const FarmForm = () => {
           lon: g.longitude,
         },
       ];
+      data.center = [g.longitude, g.latitude];
     }
 
     data = Object.keys(data)
       .filter((k) => data[k] && data[k].length)
       .reduce((a, k) => Object.assign(a, { [k]: data[k] }), {});
 
-    console.log(data);
-
     if (
       currentUser.isAdmin ||
       (edit && edit.authUsers.includes(currentUser.user.username))
     ) {
       dispatch(editOne({ currentUser, data })).then(() => {
-        dispatch(setSelected({ ...edit, ...data }));
+        dispatch(setSelected({ ...edit, ...data, fly: true }));
       });
     } else {
       dispatch(submitOne(data));

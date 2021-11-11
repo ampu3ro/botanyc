@@ -49,7 +49,7 @@ const Search = () => {
 
   const handleSearch = (event, value) => {
     dispatch(setSearch(value));
-    dispatch(setSelected(value));
+    dispatch(setSelected({ ...value, fly: true }));
   };
 
   const { options } = location;
