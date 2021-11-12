@@ -151,7 +151,7 @@ export const FARM_PROPS = {
     ],
   },
   adModes: {
-    label: 'Promotion',
+    label: 'Publicity',
     helpText: 'How can members of the community find your farm or garden?',
     options: [
       'Signage in front of farm or garden',

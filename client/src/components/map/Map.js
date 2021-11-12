@@ -203,6 +203,7 @@ const Map = ({ showLayers, showFilters }) => {
 
   useEffect(() => {
     if (!mapBase || !selected) return;
+
     const { featureId } = selected;
     if (featureId !== undefined) {
       selectedId.current = featureId;
@@ -221,6 +222,7 @@ const Map = ({ showLayers, showFilters }) => {
 
   useEffect(() => {
     if (!mapBase) return;
+
     let color = '#28811e';
     if (colorBy !== 'none') {
       color = ['match', ['get', colorBy], ...PAINT_COLOR[colorBy]];
@@ -233,11 +235,18 @@ const Map = ({ showLayers, showFilters }) => {
 
     let step1 = 4;
     let step2 = 8;
+    const fallback = sizeBy === 'area' ? 10000 : 64;
+    const root = ['sqrt', ['number', ['get', sizeBy], fallback]];
     if (sizeBy === 'area') {
-      const sizeRoot = ['sqrt', ['number', ['get', sizeBy], 10000]];
-      step1 = ['max', ['/', sizeRoot, 20], 2];
-      step2 = ['max', ['/', sizeRoot, 10], 4];
+      step1 = ['/', root, 20];
+      step2 = ['/', root, 10];
+    } else if (sizeBy === 'production') {
+      step1 = ['/', root, 4];
+      step2 = ['/', root, 2];
     }
+    step1 = ['max', step1, 2];
+    step2 = ['max', step2, 4];
+
     const radius = ['interpolate', ['linear'], ['zoom'], 10, step1, 15, step2];
     mapBase.setPaintProperty('farms-layer', 'circle-radius', radius);
   }, [sizeBy, mapBase]);

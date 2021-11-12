@@ -15,7 +15,8 @@ const COLOR_BY = [
   { name: 'none', label: 'None' },
 ];
 const SIZE_BY = [
-  { name: 'area', label: 'Area (sqft)' },
+  { name: 'area', label: 'Lot area (sqft)' },
+  { name: 'production', label: 'Total production (lbs)' },
   { name: 'none', label: 'None' },
 ];
 
