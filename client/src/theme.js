@@ -16,15 +16,6 @@ const theme = responsiveFontSizes(
       secondary: {
         main: '#a1c23b',
       },
-      error: {
-        main: '#bc0604',
-      },
-      warning: {
-        main: '#bf5909',
-      },
-      success: {
-        main: '#28811e',
-      },
     },
     typography: {
       fontFamily: 'Montserrat',

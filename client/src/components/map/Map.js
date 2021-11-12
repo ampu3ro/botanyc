@@ -8,6 +8,7 @@ import {
   LAYER_SLIDERS,
   PAINT_COLOR,
 } from '../data';
+import { purple, green, grey } from '@mui/material/colors';
 import { setSelected } from '../../store/actions/locations';
 import './styles.css';
 
@@ -57,7 +58,7 @@ const Map = ({ showLayers, showFilters }) => {
         source: 'socioeconomic-data',
         type: 'fill',
         paint: {
-          'fill-color': '#8900e1',
+          'fill-color': purple[500],
           'fill-opacity': 0,
         },
       });
@@ -223,9 +224,9 @@ const Map = ({ showLayers, showFilters }) => {
   useEffect(() => {
     if (!mapBase) return;
 
-    let color = '#28811e';
+    let color = green[500];
     if (colorBy !== 'none') {
-      color = ['match', ['get', colorBy], ...PAINT_COLOR[colorBy]];
+      color = ['match', ['get', colorBy], ...PAINT_COLOR[colorBy], grey[500]];
     }
     mapBase.setPaintProperty('farms-layer', 'circle-color', color);
   }, [colorBy, mapBase]);

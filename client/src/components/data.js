@@ -1,10 +1,16 @@
 import {
+  red,
   pink,
   deepPurple,
+  blue,
+  cyan,
   green,
-  deepOrange,
+  lime,
   amber,
+  deepOrange,
+  brown,
   teal,
+  blueGrey,
 } from '@mui/material/colors';
 
 export const AG_TYPES = [
@@ -388,22 +394,40 @@ export const FARM_PROPS = {
     title:
       'How many pounds did you sell or distribute through the following market channels in the last three years?',
     fields: [
-      { name: 'distroBox', label: 'Big box store', helpText: 'Target, Costco' },
-      { name: 'distroCorner', label: 'Bodega/corner store' },
+      {
+        name: 'distroBox',
+        label: 'Big box store',
+        helpText: 'Target, Costco',
+        color: pink[500],
+      },
+      {
+        name: 'distroCorner',
+        label: 'Bodega/corner store',
+        color: deepPurple[500],
+      },
       {
         name: 'distroSuper',
         label: 'Supermarket',
         helpText: 'Key Food, Whole Foods',
+        color: red[500],
       },
-      { name: 'distroRestaurant', label: 'Restaurants' },
-      { name: 'distroWeb', label: 'Farm/garden website' },
-      { name: 'distroCSA', label: 'CSA' },
-      { name: 'distroMarket', label: 'Farmers markets' },
-      { name: 'distroOnsite', label: 'On-site market' },
-      { name: 'distroDonation', label: 'Donation' },
-      { name: 'distroHub', label: 'Aggregator/food processor/food hub' },
-      { name: 'distroPersonal', label: 'Personal consumption' },
-      { name: 'distroOther', label: 'Other' },
+      { name: 'distroRestaurant', label: 'Restaurants', color: blue[500] },
+      { name: 'distroWeb', label: 'Farm/garden website', color: cyan[500] },
+      { name: 'distroCSA', label: 'CSA', color: lime[500] },
+      { name: 'distroMarket', label: 'Farmers markets', color: green[500] },
+      { name: 'distroOnsite', label: 'On-site market', color: amber[500] },
+      { name: 'distroDonation', label: 'Donation', color: deepOrange[500] },
+      {
+        name: 'distroHub',
+        label: 'Aggregator/food processor/food hub',
+        color: brown[500],
+      },
+      {
+        name: 'distroPersonal',
+        label: 'Personal consumption',
+        color: teal[500],
+      },
+      { name: 'distroOther', label: 'Other', color: blueGrey[500] },
     ],
   },
   founding: {
@@ -571,12 +595,10 @@ export const LAYER_SLIDERS = [
 ];
 
 export const PAINT_COLOR = {
-  type: [
-    ...AG_TYPES.filter((d) => d.label)
-      .map((d) => [d.option, d.color])
-      .flat(),
-    '#ccc',
-  ],
+  type: AG_TYPES.filter((d) => d.label)
+    .map((d) => [d.option, d.color])
+    .flat(),
+  distro1: FARM_PROPS.distros.fields.map((d) => [d.name, d.color]).flat(),
 };
 
 const GIST_REPO = 'https://gist.githubusercontent.com/ampu3ro';

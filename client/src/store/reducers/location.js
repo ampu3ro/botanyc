@@ -9,11 +9,19 @@ const location = (state = {}, action) => {
       // could make this a calculated field in Mongo but more manual if updating fields
       data.features.map((feature) => {
         const { properties } = feature;
+
         let p = 0;
-        FARM_PROPS.crops.fields.forEach((d) => {
-          p += parseInt(properties[d.name]) || 0;
+        FARM_PROPS.crops.fields.forEach(({ name }) => {
+          p += parseInt(properties[name]) || 0;
         });
         properties.production = p > 0 ? p : NaN;
+
+        const d = FARM_PROPS.distros.fields
+          .map(({ name }) => ({ name, value: properties[name] || 0 }))
+          .sort((a, b) => b.value - a.value)
+          .filter((d) => d.value > 0);
+
+        properties.distro1 = d.length ? d[0] : 'None specified';
       });
 
       let options = undefined;

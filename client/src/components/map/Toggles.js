@@ -12,6 +12,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 const COLOR_BY = [
   { name: 'type', label: 'Type' },
+  { name: 'distro1', label: 'Primary distribution channel' },
   { name: 'none', label: 'None' },
 ];
 const SIZE_BY = [
