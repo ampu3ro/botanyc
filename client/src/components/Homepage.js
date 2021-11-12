@@ -38,7 +38,7 @@ const Homepage = () => {
       {location.data && (
         <div>
           <div style={{ position: 'relative' }}>
-            <Map {...{ showLayers, showToggles }} />
+            <Map {...{ showLayers, showFilters }} />
             <Search />
             <Sidebar />
           </div>

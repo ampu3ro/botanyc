@@ -13,7 +13,7 @@ import './styles.css';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
-const Map = ({ showLayers }) => {
+const Map = ({ showLayers, showFilters }) => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
   const [featureId, setFeatureId] = useState('');
@@ -191,13 +191,15 @@ const Map = ({ showLayers }) => {
   useEffect(() => {
     if (!mapBase || !filters.types || !filters.environments) return;
 
-    const pointFilters = [
-      'all',
-      ['in', 'type', ...filters.types],
-      ['in', 'environments', ...filters.environments],
-    ];
-    mapBase.setFilter('farms-layer', pointFilters);
-  }, [filters, mapBase]);
+    const filter = showFilters
+      ? [
+          'all',
+          ['in', 'type', ...filters.types],
+          ['in', 'environments', ...filters.environments],
+        ]
+      : null;
+    mapBase.setFilter('farms-layer', filter);
+  }, [filters, showFilters, mapBase]);
 
   useEffect(() => {
     if (!mapBase || !selected) return;
