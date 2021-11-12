@@ -1,12 +1,14 @@
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { FARM_PROPS } from '../data';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -52,6 +54,16 @@ export const TextForm = ({ name, label, helpText, int, adorn, ...props }) => {
   );
 };
 
+const renderValue = (selected) => {
+  return (
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+      {selected.map((value) => (
+        <Chip key={value} label={value} />
+      ))}
+    </Box>
+  );
+};
+
 export const SelectForm = ({
   name,
   label,
@@ -82,6 +94,7 @@ export const SelectForm = ({
             labelId={labelId}
             label={label}
             multiple={multiple}
+            renderValue={multiple ? renderValue : null}
             {...field}
             {...props}
           >
