@@ -1,4 +1,5 @@
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import GothamPro from './fonts/GothamPro.woff';
 import '@fontsource/montserrat';
 import '@fontsource/frank-ruhl-libre';
 
@@ -18,7 +19,19 @@ const theme = responsiveFontSizes(
       },
     },
     typography: {
-      fontFamily: 'Montserrat',
+      fontFamily: 'GothamPro, Montserrat',
+    },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: `
+        @font-face {
+          font-family: GothamPro;
+          src: url(${GothamPro}) format("woff");
+          font-weight: 200;
+          font-style: normal
+        }
+      `,
+      },
     },
   })
 );
