@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Map from './map/Map';
+import Legend from './map/Legend';
 import Search from './map/Search';
 import Toggles from './map/Toggles';
 import Filters from './map/Filters';
@@ -12,13 +13,16 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import { PAINT_COLOR } from './data';
 
 const Homepage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showLayers, setShowLayers] = useState(false);
   const [showToggles, setShowToggles] = useState(false);
+
   const currentUser = useSelector((state) => state.currentUser);
   const location = useSelector((state) => state.location);
+  const colorBy = useSelector((state) => state.colorBy);
 
   return (
     <div>
@@ -39,6 +43,7 @@ const Homepage = () => {
         <div>
           <div style={{ position: 'relative' }}>
             <Map {...{ showLayers, showFilters }} />
+            <Legend colors={PAINT_COLOR[colorBy]} />
             <Search />
             <Sidebar />
           </div>

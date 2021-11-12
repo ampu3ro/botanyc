@@ -226,7 +226,10 @@ const Map = ({ showLayers, showFilters }) => {
 
     let color = green[500];
     if (colorBy !== 'none') {
-      color = ['match', ['get', colorBy], ...PAINT_COLOR[colorBy], grey[500]];
+      const colorArr = PAINT_COLOR[colorBy]
+        .map(({ name, color }) => [name, color])
+        .flat();
+      color = ['match', ['get', colorBy], ...colorArr, grey[500]];
     }
     mapBase.setPaintProperty('farms-layer', 'circle-color', color);
   }, [colorBy, mapBase]);

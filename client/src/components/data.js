@@ -6,6 +6,7 @@ import {
   cyan,
   green,
   lime,
+  yellow,
   amber,
   deepOrange,
   brown,
@@ -57,7 +58,7 @@ export const AG_TYPES = [
     color: amber[500],
     checked: true,
   },
-  { option: 'Home garden', select: true },
+  { option: 'Home garden', select: true, color: yellow[500] },
   {
     option: 'Potential community farm or garden',
     select: false,
@@ -65,7 +66,7 @@ export const AG_TYPES = [
     color: teal[500],
     checked: false,
   },
-  { option: 'Other', select: true },
+  { option: 'Other', select: true, color: blueGrey[500] },
 ];
 
 export const ENVIRONMENTS = {
@@ -595,10 +596,14 @@ export const LAYER_SLIDERS = [
 ];
 
 export const PAINT_COLOR = {
-  type: AG_TYPES.filter((d) => d.label)
-    .map((d) => [d.option, d.color])
-    .flat(),
-  distro1: FARM_PROPS.distros.fields.map((d) => [d.name, d.color]).flat(),
+  type: AG_TYPES.filter((d) => d.label).map(
+    ({ option: name, color, label }) => ({
+      name,
+      color,
+      label,
+    })
+  ),
+  distro1: FARM_PROPS.distros.fields,
 };
 
 const GIST_REPO = 'https://gist.githubusercontent.com/ampu3ro';
