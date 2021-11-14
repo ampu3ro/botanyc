@@ -39,8 +39,7 @@ const location = (state = {}, action) => {
           };
         });
         options.forEach((d, i, a) => {
-          const dupe = a.findIndex((t) => t.label === d.label) !== i;
-          if (dupe) {
+          if (a.findIndex((t) => t.label === d.label) !== i) {
             d.label += ` [${i}]`;
           }
         });
