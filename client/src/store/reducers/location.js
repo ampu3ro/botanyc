@@ -38,6 +38,12 @@ const location = (state = {}, action) => {
             featureId: d.id,
           };
         });
+        options.forEach((d, i, a) => {
+          const dupe = a.findIndex((t) => t.label === d.label) !== i;
+          if (dupe) {
+            d.label += ` [${i}]`;
+          }
+        });
       }
       return { data, options };
     default:
