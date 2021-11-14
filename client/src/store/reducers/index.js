@@ -14,6 +14,7 @@ import selected from './selected';
 import poi from './poi';
 import colorBy from './colorBy';
 import sizeBy from './sizeBy';
+import market from './market';
 
 const rootReducer = combineReducers({
   currentUser,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   poi,
   colorBy,
   sizeBy,
+  market,
 });
 
 export default rootReducer;

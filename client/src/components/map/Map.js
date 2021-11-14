@@ -21,6 +21,7 @@ const Map = ({ showLayers, showFilters }) => {
   const selectedId = useRef();
 
   const location = useSelector((state) => state.location);
+  const market = useSelector((state) => state.market);
   const filters = useSelector((state) => state.filters);
   const layers = useSelector((state) => state.layers);
   const selected = useSelector((state) => state.selected);
@@ -48,23 +49,18 @@ const Map = ({ showLayers, showFilters }) => {
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
     map.on('load', () => {
-      const source = 'mapbox-streets';
-      const { id, symbol } = POI_PROPS.filter(
-        ({ id }) => id === 'transit_stop_label'
-      )[0];
-
-      map.addSource(source, {
+      map.addSource('mapbox-streets', {
         type: 'vector',
         url: 'mapbox://mapbox.mapbox-streets-v8',
       });
 
       map.addLayer({
-        id,
-        source,
+        id: 'transit_stop_label',
+        source: 'mapbox-streets',
         'source-layer': 'transit_stop_label',
         type: 'symbol',
         layout: {
-          'icon-image': symbol,
+          'icon-image': 'new-york-subway',
           'text-field': ['get', 'name'],
           'text-anchor': 'top',
           'text-offset': [0, 1],
@@ -89,48 +85,46 @@ const Map = ({ showLayers, showFilters }) => {
         },
       });
 
-      POI_PROPS.filter(({ id }) => id !== 'transit_stop_label').forEach(
-        ({ id, url, symbol }) => {
-          const source = `${id}-data`;
+      POI_PROPS.filter(({ data }) => data).forEach(({ id, data, layout }) => {
+        const source = `${id}-data`;
 
-          map.addSource(source, {
-            type: 'geojson',
-            data: url,
-          });
+        map.addSource(source, {
+          type: 'geojson',
+          data: data.includes('geojson') ? data : null,
+        });
 
-          map.addLayer({
-            id,
-            source,
-            type: 'symbol',
-            layout: {
-              'icon-image': symbol,
-              visibility: 'none',
-            },
-          });
+        map.addLayer({
+          id,
+          source,
+          type: 'symbol',
+          layout: {
+            ...layout,
+            visibility: 'none',
+          },
+        });
 
-          map.on('mouseenter', id, (e) => {
-            map.getCanvas().style.cursor = 'pointer';
-            const { coordinates } = e.features[0].geometry;
-            const { Name } = e.features[0].properties;
-            hoverPopup.setLngLat(coordinates).setHTML(Name).addTo(map);
-          });
+        map.on('mouseenter', id, (e) => {
+          map.getCanvas().style.cursor = 'pointer';
+          const { coordinates } = e.features[0].geometry;
+          const { Name } = e.features[0].properties;
+          hoverPopup.setLngLat(coordinates).setHTML(Name).addTo(map);
+        });
 
-          map.on('mouseleave', id, () => {
-            map.getCanvas().style.cursor = '';
-            hoverPopup.remove();
-          });
+        map.on('mouseleave', id, () => {
+          map.getCanvas().style.cursor = '';
+          hoverPopup.remove();
+        });
 
-          map.on('click', id, (e) => {
-            map.getCanvas().style.cursor = 'pointer';
-            const { coordinates } = e.features[0].geometry;
-            const { Lat, Lon, Zipcode, ...fields } = e.features[0].properties;
-            const html = Object.entries(fields)
-              .map(([k, v]) => `<b>${k}</b>: ${v}`)
-              .join('<br>');
-            popup.setLngLat(coordinates).setHTML(html).addTo(map);
-          });
-        }
-      );
+        map.on('click', id, (e) => {
+          map.getCanvas().style.cursor = 'pointer';
+          const { coordinates } = e.features[0].geometry;
+          const { Lat, Lon, Zipcode, ...fields } = e.features[0].properties;
+          const html = Object.entries(fields)
+            .map(([k, v]) => `<b>${k}</b>: ${v}`)
+            .join('<br>');
+          popup.setLngLat(coordinates).setHTML(html).addTo(map);
+        });
+      });
 
       map.addSource('farms-data', {
         type: 'geojson',
@@ -215,6 +209,13 @@ const Map = ({ showLayers, showFilters }) => {
 
     mapBase.getSource('farms-data').setData(mapData);
   }, [location, mapBase]);
+
+  useEffect(() => {
+    if (mapBase && market) {
+      mapBase.getSource('market-data').setData(market);
+      console.log(mapBase.getStyle().layers);
+    }
+  }, [market, mapBase]);
 
   useEffect(() => {
     if (!mapBase || !filters.types || !filters.environments) return;

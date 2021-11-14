@@ -14,3 +14,4 @@ export const CLEAR_LAYERS = 'CLEAR_LAYERS';
 export const SET_COLOR_BY = 'SET_COLOR';
 export const SET_SIZE_BY = 'SET_SIZE';
 export const SET_POI = 'SET_POI';
+export const SET_MARKETS = 'SET_MARKETS';

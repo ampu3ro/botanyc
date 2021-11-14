@@ -9,6 +9,7 @@ const farmAdminRoutes = require('./routes/farmAdmin');
 const { fetchLocations } = require('./handlers/location');
 const { geocode } = require('./handlers/maps');
 const { submitFarm } = require('./handlers/farm');
+const { fetchMarkets } = require('./handlers/market');
 const {
   loginRequired,
   authRequired,
@@ -34,7 +35,7 @@ app.use(
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', loginRequired, adminRequired, userRoutes);
-app.use('/api/loc', router.get('/fetch', fetchLocations));
+app.use(router.get('/api/locations', fetchLocations));
 app.use('/api/maps', loginRequired, router.post('/geocode', geocode));
 app.use(
   '/api/farm/approval',
@@ -43,6 +44,7 @@ app.use(
 );
 app.use('/api/farm/auth', loginRequired, authRequired, farmAuthRoutes);
 app.use('/api/farm/admin', loginRequired, adminRequired, farmAdminRoutes);
+app.use(router.get('/api/markets', fetchMarkets));
 
 // app.use((req, res, next) => {
 //   let err = new Error('Not found');

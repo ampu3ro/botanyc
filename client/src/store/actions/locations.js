@@ -12,7 +12,7 @@ export function setLocations(data) {
 export function fetchLocations() {
   return async (dispatch) => {
     try {
-      const data = await apiCall('get', '/api/loc/fetch');
+      const data = await apiCall('get', '/api/locations');
       dispatch(setLocations(data));
       return data;
     } catch (err) {

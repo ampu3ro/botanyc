@@ -612,13 +612,22 @@ export const POI_PROPS = [
   {
     id: 'pantry',
     label: 'Food pantry locations',
-    url: `${GIST_REPO}/1cc8e3347805d344c1b3a3638d25caa1/raw/8d76a1d543551097559e2bdcf4566f20262bd313/nyc_pantries.geojson`,
-    symbol: 'convenience',
+    data: `${GIST_REPO}/1cc8e3347805d344c1b3a3638d25caa1/raw/8d76a1d543551097559e2bdcf4566f20262bd313/nyc_pantries.geojson`,
+    layout: {
+      'icon-image': 'shop',
+    },
+  },
+  {
+    id: 'market',
+    label: "Farmer's market locations",
+    data: 'markets',
+    layout: {
+      'icon-image': 'convenience',
+    },
   },
   {
     id: 'transit_stop_label',
     label: 'Subway stops',
-    symbol: 'new-york-subway',
   },
 ];
 

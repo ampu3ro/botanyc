@@ -37,6 +37,7 @@
     "node-geocoder": "^3.27.0",
     "nodemailer": "^6.6.5",
     "nodemon": "^2.0.12",
-    "path-parser": "^6.1.0"
+    "path-parser": "^6.1.0",
+    "soda-js": "^0.2.3"
   }
 }

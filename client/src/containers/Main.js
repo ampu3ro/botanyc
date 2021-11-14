@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchLocations } from '../store/actions/locations';
+import { fetchMarkets } from '../store/actions/markets';
 import { setAlert } from '../store/actions/alert';
 import { setFilters } from '../store/actions/filters';
 import { FILTER_DEFAULT } from '../components/data';
@@ -25,6 +26,7 @@ const Main = () => {
   useEffect(() => {
     dispatch(fetchLocations());
     dispatch(setFilters(FILTER_DEFAULT));
+    dispatch(fetchMarkets());
   }, [dispatch]);
 
   const handleClose = (event, reason) => {
