@@ -4,11 +4,13 @@ import { setColorBy, setSizeBy, setPoi } from '../../store/actions/toggles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import FormLabel from '@mui/material/FormLabel';
+import FormGroup from '@mui/material/FormGroup';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Checkbox from '@mui/material/Checkbox';
+import { POI_PROPS } from '../data';
 
 const COLOR_BY = [
   { name: 'type', label: 'Type' },
@@ -69,15 +71,20 @@ const Toggles = () => {
         <Grid item>
           <FormControl>
             <FormLabel>Show points of interest</FormLabel>
-            <FormControlLabel
-              label="Food pantry locations"
-              control={
-                <Checkbox
-                  checked={poi.pantry}
-                  onChange={() => dispatch(setPoi({ pantry: !poi.pantry }))}
+            <FormGroup>
+              {POI_PROPS.map(({ id, label }) => (
+                <FormControlLabel
+                  key={id}
+                  label={label}
+                  control={
+                    <Checkbox
+                      checked={poi[id]}
+                      onChange={() => dispatch(setPoi({ [id]: !poi[id] }))}
+                    />
+                  }
                 />
-              }
-            />
+              ))}
+            </FormGroup>
           </FormControl>
         </Grid>
       </Grid>

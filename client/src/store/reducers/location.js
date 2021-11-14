@@ -7,7 +7,7 @@ const location = (state = {}, action) => {
       const { data } = action;
 
       // could make this a calculated field in Mongo but more manual if updating fields
-      data.features.map((feature) => {
+      data.features.forEach((feature) => {
         const { properties } = feature;
 
         let p = 0;

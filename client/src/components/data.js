@@ -610,9 +610,15 @@ const GIST_REPO = 'https://gist.githubusercontent.com/ampu3ro';
 
 export const POI_PROPS = [
   {
-    name: 'pantry',
+    id: 'pantry',
+    label: 'Food pantry locations',
     url: `${GIST_REPO}/1cc8e3347805d344c1b3a3638d25caa1/raw/8d76a1d543551097559e2bdcf4566f20262bd313/nyc_pantries.geojson`,
     symbol: 'convenience',
+  },
+  {
+    id: 'transit_stop_label',
+    label: 'Subway stops',
+    symbol: 'new-york-subway',
   },
 ];
 

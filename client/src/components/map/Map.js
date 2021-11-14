@@ -48,6 +48,32 @@ const Map = ({ showLayers, showFilters }) => {
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
     map.on('load', () => {
+      const source = 'mapbox-streets';
+      const { id, symbol } = POI_PROPS.filter(
+        ({ id }) => id === 'transit_stop_label'
+      )[0];
+
+      map.addSource(source, {
+        type: 'vector',
+        url: 'mapbox://mapbox.mapbox-streets-v8',
+      });
+
+      map.addLayer({
+        id,
+        source,
+        'source-layer': 'transit_stop_label',
+        type: 'symbol',
+        layout: {
+          'icon-image': symbol,
+          'text-field': ['get', 'name'],
+          'text-anchor': 'top',
+          'text-offset': [0, 1],
+          'text-size': 10,
+          visibility: 'none',
+        },
+        filter: ['==', 'stop_type', 'station'],
+      });
+
       map.addSource('socioeconomic-data', {
         type: 'geojson',
         data: SOCIOECONOMIC_URL,
@@ -63,47 +89,48 @@ const Map = ({ showLayers, showFilters }) => {
         },
       });
 
-      POI_PROPS.forEach((d) => {
-        const sourceId = `${d.name}-data`;
-        const layerId = `${d.name}-layer`;
+      POI_PROPS.filter(({ id }) => id !== 'transit_stop_label').forEach(
+        ({ id, url, symbol }) => {
+          const source = `${id}-data`;
 
-        map.addSource(sourceId, {
-          type: 'geojson',
-          data: d.url,
-        });
+          map.addSource(source, {
+            type: 'geojson',
+            data: url,
+          });
 
-        map.addLayer({
-          id: layerId,
-          source: sourceId,
-          type: 'symbol',
-          layout: {
-            'icon-image': d.symbol,
-            visibility: 'none',
-          },
-        });
+          map.addLayer({
+            id,
+            source,
+            type: 'symbol',
+            layout: {
+              'icon-image': symbol,
+              visibility: 'none',
+            },
+          });
 
-        map.on('mouseenter', layerId, (e) => {
-          map.getCanvas().style.cursor = 'pointer';
-          const { coordinates } = e.features[0].geometry;
-          const { Name } = e.features[0].properties;
-          hoverPopup.setLngLat(coordinates).setHTML(Name).addTo(map);
-        });
+          map.on('mouseenter', id, (e) => {
+            map.getCanvas().style.cursor = 'pointer';
+            const { coordinates } = e.features[0].geometry;
+            const { Name } = e.features[0].properties;
+            hoverPopup.setLngLat(coordinates).setHTML(Name).addTo(map);
+          });
 
-        map.on('mouseleave', layerId, () => {
-          map.getCanvas().style.cursor = '';
-          hoverPopup.remove();
-        });
+          map.on('mouseleave', id, () => {
+            map.getCanvas().style.cursor = '';
+            hoverPopup.remove();
+          });
 
-        map.on('click', layerId, (e) => {
-          map.getCanvas().style.cursor = 'pointer';
-          const { coordinates } = e.features[0].geometry;
-          const { Lat, Lon, Zipcode, ...fields } = e.features[0].properties;
-          const html = Object.entries(fields)
-            .map(([k, v]) => `<b>${k}</b>: ${v}`)
-            .join('<br>');
-          popup.setLngLat(coordinates).setHTML(html).addTo(map);
-        });
-      });
+          map.on('click', id, (e) => {
+            map.getCanvas().style.cursor = 'pointer';
+            const { coordinates } = e.features[0].geometry;
+            const { Lat, Lon, Zipcode, ...fields } = e.features[0].properties;
+            const html = Object.entries(fields)
+              .map(([k, v]) => `<b>${k}</b>: ${v}`)
+              .join('<br>');
+            popup.setLngLat(coordinates).setHTML(html).addTo(map);
+          });
+        }
+      );
 
       map.addSource('farms-data', {
         type: 'geojson',
@@ -260,7 +287,7 @@ const Map = ({ showLayers, showFilters }) => {
 
     Object.entries(poi).forEach(([k, v]) => {
       const vis = v ? 'visible' : 'none';
-      mapBase.setLayoutProperty(`${k}-layer`, 'visibility', vis);
+      mapBase.setLayoutProperty(k, 'visibility', vis);
     });
   }, [poi, mapBase]);
 

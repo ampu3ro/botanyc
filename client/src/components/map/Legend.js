@@ -52,7 +52,7 @@ const Legend = ({ colors }) => {
             >
               <Grid item>
                 <Avatar sx={{ width: 10, height: 10, bgcolor: color }}>
-                  <img />
+                  <img alt="" />
                 </Avatar>
               </Grid>
               <Grid item>
