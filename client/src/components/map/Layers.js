@@ -35,7 +35,7 @@ const SliderControl = ({ name, label, min, format, ...props }) => {
 const Layers = () => {
   const dispatch = useDispatch();
   const handleReset = () => dispatch(clearLayers());
-  const handleFill = (iqr = false) => {
+  const handleFill = (iqr) => {
     const arr = LAYER_SLIDERS.map(({ name, min, max, marks }) => {
       const value = iqr ? [marks[0], marks[2]] : [min || 0, max || 100];
       return [name, value];
@@ -57,7 +57,11 @@ const Layers = () => {
       </Grid>
       <Grid container spacing={2} sx={{ marginTop: 2 }}>
         <Grid item>
-          <Button variant="outlined" color="secondary" onClick={handleFill}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => handleFill(false)}
+          >
             Fill
           </Button>
         </Grid>
