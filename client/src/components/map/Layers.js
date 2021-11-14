@@ -35,24 +35,47 @@ const SliderControl = ({ name, label, min, format, ...props }) => {
 const Layers = () => {
   const dispatch = useDispatch();
   const handleReset = () => dispatch(clearLayers());
+  const handleFill = (iqr = false) => {
+    const arr = LAYER_SLIDERS.map(({ name, min, max, marks }) => {
+      const value = iqr ? [marks[0], marks[2]] : [min || 0, max || 100];
+      return [name, value];
+    });
+    dispatch(setLayers(Object.fromEntries(arr)));
+  };
 
   return (
     <Box sx={{ padding: 2 }}>
       <Grid container rowSpacing={1} columnSpacing={6}>
         {LAYER_SLIDERS.map((d) => (
           <Grid item key={d.name} xs={12} md={6} lg={3}>
-            <SliderControl {...d} />
+            <SliderControl
+              {...d}
+              marks={d.marks.map((v, i) => ({ value: v, label: `Q${i + 1}` }))}
+            />
           </Grid>
         ))}
       </Grid>
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={handleReset}
-        sx={{ marginTop: 2 }}
-      >
-        Reset
-      </Button>
+      <Grid container spacing={2} sx={{ marginTop: 2 }}>
+        <Grid item>
+          <Button variant="outlined" color="secondary" onClick={handleFill}>
+            Fill
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => handleFill(true)}
+          >
+            IQR
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button variant="outlined" color="secondary" onClick={handleReset}>
+            Reset
+          </Button>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

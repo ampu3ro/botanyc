@@ -554,16 +554,19 @@ export const FILTER_DEFAULT = {
   environments: Object.keys(ENVIRONMENTS),
 };
 
+// could make this dynamic based on the data in the future
 export const LAYER_SLIDERS = [
   {
     name: 'cdc_mental',
     label: 'Poor mental health',
     max: 30,
+    marks: [11, 12.5, 14.6],
   },
   {
     name: 'cdc_physical',
     label: 'Poor physical health',
     max: 30,
+    marks: [10, 11.8, 13.8],
   },
   {
     name: 'acs_income',
@@ -572,19 +575,22 @@ export const LAYER_SLIDERS = [
     max: 300000,
     step: 5000,
     format: (v) => `$${v.toLocaleString('en')}`,
+    marks: [44532, 62984, 83338],
   },
   {
     name: 'acs_bachelors',
     label: "At least bachelor's",
+    marks: [20.1, 29.9, 45.3],
   },
-  { name: 'acs_hs', label: 'At least high school' },
-  { name: 'acs_foreign', label: 'Foreign born' },
-  { name: 'acs_white', label: 'White' },
-  { name: 'acs_child', label: 'Has child' },
-  { name: 'acs_alone', label: 'Living alone' },
+  { name: 'acs_hs', label: 'At least high school', marks: [73.9, 83.4, 90.2] },
+  { name: 'acs_foreign', label: 'Foreign born', marks: [25.7, 37.3, 47.9] },
+  { name: 'acs_white', label: 'White', marks: [4.4, 23.4, 58.6] },
+  { name: 'acs_child', label: 'Has child', marks: [23.5, 32.4, 39.6] },
+  { name: 'acs_alone', label: 'Living alone', marks: [19.5, 27.3, 35.6] },
   {
     name: 'acs_participation',
     label: 'Labor force participation',
+    marks: [58, 63.5, 68.4],
   },
   {
     name: 'population',
@@ -592,6 +598,7 @@ export const LAYER_SLIDERS = [
     max: 30000,
     step: 1000,
     format: (v) => v.toLocaleString('en'),
+    marks: [2462, 3617, 5031],
   },
 ];
 

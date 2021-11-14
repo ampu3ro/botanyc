@@ -213,7 +213,6 @@ const Map = ({ showLayers, showFilters }) => {
   useEffect(() => {
     if (mapBase && market) {
       mapBase.getSource('market-data').setData(market);
-      console.log(mapBase.getStyle().layers);
     }
   }, [market, mapBase]);
 
@@ -296,13 +295,11 @@ const Map = ({ showLayers, showFilters }) => {
     if (!mapBase) return;
     let opacity;
     if (showLayers && Object.keys(layers).length) {
-      const x = 1 / LAYER_SLIDERS.length;
-      const add = Object.entries(layers).map(([k, v]) => {
+      const all = Object.entries(layers).map(([k, v]) => {
         const feature = ['to-number', ['get', k]];
-        const between = ['all', ['>=', feature, v[0]], ['<=', feature, v[1]]];
-        return ['case', between, x, 0];
+        return ['all', ['>=', feature, v[0]], ['<=', feature, v[1]]];
       });
-      opacity = ['+', ...add];
+      opacity = ['case', ['all', ...all], 0.3, 0];
     } else {
       opacity = 0;
     }
