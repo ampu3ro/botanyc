@@ -1,6 +1,34 @@
 const db = require('../models');
 const mongoose = require('mongoose');
 
+exports.fetchFarms = async (req, res, next) => {
+  try {
+    const farms = await db.Farm.find({ needsApproval: false }).lean();
+
+    const features = farms.map((farm) => {
+      const { _id, ...properties } = farm;
+      properties.id = _id;
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [properties.lon, properties.lat],
+        },
+        properties,
+      };
+    });
+
+    const result = {
+      type: 'FeatureCollection',
+      features,
+    };
+
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.bulkFarms = async (req, res, next) => {
   try {
     const bulkOps = req.body.data.map((d) => {
@@ -48,7 +76,7 @@ exports.bulkFarms = async (req, res, next) => {
             lon = g[0].longitude;
           }
         }
-        document.locations = [{ lat, lon, address }]; // need to refactor for multi-loc
+        document = { ...document, address, lat, lon };
       }
       if (!id) {
         return { insertOne: { document } };

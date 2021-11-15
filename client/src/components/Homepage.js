@@ -21,7 +21,7 @@ const Homepage = () => {
   const [showToggles, setShowToggles] = useState(false);
 
   const currentUser = useSelector((state) => state.currentUser);
-  const location = useSelector((state) => state.location);
+  const farm = useSelector((state) => state.farm);
   const colorBy = useSelector((state) => state.colorBy);
 
   return (
@@ -39,7 +39,7 @@ const Homepage = () => {
           </Typography>
         </div>
       )}
-      {location.data && (
+      {farm.features && (
         <div>
           <div style={{ position: 'relative' }}>
             <Map {...{ showLayers, showFilters }} />

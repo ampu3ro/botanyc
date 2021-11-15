@@ -1,7 +1,45 @@
 import { apiCall } from '../../services/api';
-import { fetchLocations } from './locations';
-import { SET_EDIT, SET_BULK_EDIT, SET_APPROVALS } from '../actionTypes';
+import {
+  SET_FARMS,
+  SET_SELECTED,
+  SET_SEARCH,
+  SET_EDIT,
+  SET_BULK_EDIT,
+  SET_APPROVALS,
+} from '../actionTypes';
 import { setAlert } from './alert';
+
+export function setFarms(data) {
+  return {
+    type: SET_FARMS,
+    data,
+  };
+}
+
+export function fetchFarms() {
+  return async (dispatch) => {
+    try {
+      const data = await apiCall('get', '/api/farms');
+      dispatch(setFarms(data));
+      return data;
+    } catch (err) {
+      dispatch(setAlert({ message: err?.message }));
+      return {};
+    }
+  };
+}
+
+export function setSelected(data) {
+  return {
+    type: SET_SELECTED,
+    data,
+  };
+}
+
+export const setSearch = (payload) => ({
+  type: SET_SEARCH,
+  payload,
+});
 
 export function submitOne(data) {
   return async (dispatch) => {
@@ -9,7 +47,7 @@ export function submitOne(data) {
       const result = await apiCall('post', '/api/farm/approval/submit', data);
       const message = `Successfully submitted ${result.name} for review!`;
       dispatch(setAlert({ severity: 'success', message }));
-      return dispatch(fetchLocations());
+      return dispatch(fetchFarms()); // make thenable for FarmForm
     } catch (err) {
       dispatch(setAlert({ message: err?.message }));
     }
@@ -32,7 +70,7 @@ export function editOne(data) {
         : 'inserted';
       const message = `Successfully ${verb} ${result.value.name}!`;
       dispatch(setAlert({ severity: 'success', message }));
-      return dispatch(fetchLocations());
+      return dispatch(fetchFarms());
     } catch (err) {
       dispatch(setAlert({ message: err?.message }));
     }
@@ -54,7 +92,7 @@ export function editBulk(data) {
       dispatch(
         setAlert({ severity: 'success', message: 'Bulk write finished!' })
       );
-      return dispatch(fetchLocations());
+      return dispatch(fetchFarms());
     } catch (err) {
       dispatch(setAlert({ message: err?.message }));
     }
@@ -67,7 +105,7 @@ export function deleteOne(data) {
       await apiCall('post', '/api/farm/auth/delete', data);
       const message = `Successfully deleted ${data.data.name}!`;
       dispatch(setAlert({ severity: 'success', message }));
-      return dispatch(fetchLocations());
+      return dispatch(fetchFarms());
     } catch (err) {
       dispatch(setAlert({ message: err?.message }));
     }

@@ -15,7 +15,7 @@ import { AG_TYPES, ENVIRONMENTS } from '../data';
 const Filters = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
-  const location = useSelector((state) => state.location);
+  const farm = useSelector((state) => state.farm);
 
   const handleChecks = (event, key) => {
     const { name, checked } = event.target;
@@ -28,9 +28,9 @@ const Filters = () => {
     dispatch(setFilters({ [key]: values }));
   };
 
-  const features = location.data.features
-    .filter((d) => {
-      const { type, environments } = d.properties;
+  const features = farm.features
+    .filter(({ properties }) => {
+      const { type, environments } = properties;
       return (
         (filters.types ? filters.types.includes(type) : true) &&
         (filters.environments && environments
@@ -38,10 +38,10 @@ const Filters = () => {
           : true)
       );
     })
-    .map((d) => {
-      const { authUsers, modifiedBy, needsApproval, ...properties } =
-        d.properties;
-      return { ...d, properties };
+    .map((feature) => {
+      const { authUsers, modifiedBy, needsApproval, distro1, ...properties } =
+        feature.properties;
+      return { ...feature, properties };
     });
 
   const properties = features.map((d) => d.properties);
@@ -108,7 +108,7 @@ const Filters = () => {
             startIcon={<DownloadIcon />}
             href={
               'data:text/json;charset=utf-8,' +
-              encodeURIComponent(JSON.stringify({ ...location.data, features }))
+              encodeURIComponent(JSON.stringify({ ...farm, features }))
             }
             download="botanyc.geojson"
           >

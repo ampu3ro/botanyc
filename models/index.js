@@ -12,5 +12,4 @@ mongoose.connect(keys.mongoURI, {
 });
 
 module.exports.User = require('./user');
-module.exports.Location = require('./location');
 module.exports.Farm = require('./farm');

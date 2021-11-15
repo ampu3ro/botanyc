@@ -1,6 +1,8 @@
 export const SET_ALERT = 'SET_ALERT';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
-export const SET_LOCATIONS = 'SET_LOCATIONS';
+export const SET_FARMS = 'SET_FARMS';
+export const SET_MARKETS = 'SET_MARKETS';
+export const SET_DISTRICTS = 'SET_DISTRICTS';
 export const SET_GEOCODED = 'SET_GEOCODED';
 export const SET_EDIT = 'SET_EDIT';
 export const SET_BULK_EDIT = 'SET_BULK_EDIT';
@@ -14,5 +16,3 @@ export const CLEAR_LAYERS = 'CLEAR_LAYERS';
 export const SET_COLOR_BY = 'SET_COLOR';
 export const SET_SIZE_BY = 'SET_SIZE';
 export const SET_POI = 'SET_POI';
-export const SET_MARKETS = 'SET_MARKETS';
-export const SET_DISTRICTS = 'SET_DISTRICTS';

@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import DownloadIcon from '@mui/icons-material/Download';
 import { CSVDownloader } from 'react-papaparse';
 import { editUser, fetchUsers } from '../store/actions/users';
-import { fetchApprovals } from '../store/actions/farm';
+import { fetchApprovals } from '../store/actions/farms';
 
 const AdminForm = () => {
   const [search, setSearch] = useState('');

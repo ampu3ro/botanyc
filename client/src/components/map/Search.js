@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelected, setSearch } from '../../store/actions/locations';
+import { setSelected, setSearch } from '../../store/actions/farms';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
@@ -42,7 +42,7 @@ const AutoSearch = styled(Autocomplete)(({ theme }) => ({
 const Search = () => {
   const [open, setOpen] = React.useState(false);
 
-  const location = useSelector((state) => state.location);
+  const farm = useSelector((state) => state.farm);
   const search = useSelector((state) => state.search);
 
   const dispatch = useDispatch();
@@ -52,8 +52,8 @@ const Search = () => {
     dispatch(setSelected({ ...value, fly: true }));
   };
 
-  const { options } = location;
-  if (!options) return <div />;
+  const { features } = farm;
+  if (!features) return <div />;
 
   const startAdornment = (
     <InputAdornment position="start">
@@ -64,7 +64,7 @@ const Search = () => {
   return (
     <SearchDiv>
       <AutoSearch
-        options={options}
+        options={features}
         freeSolo
         open={open}
         onClose={() => setOpen(false)}

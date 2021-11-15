@@ -6,7 +6,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const farmAuthRoutes = require('./routes/farmAuth');
 const farmAdminRoutes = require('./routes/farmAdmin');
-const { fetchLocations } = require('./handlers/location');
+const { fetchFarms } = require('./handlers/farm');
 const { fetchMarkets } = require('./handlers/market');
 const { fetchDistricts } = require('./handlers/district');
 const { geocode } = require('./handlers/maps');
@@ -36,7 +36,7 @@ app.use(
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', loginRequired, adminRequired, userRoutes);
-app.use(router.get('/api/locations', fetchLocations));
+app.use(router.get('/api/farms', fetchFarms));
 app.use(router.get('/api/markets', fetchMarkets));
 app.use(router.get('/api/districts', fetchDistricts));
 app.use('/api/maps', loginRequired, router.post('/geocode', geocode));

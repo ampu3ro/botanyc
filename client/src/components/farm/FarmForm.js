@@ -8,8 +8,9 @@ import {
   deleteOne,
   editOne,
   submitOne,
-} from '../../store/actions/farm';
-import { setSelected, setSearch } from '../../store/actions/locations';
+  setSelected,
+  setSearch,
+} from '../../store/actions/farms';
 import { FARM_PROPS, FARM_DEFAULT, ENVIRONMENTS } from '../data';
 import Header from '../Header';
 import SectionHeader from './SectionHeader';
@@ -41,7 +42,7 @@ const FarmForm = () => {
   const [jobsCount, setJobsCount] = useState(1);
 
   const currentUser = useSelector((state) => state.currentUser);
-  const location = useSelector((state) => state.location);
+  const farm = useSelector((state) => state.farm);
   const geocoded = useSelector((state) => state.geocoded);
   const edit = useSelector((state) => state.edit);
 
@@ -55,10 +56,10 @@ const FarmForm = () => {
   const watchGrowMethods = watch('growMethods', []);
   const watchCompost = watch('compost', '');
 
-  let searchOptions = location.options;
+  let searchOptions = farm.features;
   if (!currentUser.isAdmin && searchOptions) {
-    searchOptions = searchOptions.filter((d) =>
-      d.authUsers.includes(currentUser.user.username)
+    searchOptions = searchOptions.filter(({ properties }) =>
+      properties.authUsers.includes(currentUser.user.username)
     );
   }
 
@@ -79,7 +80,7 @@ const FarmForm = () => {
 
   const onSubmit = (data) => {
     const { address } = data;
-    if (!edit || edit.address !== address) {
+    if (!edit || edit.properties.address !== address) {
       setPush(false);
       dispatch(geocode({ address }));
     } else {
@@ -94,8 +95,8 @@ const FarmForm = () => {
   };
 
   useEffect(() => {
-    if (edit) {
-      Object.entries(edit).forEach(([k, v]) => setValue(k, v));
+    if (edit && edit.properties) {
+      Object.entries(edit.properties).forEach(([k, v]) => setValue(k, v));
     }
   }, [edit, setValue]);
 
@@ -119,7 +120,7 @@ const FarmForm = () => {
       (parseInt(data.areaRoof) || 0) +
       (parseInt(data.areaOther) || 0);
     if (area > 0) {
-      data.area = String(area); // filtering fields with 0 length below
+      data.area = area; // filtering fields with 0 length below
     }
 
     data.positions = Object.values(positions).filter((d) => d !== '');
@@ -132,37 +133,36 @@ const FarmForm = () => {
 
     if (geocoded.length && verified !== '') {
       const g = geocoded.filter((d) => d.formattedAddress === verified)[0];
-      data.locations = [
-        {
-          // need to refactor for multi-loc
-          address: g.formattedAddress,
-          lat: g.latitude,
-          lon: g.longitude,
-        },
-      ];
-      data.center = [g.longitude, g.latitude];
+      data = {
+        ...data,
+        address: g.formattedAddress,
+        lat: g.latitude,
+        lon: g.longitude,
+      };
     }
 
+    // only update fields with data
     data = Object.keys(data)
-      .filter((k) => data[k] && data[k].length)
+      .filter((k) => typeof data[k] === 'number' || (data[k] && data[k].length))
       .reduce((a, k) => Object.assign(a, { [k]: data[k] }), {});
 
+    const timestamp = new Date();
     if (
       currentUser.isAdmin ||
-      (edit && edit.authUsers.includes(currentUser.user.username))
+      (edit && edit.properties.authUsers.includes(currentUser.user.username))
     ) {
       dispatch(editOne({ currentUser, data })).then(({ features }) => {
-        const featureId = edit
-          ? features.filter((d) => d.properties.id === edit.id)[0].featureId
-          : undefined;
-        dispatch(setSelected({ featureId, ...edit, ...data, fly: true }));
+        const feature = features.filter((d) => {
+          const { name, updatedAt } = d.properties;
+          return name === data.name && updatedAt > timestamp.toISOString();
+        })[0];
+        dispatch(setSelected({ ...feature, fly: true }));
+        handleClear();
       });
     } else {
-      dispatch(submitOne(data));
+      dispatch(submitOne(data)).then(() => handleClear());
     }
 
-    dispatch(setSearch(''));
-    handleClear();
     history.push('/');
   }, [
     push,
@@ -174,9 +174,15 @@ const FarmForm = () => {
     geocoded,
     verified,
     dispatch,
-    handleClear,
     history,
+    handleClear,
   ]);
+
+  // useEffect(() => {
+  //   if (done) {
+  //     handleClear();
+  //   }
+  // }, [done]);
 
   const floors = FARM_PROPS.floors.fields.filter((d) => {
     let re = new RegExp(d.pattern, 'i');

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const Location = require('./location');
 
 const farmSchema = new Schema(
   {
@@ -8,10 +7,15 @@ const farmSchema = new Schema(
       type: String,
       required: true,
     },
-    locations: {
-      type: [Location.schema],
-      default: undefined,
+    lat: {
+      type: Number,
+      required: true,
     },
+    lon: {
+      type: Number,
+      required: true,
+    },
+    address: String,
     type: String,
     environments: {
       type: [String],

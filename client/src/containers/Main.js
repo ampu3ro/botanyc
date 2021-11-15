@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchLocations } from '../store/actions/locations';
+import { fetchFarms } from '../store/actions/farms';
 import { fetchMarkets } from '../store/actions/markets';
 import { fetchDistricts } from '../store/actions/districts';
 import { setAlert } from '../store/actions/alert';
@@ -9,8 +9,8 @@ import { setFilters } from '../store/actions/filters';
 import { FILTER_DEFAULT } from '../components/data';
 import Homepage from '../components/Homepage';
 import AuthForm from '../components/AuthForm';
-import BulkEdit from '../components/BulkEdit';
-import FarmForm from '../components/location/FarmForm';
+import BulkEdit from '../components/farm/BulkEdit';
+import FarmForm from '../components/farm/FarmForm';
 import AdminForm from '../components/AdminForm';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -25,7 +25,7 @@ const Main = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchLocations());
+    dispatch(fetchFarms());
     dispatch(fetchMarkets());
     dispatch(fetchDistricts());
     dispatch(setFilters(FILTER_DEFAULT));

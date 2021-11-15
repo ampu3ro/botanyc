@@ -1,10 +1,10 @@
 import { React, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { editBulk, setBulkEdit } from '../store/actions/farm';
-import { setAlert } from '../store/actions/alert';
+import { editBulk, setBulkEdit } from '../../store/actions/farms';
+import { setAlert } from '../../store/actions/alert';
 import { CSVReader } from 'react-papaparse';
-import Header from './Header';
+import Header from '../Header';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -54,7 +54,7 @@ const BulkEdit = () => {
 
   return (
     <div>
-      <Header text="Bulk Edit Locations" />
+      <Header text="Bulk Edit Farms" />
       <CSVReader
         onDrop={handleOnDrop}
         onError={handleOnError}

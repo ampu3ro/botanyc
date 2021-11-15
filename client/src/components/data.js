@@ -88,7 +88,6 @@ export const FARM_PROPS = {
     label: 'Address',
     helpText: "What is the address of this farm or garden's location?",
   },
-  locations: { default: [] },
   type: {
     label: 'Type',
     helpText: 'How would you describe your farm or garden?',

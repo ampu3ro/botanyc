@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import currentUser from './currentUser';
 import alert from './alert';
-import location from './location';
+import farm from './farm';
 import geocoded from './geocoded';
 import edit from './edit';
 import bulkEdits from './bulkEdits';
@@ -20,7 +20,9 @@ import district from './district';
 const rootReducer = combineReducers({
   currentUser,
   alert,
-  location,
+  farm,
+  market,
+  district,
   geocoded,
   edit,
   bulkEdits,
@@ -30,11 +32,9 @@ const rootReducer = combineReducers({
   search,
   approvals,
   selected,
-  poi,
   colorBy,
   sizeBy,
-  market,
-  district,
+  poi,
 });
 
 export default rootReducer;

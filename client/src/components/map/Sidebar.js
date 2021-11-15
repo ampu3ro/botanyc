@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setSelected } from '../../store/actions/locations';
-import { setEdit } from '../../store/actions/farm';
+import { setSelected } from '../../store/actions/farms';
+import { setEdit } from '../../store/actions/farms';
 import { FARM_PROPS } from '../data';
 import Bar from './Bar';
 import Drawer from '@mui/material/Drawer';
@@ -27,9 +27,10 @@ const FarmContent = ({ selected }) => {
     .filter((k) => k !== 'floors')
     .map((k) => {
       const { label, fields, adorn, int } = FARM_PROPS[k];
+      const { properties } = selected;
       if (fields) {
         const data = fields
-          .map((d) => ({ ...d, value: selected[d.name] }))
+          .map((d) => ({ ...d, value: properties[d.name] }))
           .filter((d) => !!d.value);
         if (!data.length) return undefined;
 
@@ -40,7 +41,7 @@ const FarmContent = ({ selected }) => {
           </Stack>
         );
       }
-      let v = selected[k];
+      let v = properties[k];
       if (!label || !v) return undefined;
       if (k === 'name') {
         return (
@@ -60,11 +61,10 @@ const FarmContent = ({ selected }) => {
           </Typography>
         );
       }
-      const time = k === 'updatedAt';
-      if (v[0] === '[' && v.at(-1) === ']') {
-        // mapbox stores arrays as strings
-        v = JSON.parse(v).join(', ');
+      if (Array.isArray(v)) {
+        v = v.join(', ');
       }
+      const time = k === 'updatedAt';
       return (
         <Stack key={k}>
           {time && <Divider sx={{ marginBottom: 2 }} />}
@@ -98,7 +98,7 @@ const Sidebar = () => {
     dispatch(setSelected(null));
   };
 
-  if (selected === null) return <div />;
+  if (!selected || !selected.properties) return <div />;
 
   return (
     <Drawer
@@ -110,10 +110,10 @@ const Sidebar = () => {
     >
       <Box sx={{ width: 300, padding: '2ch' }} onClick={closeDrawer}>
         <Stack spacing={2}>
-          {selected.id ? (
-            <FarmContent selected={selected} />
-          ) : (
+          {selected.properties.BoroCode ? (
             <BoroughContent selected={selected} />
+          ) : (
+            <FarmContent selected={selected} />
           )}
         </Stack>
       </Box>

@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { logout } from '../store/actions/auth';
-import { setSearch } from '../store/actions/locations';
+import { setSearch } from '../store/actions/farms';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';

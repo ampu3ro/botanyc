@@ -1,6 +1,6 @@
 import { SET_DISTRICTS } from '../actionTypes';
 
-const district = (state = null, action) => {
+const district = (state = {}, action) => {
   switch (action.type) {
     case SET_DISTRICTS:
       return action.data;
