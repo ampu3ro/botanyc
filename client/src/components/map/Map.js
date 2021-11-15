@@ -2,12 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 /* eslint import/no-webpack-loader-syntax: off */
 import mapboxgl from '!mapbox-gl';
-import {
-  POI_PROPS,
-  SOCIOECONOMIC_URL,
-  LAYER_SLIDERS,
-  PAINT_COLOR,
-} from '../data';
+import collect from '@turf/collect';
+import { POI_PROPS, SOCIOECONOMIC_URL, PAINT_COLOR } from '../data';
 import { purple, green, grey } from '@mui/material/colors';
 import { setSelected } from '../../store/actions/locations';
 import './styles.css';
@@ -17,11 +13,14 @@ mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 const Map = ({ showLayers, showFilters }) => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
-  const [featureId, setFeatureId] = useState('');
-  const selectedId = useRef();
+  const [farmId, setFarmId] = useState(null);
+  const farmIdRef = useRef();
+  const [boroughId, setBoroughId] = useState(null);
+  const boroughIdRef = useRef();
 
   const location = useSelector((state) => state.location);
   const market = useSelector((state) => state.market);
+  const district = useSelector((state) => state.district);
   const filters = useSelector((state) => state.filters);
   const layers = useSelector((state) => state.layers);
   const selected = useSelector((state) => state.selected);
@@ -49,6 +48,73 @@ const Map = ({ showLayers, showFilters }) => {
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
     map.on('load', () => {
+      map.addSource('borough-data', {
+        type: 'geojson',
+        data: null,
+      });
+
+      map.addLayer({
+        id: 'borough-layer',
+        source: 'borough-data',
+        type: 'fill',
+        paint: {
+          'fill-opacity': 0,
+        },
+        layout: {
+          visibility: 'visible',
+        },
+      });
+
+      map.addLayer({
+        id: 'borough-line',
+        source: 'borough-data',
+        type: 'line',
+        paint: {
+          'line-color': '#000',
+          'line-width': 1.5,
+        },
+        layout: {
+          visibility: 'visible',
+        },
+      });
+
+      map.on('click', 'borough-layer', (e) => {
+        e.preventDefault();
+        if (!e.features.length) return;
+        console.log(e.features);
+        const { id } = e.features[0];
+        boroughIdRef.current = id;
+        setBoroughId(id);
+      });
+
+      map.on('click', (e) => {
+        if (e.defaultPrevented || !boroughIdRef.current) return;
+        map.setFeatureState(
+          { source: 'borough-data', id: boroughIdRef.current },
+          { selected: false }
+        );
+        boroughIdRef.current = null;
+        dispatch(setSelected(null));
+      });
+
+      map.addSource('socioeconomic-data', {
+        type: 'geojson',
+        data: SOCIOECONOMIC_URL,
+      });
+
+      map.addLayer({
+        id: 'socioeconomic-layer',
+        source: 'socioeconomic-data',
+        type: 'fill',
+        paint: {
+          'fill-color': purple[500],
+          'fill-opacity': 0,
+        },
+        layout: {
+          visibility: 'none',
+        },
+      });
+
       map.addSource('mapbox-streets', {
         type: 'vector',
         url: 'mapbox://mapbox.mapbox-streets-v8',
@@ -68,21 +134,6 @@ const Map = ({ showLayers, showFilters }) => {
           visibility: 'none',
         },
         filter: ['==', 'stop_type', 'station'],
-      });
-
-      map.addSource('socioeconomic-data', {
-        type: 'geojson',
-        data: SOCIOECONOMIC_URL,
-      });
-
-      map.addLayer({
-        id: 'socioeconomic-layer',
-        source: 'socioeconomic-data',
-        type: 'fill',
-        paint: {
-          'fill-color': purple[500],
-          'fill-opacity': 0,
-        },
       });
 
       POI_PROPS.filter(({ data }) => data).forEach(({ id, data, layout }) => {
@@ -156,18 +207,19 @@ const Map = ({ showLayers, showFilters }) => {
       map.on('click', 'farms-layer', (e) => {
         e.preventDefault();
         if (!e.features.length) return;
+        console.log(e.features);
         const { id } = e.features[0];
-        selectedId.current = id;
-        setFeatureId(id);
+        farmIdRef.current = id;
+        setFarmId(id);
       });
 
       map.on('click', (e) => {
-        if (e.defaultPrevented || !selectedId.current) return;
+        if (e.defaultPrevented || !farmIdRef.current) return;
         map.setFeatureState(
-          { source: 'farms-data', id: selectedId.current },
+          { source: 'farms-data', id: farmIdRef.current },
           { selected: false }
         );
-        selectedId.current = null;
+        farmIdRef.current = null;
         dispatch(setSelected(null));
       });
 
@@ -190,25 +242,43 @@ const Map = ({ showLayers, showFilters }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    const { options } = location;
-    if (options && featureId) {
-      const clicked = options.filter((d) => d.featureId === featureId)[0];
+    const { borough } = district;
+    if (borough && boroughId) {
+      const clicked = borough.features.filter((d) => d.id === boroughId)[0];
       dispatch(setSelected({ ...clicked, fly: false }));
     }
-  }, [location, featureId, dispatch]);
+  }, [district, boroughId, dispatch]);
 
   useEffect(() => {
-    let mapData = JSON.parse(JSON.stringify(location.data)); // deep copy for mutation below
-    if (!mapBase || !mapData || !mapData.features) return;
+    const { options } = location;
+    if (options && farmId) {
+      const clicked = options.filter((d) => d.featureId === farmId)[0];
+      dispatch(setSelected({ ...clicked, fly: false }));
+    }
+  }, [location, farmId, dispatch]);
 
-    mapData.features = mapData.features.map((d) => {
-      let { properties } = d;
+  useEffect(() => {
+    let locData = JSON.parse(JSON.stringify(location.data)); // deep copy for mutation below
+    if (!mapBase || !locData || !locData.features) return;
+
+    locData.features.forEach(({ properties }) => {
       properties.environments = String(properties.environments); // mapbox won't filter an array
-      return { ...d, properties };
     });
 
-    mapBase.getSource('farms-data').setData(mapData);
-  }, [location, mapBase]);
+    let boroData = collect(
+      district.borough,
+      locData,
+      'production',
+      'production'
+    );
+    const add = (a, d) => a + (d || 0);
+    boroData.features.forEach(({ properties }) => {
+      properties.production = properties.production.reduce(add, 0);
+    });
+
+    mapBase.getSource('farms-data').setData(locData);
+    mapBase.getSource('borough-data').setData(boroData);
+  }, [location, district, mapBase]);
 
   useEffect(() => {
     if (mapBase && market) {
@@ -234,7 +304,7 @@ const Map = ({ showLayers, showFilters }) => {
 
     const { featureId } = selected;
     if (featureId !== undefined) {
-      selectedId.current = featureId;
+      farmIdRef.current = featureId;
       mapBase.setFeatureState(
         { source: 'farms-data', id: featureId },
         { selected: true }
@@ -293,17 +363,22 @@ const Map = ({ showLayers, showFilters }) => {
 
   useEffect(() => {
     if (!mapBase) return;
-    let opacity;
+
+    const id = 'socioeconomic-layer';
+    let opacity = 0;
+    let visibility = 'none';
     if (showLayers && Object.keys(layers).length) {
       const all = Object.entries(layers).map(([k, v]) => {
         const feature = ['to-number', ['get', k]];
         return ['all', ['>=', feature, v[0]], ['<=', feature, v[1]]];
       });
       opacity = ['case', ['all', ...all], 0.3, 0];
-    } else {
-      opacity = 0;
+      visibility = 'visible';
     }
-    mapBase.setPaintProperty('socioeconomic-layer', 'fill-opacity', opacity);
+
+    mapBase
+      .setPaintProperty(id, 'fill-opacity', opacity)
+      .setLayoutProperty(id, 'visibility', visibility);
   }, [layers, showLayers, mapBase]);
 
   return (

@@ -13,12 +13,81 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 
-const Sidebar = () => {
-  const selected = useSelector((state) => state.selected);
+const FarmContent = ({ selected }) => {
   const currentUser = useSelector((state) => state.currentUser);
-
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const handleEdit = () => {
+    dispatch(setEdit(selected));
+    history.push('/farm');
+  };
+
+  return Object.keys(FARM_PROPS)
+    .filter((k) => k !== 'floors')
+    .map((k) => {
+      const { label, fields, adorn, int } = FARM_PROPS[k];
+      if (fields) {
+        const data = fields
+          .map((d) => ({ ...d, value: selected[d.name] }))
+          .filter((d) => !!d.value);
+        if (!data.length) return undefined;
+
+        return (
+          <Stack key={k}>
+            <Typography>{`${label} (${adorn})`}</Typography>
+            <Bar data={data} />
+          </Stack>
+        );
+      }
+      let v = selected[k];
+      if (!label || !v) return undefined;
+      if (k === 'name') {
+        return (
+          <Typography variant="h4" key={k}>
+            {v}
+            {currentUser.isAdmin && (
+              <IconButton
+                sx={{
+                  display: 'inline-flex',
+                  verticalAlign: 'middle',
+                }}
+                onClick={handleEdit}
+              >
+                <EditIcon />
+              </IconButton>
+            )}
+          </Typography>
+        );
+      }
+      const time = k === 'updatedAt';
+      if (v[0] === '[' && v.at(-1) === ']') {
+        // mapbox stores arrays as strings
+        v = JSON.parse(v).join(', ');
+      }
+      return (
+        <Stack key={k}>
+          {time && <Divider sx={{ marginBottom: 2 }} />}
+          <Typography>{label}</Typography>
+          <Typography variant="h6">
+            {time
+              ? new Date(v).toDateString()
+              : int
+              ? parseInt(v).toLocaleString()
+              : v}
+          </Typography>
+        </Stack>
+      );
+    });
+};
+
+const BoroughContent = ({ selected }) => {
+  return <div>Boro</div>;
+};
+
+const Sidebar = () => {
+  const selected = useSelector((state) => state.selected);
+  const dispatch = useDispatch();
 
   const closeDrawer = (event) => {
     if (
@@ -27,11 +96,6 @@ const Sidebar = () => {
     )
       return;
     dispatch(setSelected(null));
-  };
-
-  const handleEdit = () => {
-    dispatch(setEdit(selected));
-    history.push('/farm');
   };
 
   if (selected === null) return <div />;
@@ -46,62 +110,11 @@ const Sidebar = () => {
     >
       <Box sx={{ width: 300, padding: '2ch' }} onClick={closeDrawer}>
         <Stack spacing={2}>
-          {Object.keys(FARM_PROPS)
-            .filter((k) => k !== 'floors')
-            .map((k) => {
-              const { label, fields, adorn, int } = FARM_PROPS[k];
-              if (fields) {
-                const data = fields
-                  .map((d) => ({ ...d, value: selected[d.name] }))
-                  .filter((d) => !!d.value);
-                if (!data.length) return undefined;
-
-                return (
-                  <Stack key={k}>
-                    <Typography>{`${label} (${adorn})`}</Typography>
-                    <Bar data={data} />
-                  </Stack>
-                );
-              }
-              let v = selected[k];
-              if (!label || !v) return undefined;
-              if (k === 'name') {
-                return (
-                  <Typography variant="h4" key={k}>
-                    {v}
-                    {currentUser.isAdmin && (
-                      <IconButton
-                        sx={{
-                          display: 'inline-flex',
-                          verticalAlign: 'middle',
-                        }}
-                        onClick={handleEdit}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    )}
-                  </Typography>
-                );
-              }
-              const time = k === 'updatedAt';
-              if (v[0] === '[' && v.at(-1) === ']') {
-                // mapbox stores arrays as strings
-                v = JSON.parse(v).join(', ');
-              }
-              return (
-                <Stack key={k}>
-                  {time && <Divider sx={{ marginBottom: 2 }} />}
-                  <Typography>{label}</Typography>
-                  <Typography variant="h6">
-                    {time
-                      ? new Date(v).toDateString()
-                      : int
-                      ? parseInt(v).toLocaleString('en')
-                      : v}
-                  </Typography>
-                </Stack>
-              );
-            })}
+          {selected.id ? (
+            <FarmContent selected={selected} />
+          ) : (
+            <BoroughContent selected={selected} />
+          )}
         </Stack>
       </Box>
     </Drawer>
