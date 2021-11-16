@@ -1,4 +1,14 @@
-import { SET_SIZE_BY, SET_COLOR_BY, SET_POI } from '../actionTypes';
+import {
+  SET_DISPLAY,
+  SET_SIZE_BY,
+  SET_COLOR_BY,
+  SET_POI,
+} from '../actionTypes';
+
+export const setDisplay = (payload) => ({
+  type: SET_DISPLAY,
+  payload,
+});
 
 export const setSizeBy = (payload) => ({
   type: SET_SIZE_BY,

@@ -1,6 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setColorBy, setSizeBy, setPoi } from '../../store/actions/toggles';
+import {
+  setDisplay,
+  setColorBy,
+  setSizeBy,
+  setPoi,
+} from '../../store/actions/toggles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import FormLabel from '@mui/material/FormLabel';
@@ -11,6 +16,11 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Checkbox from '@mui/material/Checkbox';
 import { POI_PROPS } from '../data';
+
+const DISPLAY = [
+  { name: 'farms', label: 'Point locations' },
+  { name: 'community', label: 'Community district density' },
+];
 
 const COLOR_BY = [
   { name: 'type', label: 'Type' },
@@ -23,51 +33,68 @@ const SIZE_BY = [
   { name: 'none', label: 'None' },
 ];
 
+const RadioGroupControl = ({ label, value, options, setter }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <FormControl>
+      <FormLabel>{label}</FormLabel>
+      <RadioGroup
+        value={value}
+        onChange={(e) => dispatch(setter(e.target.value))}
+      >
+        {options.map(({ name, label }) => (
+          <FormControlLabel
+            key={name}
+            value={name}
+            label={label}
+            control={<Radio />}
+          />
+        ))}
+      </RadioGroup>
+    </FormControl>
+  );
+};
+
 const Toggles = () => {
+  const display = useSelector((state) => state.display);
   const colorBy = useSelector((state) => state.colorBy);
   const sizeBy = useSelector((state) => state.sizeBy);
   const poi = useSelector((state) => state.poi);
+
   const dispatch = useDispatch();
 
   return (
     <Box sx={{ padding: 2 }}>
       <Grid container spacing={4}>
         <Grid item>
-          <FormControl>
-            <FormLabel>Color farms/gardens by</FormLabel>
-            <RadioGroup
+          <RadioGroupControl
+            label="Display data as"
+            value={display}
+            options={DISPLAY}
+            setter={setDisplay}
+          />
+        </Grid>
+        {display === 'farms' && (
+          <Grid item>
+            <RadioGroupControl
+              label="Color farms/gardens by"
               value={colorBy}
-              onChange={(e) => dispatch(setColorBy(e.target.value))}
-            >
-              {COLOR_BY.map((d) => (
-                <FormControlLabel
-                  key={d.name}
-                  value={d.name}
-                  label={d.label}
-                  control={<Radio />}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-        <Grid item>
-          <FormControl>
-            <FormLabel>Size farms/gardens by</FormLabel>
-            <RadioGroup
+              options={COLOR_BY}
+              setter={setColorBy}
+            />
+          </Grid>
+        )}
+        {display === 'farms' && (
+          <Grid item>
+            <RadioGroupControl
+              label="Size farms/gardens by"
               value={sizeBy}
-              onChange={(e) => dispatch(setSizeBy(e.target.value))}
-            >
-              {SIZE_BY.map((d) => (
-                <FormControlLabel
-                  key={d.name}
-                  value={d.name}
-                  label={d.label}
-                  control={<Radio />}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-        </Grid>
+              options={SIZE_BY}
+              setter={setSizeBy}
+            />
+          </Grid>
+        )}
         <Grid item>
           <FormControl>
             <FormLabel>Show points of interest</FormLabel>

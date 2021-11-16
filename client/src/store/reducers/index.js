@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 import currentUser from './currentUser';
 import alert from './alert';
 import farm from './farm';
+import market from './market';
+import district from './district';
 import geocoded from './geocoded';
 import edit from './edit';
 import bulkEdits from './bulkEdits';
@@ -11,11 +13,10 @@ import users from './users';
 import search from './search';
 import approvals from './approvals';
 import selected from './selected';
-import poi from './poi';
+import display from './display';
 import colorBy from './colorBy';
 import sizeBy from './sizeBy';
-import market from './market';
-import district from './district';
+import poi from './poi';
 
 const rootReducer = combineReducers({
   currentUser,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   search,
   approvals,
   selected,
+  display,
   colorBy,
   sizeBy,
   poi,
