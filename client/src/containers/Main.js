@@ -28,17 +28,16 @@ const Main = () => {
   useEffect(() => {
     dispatch(fetchFarms()).then((farm) => {
       dispatch(fetchDistricts()).then((district) => {
-        district = collect(district, farm, 'area', 'a');
-        district = collect(district, farm, 'production', 'p');
+        district = collect(district, farm, 'area', 'area');
+        district = collect(district, farm, 'production', 'production');
         const add = (acc, v) => acc + (v || 0);
 
         district.features.forEach(({ properties }) => {
-          const { a, p, total_pop } = properties;
-          properties.count = a.length;
-          properties.area = a.reduce(add, 0);
-          properties.production = p.reduce(add, 0);
+          properties.count = properties.area.length;
+          properties.area = properties.area.reduce(add, 0);
+          properties.production = properties.production.reduce(add, 0);
 
-          const { count, area, production } = properties;
+          const { count, area, production, total_pop } = properties;
           properties.countCapita = total_pop > 0 ? count / total_pop : 0;
           properties.areaCapita = total_pop > 0 ? area / total_pop : 0;
           properties.productionCapita =

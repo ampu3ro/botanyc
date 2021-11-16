@@ -8,6 +8,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { styled, alpha } from '@mui/material/styles';
+import { PAINT_COLOR } from '../data';
 
 const LegendPaper = styled(Paper)(({ theme }) => ({
   position: 'absolute',
@@ -21,8 +22,11 @@ const LegendPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1.5),
 }));
 
-const Legend = ({ colors }) => {
+const Legend = ({ colorId }) => {
   const [expanded, setExpanded] = useState(true);
+
+  const colors = PAINT_COLOR[colorId];
+  const variant = colorId === 'density' ? 'square' : 'circle';
 
   if (!colors || colors.length <= 1) return <div />;
 
@@ -51,7 +55,10 @@ const Legend = ({ colors }) => {
               alignItems="center"
             >
               <Grid item>
-                <Avatar sx={{ width: 10, height: 10, bgcolor: color }}>
+                <Avatar
+                  sx={{ width: 10, height: 10, bgcolor: color }}
+                  variant={variant}
+                >
                   <img alt="" />
                 </Avatar>
               </Grid>

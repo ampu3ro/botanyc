@@ -610,6 +610,11 @@ export const PAINT_COLOR = {
     })
   ),
   distro1: FARM_PROPS.distros.fields,
+  density: [
+    { name: 'low', color: green[50], label: 'Low' },
+    { name: 'mid', color: green[200], label: 'Medium' },
+    { name: 'high', color: green[500], label: 'High' },
+  ],
 };
 
 const GIST_REPO = 'https://gist.githubusercontent.com/ampu3ro';

@@ -13,7 +13,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { PAINT_COLOR } from './data';
 
 const Homepage = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -22,6 +21,7 @@ const Homepage = () => {
 
   const currentUser = useSelector((state) => state.currentUser);
   const farm = useSelector((state) => state.farm);
+  const display = useSelector((state) => state.display);
   const colorBy = useSelector((state) => state.colorBy);
 
   return (
@@ -43,7 +43,7 @@ const Homepage = () => {
         <div>
           <div style={{ position: 'relative' }}>
             <Map {...{ showLayers, showFilters }} />
-            <Legend colors={PAINT_COLOR[colorBy]} />
+            <Legend colorId={display === 'farms' ? colorBy : 'density'} />
             <Search />
             <Sidebar />
           </div>

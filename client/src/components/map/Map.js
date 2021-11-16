@@ -278,11 +278,12 @@ const Map = ({ showLayers, showFilters }) => {
     const maxPer = Math.max(
       ...district.features.map((d) => d.properties[densityBy])
     );
+    const cd = PAINT_COLOR.density;
     const fill = {
       property: densityBy,
       stops: [
-        [0, green[50]],
-        [maxPer, green[900]],
+        [0, cd.filter(({ name }) => name === 'low')[0].color],
+        [maxPer, cd.filter(({ name }) => name === 'high')[0].color],
       ],
     };
     mapBase.setPaintProperty('district-layer', 'fill-color', fill);
