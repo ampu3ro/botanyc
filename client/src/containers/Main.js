@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import collect from '@turf/collect';
+import centroid from '@turf/centroid';
 import { fetchFarms } from '../store/actions/farms';
 import { fetchMarkets } from '../store/actions/markets';
 import { fetchDistricts, setDistrict } from '../store/actions/districts';
@@ -32,16 +33,19 @@ const Main = () => {
         district = collect(district, farm, 'production', 'production');
         const add = (acc, v) => acc + (v || 0);
 
-        district.features.forEach(({ properties }) => {
+        district.features.forEach((feature) => {
+          let { properties } = feature;
+          properties.centroid = centroid(feature).geometry.coordinates;
+
           properties.count = properties.area.length;
           properties.area = properties.area.reduce(add, 0);
           properties.production = properties.production.reduce(add, 0);
 
-          const { count, area, production, total_pop } = properties;
-          properties.countCapita = total_pop > 0 ? count / total_pop : 0;
-          properties.areaCapita = total_pop > 0 ? area / total_pop : 0;
+          const { count, area, production, totalPop } = properties;
+          properties.countCapita = totalPop > 0 ? count / totalPop : 0;
+          properties.areaCapita = totalPop > 0 ? area / totalPop : 0;
           properties.productionCapita =
-            total_pop > 0 ? production / total_pop : 0;
+            totalPop > 0 ? production / totalPop : 0;
         });
         dispatch(setDistrict(district));
       });

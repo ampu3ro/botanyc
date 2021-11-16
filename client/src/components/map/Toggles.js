@@ -19,7 +19,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { POI_PROPS } from '../data';
 
 const DISPLAY = [
-  { name: 'farms', label: 'Point locations' },
+  { name: 'farm', label: 'Point locations' },
   { name: 'district', label: 'Community district density' },
 ];
 const COLOR_BY = [
@@ -84,7 +84,7 @@ const Toggles = () => {
             setter={setDisplay}
           />
         </Grid>
-        {display === 'farms' && (
+        {display === 'farm' && (
           <Grid item>
             <RadioGroupControl
               label="Color farms/gardens by"
@@ -94,7 +94,7 @@ const Toggles = () => {
             />
           </Grid>
         )}
-        {display === 'farms' && (
+        {display === 'farm' && (
           <Grid item>
             <RadioGroupControl
               label="Size farms/gardens by"

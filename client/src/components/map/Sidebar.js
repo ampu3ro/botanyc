@@ -110,7 +110,7 @@ const Sidebar = () => {
     >
       <Box sx={{ width: 300, padding: '2ch' }} onClick={closeDrawer}>
         <Stack spacing={2}>
-          {selected.properties.BoroCode ? (
+          {selected.properties.boroName ? (
             <BoroughContent selected={selected} />
           ) : (
             <FarmContent selected={selected} />

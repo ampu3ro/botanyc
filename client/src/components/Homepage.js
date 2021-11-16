@@ -43,7 +43,7 @@ const Homepage = () => {
         <div>
           <div style={{ position: 'relative' }}>
             <Map {...{ showLayers, showFilters }} />
-            <Legend colorId={display === 'farms' ? colorBy : 'density'} />
+            <Legend colorId={display === 'farm' ? colorBy : 'density'} />
             <Search />
             <Sidebar />
           </div>

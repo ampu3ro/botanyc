@@ -9,7 +9,6 @@ import {
   editOne,
   submitOne,
   setSelected,
-  setSearch,
 } from '../../store/actions/farms';
 import { FARM_PROPS, FARM_DEFAULT, ENVIRONMENTS } from '../data';
 import Header from '../Header';
