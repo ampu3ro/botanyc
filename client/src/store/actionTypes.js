@@ -16,4 +16,5 @@ export const CLEAR_LAYERS = 'CLEAR_LAYERS';
 export const SET_DISPLAY = 'SET_DISPLAY';
 export const SET_COLOR_BY = 'SET_COLOR';
 export const SET_SIZE_BY = 'SET_SIZE';
+export const SET_DENSITY_BY = 'SET_DENSITY';
 export const SET_POI = 'SET_POI';

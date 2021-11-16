@@ -16,6 +16,7 @@ import selected from './selected';
 import display from './display';
 import colorBy from './colorBy';
 import sizeBy from './sizeBy';
+import densityBy from './densityBy';
 import poi from './poi';
 
 const rootReducer = combineReducers({
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   display,
   colorBy,
   sizeBy,
+  densityBy,
   poi,
 });
 

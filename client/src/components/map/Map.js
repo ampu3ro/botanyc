@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 /* eslint import/no-webpack-loader-syntax: off */
 import mapboxgl from '!mapbox-gl';
-import collect from '@turf/collect';
 import { POI_PROPS, SOCIOECONOMIC_URL, PAINT_COLOR } from '../data';
 import { purple, green, grey } from '@mui/material/colors';
 import { setSelected } from '../../store/actions/farms';
@@ -26,6 +25,7 @@ const Map = ({ showLayers, showFilters }) => {
   const display = useSelector((state) => state.display);
   const colorBy = useSelector((state) => state.colorBy);
   const sizeBy = useSelector((state) => state.sizeBy);
+  const densityBy = useSelector((state) => state.densityBy);
   const poi = useSelector((state) => state.poi);
 
   const dispatch = useDispatch();
@@ -48,15 +48,15 @@ const Map = ({ showLayers, showFilters }) => {
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
     map.on('load', () => {
-      map.addSource('community-data', {
+      map.addSource('district-data', {
         type: 'geojson',
         data: null,
         promoteId: 'BoroCD',
       });
 
       map.addLayer({
-        id: 'community-layer',
-        source: 'community-data',
+        id: 'district-layer',
+        source: 'district-data',
         type: 'fill',
         paint: {
           'fill-opacity': 0.4,
@@ -67,8 +67,8 @@ const Map = ({ showLayers, showFilters }) => {
       });
 
       map.addLayer({
-        id: 'community-line',
-        source: 'community-data',
+        id: 'district-line',
+        source: 'district-data',
         type: 'line',
         paint: {
           'line-color': '#000',
@@ -81,23 +81,7 @@ const Map = ({ showLayers, showFilters }) => {
         },
       });
 
-      map.addSource('borough-data', {
-        type: 'geojson',
-        data: null,
-        promoteId: 'BoroCode',
-      });
-
-      map.addLayer({
-        id: 'borough-line',
-        source: 'borough-data',
-        type: 'line',
-        paint: {
-          'line-color': '#000',
-          'line-width': 0.1,
-        },
-      });
-
-      map.on('click', 'community-layer', (e) => {
+      map.on('click', 'district-layer', (e) => {
         e.preventDefault();
         if (e.features.length) {
           const feature = e.features[0];
@@ -109,7 +93,7 @@ const Map = ({ showLayers, showFilters }) => {
       map.on('click', (e) => {
         if (!e.defaultPrevented && communityRef.current) {
           map.setFeatureState(
-            { source: 'community-data', id: communityRef.current },
+            { source: 'district-data', id: communityRef.current },
             { selected: false }
           );
           communityRef.current = null;
@@ -264,12 +248,12 @@ const Map = ({ showLayers, showFilters }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    let farmData = JSON.parse(JSON.stringify(farm)); // deep copy for mutation below
-    if (mapBase && farmData && farmData.features) {
-      farmData.features.forEach(({ properties }) => {
+    if (mapBase && farm.features) {
+      let farmCopy = JSON.parse(JSON.stringify(farm));
+      farmCopy.features.forEach(({ properties }) => {
         properties.environments = String(properties.environments); // mapbox won't filter an array
       });
-      mapBase.getSource('farms-data').setData(farmData);
+      mapBase.getSource('farms-data').setData(farmCopy);
     }
   }, [farm, mapBase]);
 
@@ -283,30 +267,26 @@ const Map = ({ showLayers, showFilters }) => {
   }, [farm, farmId, mapBase]);
 
   useEffect(() => {
-    const { borough, community } = district;
-    if (!mapBase || !borough) return;
+    if (mapBase && district.features) {
+      mapBase.getSource('district-data').setData(district);
+    }
+  }, [district, mapBase]);
 
-    let cd = collect(community, farm, 'production', 'prod');
-    cd.features.forEach(({ properties }) => {
-      const { prod } = properties;
-      properties.count = prod.length;
-      properties.production = prod.reduce((a, d) => a + (d || 0), 0);
+  useEffect(() => {
+    if (!mapBase || !district.features || !densityBy) return;
 
-      const { count, total_pop } = properties;
-      properties.perCapita = total_pop > 0 ? count / total_pop : 0;
-    });
-    mapBase.getSource('community-data').setData(cd);
-
-    const maxPer = Math.max(...cd.features.map((d) => d.properties.perCapita));
+    const maxPer = Math.max(
+      ...district.features.map((d) => d.properties[densityBy])
+    );
     const fill = {
-      property: 'perCapita',
+      property: densityBy,
       stops: [
         [0, green[50]],
         [maxPer, green[900]],
       ],
     };
-    mapBase.setPaintProperty('community-layer', 'fill-color', fill);
-  }, [district, farm, mapBase]);
+    mapBase.setPaintProperty('district-layer', 'fill-color', fill);
+  }, [densityBy, district, mapBase]);
 
   useEffect(() => {
     if (mapBase) {
@@ -316,14 +296,14 @@ const Map = ({ showLayers, showFilters }) => {
         display === 'farms' ? 'visible' : 'none'
       );
       mapBase.setLayoutProperty(
-        'community-layer',
+        'district-layer',
         'visibility',
-        display === 'community' ? 'visible' : 'none'
+        display === 'district' ? 'visible' : 'none'
       );
       mapBase.setLayoutProperty(
-        'community-line',
+        'district-line',
         'visibility',
-        display === 'community' ? 'visible' : 'none'
+        display === 'district' ? 'visible' : 'none'
       );
     }
   }, [display, mapBase]);
@@ -355,7 +335,7 @@ const Map = ({ showLayers, showFilters }) => {
       let source;
       if (properties.BoroCD) {
         communityRef.current = id;
-        source = 'community-data';
+        source = 'district-data';
       } else {
         farmRef.current = id;
         source = 'farms-data';

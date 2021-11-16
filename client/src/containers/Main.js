@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import collect from '@turf/collect';
 import { fetchFarms } from '../store/actions/farms';
 import { fetchMarkets } from '../store/actions/markets';
-import { fetchDistricts } from '../store/actions/districts';
+import { fetchDistricts, setDistrict } from '../store/actions/districts';
 import { setAlert } from '../store/actions/alert';
 import { setFilters } from '../store/actions/filters';
 import { FILTER_DEFAULT } from '../components/data';
@@ -25,9 +26,28 @@ const Main = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchFarms());
+    dispatch(fetchFarms()).then((farm) => {
+      dispatch(fetchDistricts()).then((district) => {
+        district = collect(district, farm, 'area', 'a');
+        district = collect(district, farm, 'production', 'p');
+        const add = (acc, v) => acc + (v || 0);
+
+        district.features.forEach(({ properties }) => {
+          const { a, p, total_pop } = properties;
+          properties.count = a.length;
+          properties.area = a.reduce(add, 0);
+          properties.production = p.reduce(add, 0);
+
+          const { count, area, production } = properties;
+          properties.countCapita = total_pop > 0 ? count / total_pop : 0;
+          properties.areaCapita = total_pop > 0 ? area / total_pop : 0;
+          properties.productionCapita =
+            total_pop > 0 ? production / total_pop : 0;
+        });
+        dispatch(setDistrict(district));
+      });
+    });
     dispatch(fetchMarkets());
-    dispatch(fetchDistricts());
     dispatch(setFilters(FILTER_DEFAULT));
   }, [dispatch]);
 

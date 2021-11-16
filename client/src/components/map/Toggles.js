@@ -4,6 +4,7 @@ import {
   setDisplay,
   setColorBy,
   setSizeBy,
+  setDensityBy,
   setPoi,
 } from '../../store/actions/toggles';
 import Box from '@mui/material/Box';
@@ -19,18 +20,25 @@ import { POI_PROPS } from '../data';
 
 const DISPLAY = [
   { name: 'farms', label: 'Point locations' },
-  { name: 'community', label: 'Community district density' },
+  { name: 'district', label: 'Community district density' },
 ];
-
 const COLOR_BY = [
   { name: 'type', label: 'Type' },
   { name: 'distro1', label: 'Primary distribution channel' },
   { name: 'none', label: 'None' },
 ];
 const SIZE_BY = [
-  { name: 'area', label: 'Lot area (sqft)' },
-  { name: 'production', label: 'Total production (lbs)' },
+  { name: 'area', label: 'Lot/farm area' },
+  { name: 'production', label: 'Crop production' },
   { name: 'none', label: 'None' },
+];
+const DENSITY_BY = [
+  { name: 'count', label: 'Farm/garden count' },
+  { name: 'countCapita', label: 'Count per capita' },
+  { name: 'area', label: 'Total lot/farm area' },
+  { name: 'areaCapita', label: 'Area per capita' },
+  { name: 'production', label: 'Total crop production' },
+  { name: 'productionCapita', label: 'Production per capita' },
 ];
 
 const RadioGroupControl = ({ label, value, options, setter }) => {
@@ -60,6 +68,7 @@ const Toggles = () => {
   const display = useSelector((state) => state.display);
   const colorBy = useSelector((state) => state.colorBy);
   const sizeBy = useSelector((state) => state.sizeBy);
+  const densityBy = useSelector((state) => state.densityBy);
   const poi = useSelector((state) => state.poi);
 
   const dispatch = useDispatch();
@@ -92,6 +101,16 @@ const Toggles = () => {
               value={sizeBy}
               options={SIZE_BY}
               setter={setSizeBy}
+            />
+          </Grid>
+        )}
+        {display === 'district' && (
+          <Grid item>
+            <RadioGroupControl
+              label="Density variable"
+              value={densityBy}
+              options={DENSITY_BY}
+              setter={setDensityBy}
             />
           </Grid>
         )}
