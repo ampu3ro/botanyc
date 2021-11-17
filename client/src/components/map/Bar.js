@@ -14,7 +14,7 @@ const Bar = ({ data, condensed }) => {
   const height = `${((condensed ? 2 : 20) * data.length) / 5}vh`;
 
   useEffect(() => {
-    if (!dims || !data) return;
+    if (!dims || !data || !data.length) return;
 
     const dataBar = data.sort((a, b) => d3.descending(a.value, b.value));
 

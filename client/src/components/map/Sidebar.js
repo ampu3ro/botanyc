@@ -112,11 +112,15 @@ const DistrictContent = ({ district, selected }) => {
             </Stack>
           );
         } else {
-          const data = district.features.map(({ properties }) => ({
-            label: properties.name,
-            value: properties[name] * (scale || 1),
-            selected: properties.id === id,
-          }));
+          const data = district.features
+            .map(({ properties }) => ({
+              label: properties.name,
+              value: properties[name] * (scale || 1),
+              selected: properties.id === id,
+            }))
+            .filter(({ value }) => value > 0);
+
+          if (!data.length) return <div />;
 
           return (
             <Stack key={name}>
