@@ -1,18 +1,17 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
+import { grey, green } from '@mui/material/colors';
 import useResizeObserver from './useResizeObserver';
-import { useTheme } from '@mui/styles';
 
-const Bar = ({ data }) => {
+const Bar = ({ data, condensed }) => {
   const wrapperRef = useRef();
   const dims = useResizeObserver(wrapperRef);
 
   const svgRef = useRef();
   const barRef = useRef();
-  const yRef = useRef();
+  const tipRef = useRef();
 
-  const theme = useTheme();
-  const fill = theme.palette.text.primary;
+  const height = `${((condensed ? 2 : 20) * data.length) / 5}vh`;
 
   useEffect(() => {
     if (!dims || !data) return;
@@ -20,7 +19,7 @@ const Bar = ({ data }) => {
     const dataBar = data.sort((a, b) => d3.descending(a.value, b.value));
 
     const dimsBar = {
-      margin: { top: 25, right: 40, bottom: 0, left: 0 },
+      margin: { top: 0, right: 0, bottom: 10, left: 0 },
       width: dims.width,
       height: dims.height,
     };
@@ -34,11 +33,16 @@ const Bar = ({ data }) => {
       .scaleBand()
       .range([dimsBar.margin.top, dimsBar.height - dimsBar.margin.bottom])
       .domain(dataBar.map((d) => d.label))
-      .paddingInner(0.5);
+      .paddingInner(condensed ? 0.2 : 0.5);
 
     const bars = d3.select(barRef.current);
 
-    bars
+    const fill = grey[800];
+    const fillSel = green[500];
+    const fillHover = grey[500];
+    const fillHoverSel = green[200];
+
+    const rect = bars
       .selectAll('rect')
       .data(dataBar)
       .join('rect')
@@ -46,34 +50,63 @@ const Bar = ({ data }) => {
       .attr('y', (d) => y(d.label))
       .attr('height', y.bandwidth())
       .attr('width', (d) => x(d.value))
-      .style('fill', fill);
+      .attr('fill', (d) => (d.selected ? fillSel : fill));
 
-    bars
-      .selectAll('text')
-      .data(dataBar)
-      .join('text')
-      .attr('x', (d) => x(d.value) + 3)
-      .attr('y', (d) => y(d.label) + y.bandwidth() / 2 + 4)
-      .text((d) => parseInt(d.value).toLocaleString('en'))
-      .style('font-size', '8pt')
-      .style('fill', fill);
+    d3.select('body')
+      .append('div')
+      .attr('id', 'tooltip')
+      .style('position', 'absolute')
+      .style('z-index', 9999)
+      .style('opacity', 0);
 
-    d3.select(yRef.current)
-      .selectAll('text')
-      .data(dataBar)
-      .join('text')
-      .attr('class', 'MuiTypography-body1')
-      .attr('x', (d) => 0)
-      .attr('y', (d) => y(d.label) - 4)
-      .text((d) => d.label)
-      .style('fill', fill);
-  }, [data, dims, fill]);
+    if (condensed) {
+      rect
+        .on('mouseover', function (e, d) {
+          d3.select(this).attr('fill', (d) =>
+            d.selected ? fillHoverSel : fillHover
+          );
+          d3.select('#tooltip')
+            .style('left', `${e.pageX + 5}px`)
+            .style('top', `${e.pageY - 40}px`)
+            .style('opacity', 0.9)
+            .style('background-color', 'white')
+            .style('padding', '10px')
+            .html(`<b>${d.label}:</b> <span>${d.value.toLocaleString()}</span>`)
+            .style('font-size', '10pt');
+        })
+        .on('mouseout', function (e) {
+          d3.select(this).attr('fill', (d) => (d.selected ? fillSel : fill));
+          d3.select('#tooltip').style('opacity', 0);
+        });
+    } else {
+      bars
+        .selectAll('.yLabel')
+        .data(dataBar)
+        .join('text')
+        .attr('class', 'yLabel')
+        .attr('x', (d) => 0)
+        .attr('y', (d) => y(d.label) - 4)
+        .text((d) => d.label)
+        .style('fill', fill);
+
+      bars
+        .selectAll('.xLabel')
+        .data(dataBar)
+        .join('text')
+        .attr('class', 'xLabel')
+        .attr('x', (d) => x(d.value) + 3)
+        .attr('y', (d) => y(d.label) + y.bandwidth() / 2 + 4)
+        .text((d) => parseInt(d.value).toLocaleString())
+        .style('font-size', '8pt')
+        .style('fill', fill);
+    }
+  }, [data, dims, condensed]);
 
   return (
     <div ref={wrapperRef}>
-      <svg ref={svgRef} width="100%" height={`${(20 * data.length) / 5}vh`}>
+      <svg ref={svgRef} width="100%" height={height}>
         <g ref={barRef} />
-        <g ref={yRef} />
+        <g ref={tipRef} />
       </svg>
     </div>
   );

@@ -41,11 +41,11 @@ const Main = () => {
           properties.area = properties.area.reduce(add, 0);
           properties.production = properties.production.reduce(add, 0);
 
-          const { count, area, production, totalPop } = properties;
-          properties.countCapita = totalPop > 0 ? count / totalPop : 0;
-          properties.areaCapita = totalPop > 0 ? area / totalPop : 0;
+          const { count, area, production, population } = properties;
+          properties.countCapita = population > 0 ? count / population : 0;
+          properties.areaCapita = population > 0 ? area / population : 0;
           properties.productionCapita =
-            totalPop > 0 ? production / totalPop : 0;
+            population > 0 ? production / population : 0;
         });
         dispatch(setDistrict(district));
       });

@@ -617,6 +617,46 @@ export const PAINT_COLOR = {
   ],
 };
 
+export const DISPLAY = [
+  { name: 'farm', label: 'Point locations' },
+  { name: 'district', label: 'Community district density' },
+];
+
+export const COLOR_BY = [
+  { name: 'type', label: 'Type' },
+  { name: 'distro1', label: 'Primary distribution channel' },
+  { name: 'none', label: 'None' },
+];
+
+export const SIZE_BY = [
+  { name: 'area', label: 'Lot/farm area' },
+  { name: 'production', label: 'Crop production' },
+  { name: 'none', label: 'None' },
+];
+
+export const DENSITY_BY = [
+  { name: 'count', label: 'Farm/garden count' },
+  {
+    name: 'countCapita',
+    label: 'Count per capita',
+    title: 'Count per 10k residents by CD',
+    scale: 1e4,
+  },
+  { name: 'area', label: 'Total lot/farm area' },
+  {
+    name: 'areaCapita',
+    label: 'Area per capita',
+    title: 'Area (sqft/capita) by CD',
+  },
+  { name: 'production', label: 'Total crop production' },
+  {
+    name: 'productionCapita',
+    label: 'Production per capita',
+    title: 'Production (lbs/1k) by CD',
+    scale: 1e3,
+  },
+];
+
 const GIST_REPO = 'https://gist.githubusercontent.com/ampu3ro';
 
 export const POI_PROPS = [

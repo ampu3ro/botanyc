@@ -16,30 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Checkbox from '@mui/material/Checkbox';
-import { POI_PROPS } from '../data';
-
-const DISPLAY = [
-  { name: 'farm', label: 'Point locations' },
-  { name: 'district', label: 'Community district density' },
-];
-const COLOR_BY = [
-  { name: 'type', label: 'Type' },
-  { name: 'distro1', label: 'Primary distribution channel' },
-  { name: 'none', label: 'None' },
-];
-const SIZE_BY = [
-  { name: 'area', label: 'Lot/farm area' },
-  { name: 'production', label: 'Crop production' },
-  { name: 'none', label: 'None' },
-];
-const DENSITY_BY = [
-  { name: 'count', label: 'Farm/garden count' },
-  { name: 'countCapita', label: 'Count per capita' },
-  { name: 'area', label: 'Total lot/farm area' },
-  { name: 'areaCapita', label: 'Area per capita' },
-  { name: 'production', label: 'Total crop production' },
-  { name: 'productionCapita', label: 'Production per capita' },
-];
+import { DISPLAY, COLOR_BY, SIZE_BY, DENSITY_BY, POI_PROPS } from '../data';
 
 const RadioGroupControl = ({ label, value, options, setter }) => {
   const dispatch = useDispatch();
