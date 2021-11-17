@@ -639,8 +639,8 @@ export const DENSITY_BY = [
   {
     name: 'countCapita',
     label: 'Count per capita',
-    title: 'Count per 10k residents by CD',
-    scale: 1e4,
+    title: 'Count per 100k residents by CD',
+    scale: 1e5,
   },
   { name: 'area', label: 'Total lot/farm area' },
   {
