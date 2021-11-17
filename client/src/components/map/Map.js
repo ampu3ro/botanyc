@@ -9,17 +9,16 @@ import './styles.css';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
 
-const Map = ({ showLayers, showFilters }) => {
+const Map = () => {
   const mapRef = useRef(null);
   const [mapBase, setMapBase] = useState(null);
   const [farmId, setFarmId] = useState('');
   const farmRef = useRef();
   const districtRef = useRef();
 
-  const farm = useSelector((state) => state.farm);
   const market = useSelector((state) => state.market);
-  const district = useSelector((state) => state.district);
-  const filters = useSelector((state) => state.filters);
+  const farmFiltered = useSelector((state) => state.farmFiltered);
+  const districtCollected = useSelector((state) => state.districtCollected);
   const layers = useSelector((state) => state.layers);
   const selected = useSelector((state) => state.selected);
   const display = useSelector((state) => state.display);
@@ -59,7 +58,7 @@ const Map = ({ showLayers, showFilters }) => {
         source: 'district-data',
         type: 'fill',
         paint: {
-          'fill-opacity': 0.4,
+          'fill-opacity': 0.6,
         },
         layout: {
           visibility: 'visible',
@@ -216,9 +215,9 @@ const Map = ({ showLayers, showFilters }) => {
               { source: 'district-data', id: districtRef.current },
               { selected: false }
             );
-            districtRef.current = null;
             dispatch(setSelected(null));
           }
+          districtRef.current = null;
           if (farmRef.current) {
             map.setFeatureState(
               { source: 'farm-data', id: farmRef.current },
@@ -235,35 +234,31 @@ const Map = ({ showLayers, showFilters }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (mapBase && farm.features) {
-      let farmCopy = JSON.parse(JSON.stringify(farm));
-      farmCopy.features.forEach(({ properties }) => {
-        properties.environments = String(properties.environments); // mapbox won't filter an array
-      });
-      mapBase.getSource('farm-data').setData(farmCopy);
+    if (mapBase && farmFiltered.features) {
+      mapBase.getSource('farm-data').setData(farmFiltered);
     }
-  }, [farm, mapBase]);
+  }, [farmFiltered, mapBase]);
 
   useEffect(() => {
-    if (farm.features && farmId && mapBase) {
-      const feature = farm.features.filter(
+    if (farmFiltered.features && farmId && mapBase) {
+      const feature = farmFiltered.features.filter(
         ({ properties }) => properties.id === farmId
       )[0];
       dispatch(setSelected(feature));
     }
-  }, [farm, farmId, mapBase, dispatch]);
+  }, [farmFiltered, farmId, mapBase, dispatch]);
 
   useEffect(() => {
-    if (mapBase && district.features) {
-      mapBase.getSource('district-data').setData(district);
+    if (mapBase && districtCollected.features) {
+      mapBase.getSource('district-data').setData(districtCollected);
     }
-  }, [district, mapBase]);
+  }, [districtCollected, mapBase]);
 
   useEffect(() => {
-    if (!mapBase || !district.features || !densityBy) return;
+    if (!mapBase || !districtCollected.features || !densityBy) return;
 
     const maxPer = Math.max(
-      ...district.features.map((d) => d.properties[densityBy])
+      ...districtCollected.features.map((d) => d.properties[densityBy])
     );
     const cd = PAINT_COLOR.density;
     const fill = {
@@ -274,7 +269,7 @@ const Map = ({ showLayers, showFilters }) => {
       ],
     };
     mapBase.setPaintProperty('district', 'fill-color', fill);
-  }, [densityBy, district, mapBase]);
+  }, [densityBy, districtCollected, mapBase]);
 
   useEffect(() => {
     if (mapBase) {
@@ -301,19 +296,6 @@ const Map = ({ showLayers, showFilters }) => {
       mapBase.getSource('market-data').setData(market);
     }
   }, [market, mapBase]);
-
-  useEffect(() => {
-    if (!mapBase || !filters.types || !filters.environments) return;
-
-    const filter = showFilters
-      ? [
-          'all',
-          ['in', 'type', ...filters.types],
-          ['in', 'environments', ...filters.environments],
-        ]
-      : null;
-    mapBase.setFilter('farm', filter);
-  }, [filters, showFilters, mapBase]);
 
   useEffect(() => {
     if (!mapBase || !selected) return;
@@ -388,7 +370,7 @@ const Map = ({ showLayers, showFilters }) => {
     const id = 'socioeconomic';
     let opacity = 0;
     let visibility = 'none';
-    if (showLayers && Object.keys(layers).length) {
+    if (Object.keys(layers).length) {
       const all = Object.entries(layers).map(([k, v]) => {
         const feature = ['to-number', ['get', k]];
         return ['all', ['>=', feature, v[0]], ['<=', feature, v[1]]];
@@ -400,7 +382,7 @@ const Map = ({ showLayers, showFilters }) => {
     mapBase
       .setPaintProperty(id, 'fill-opacity', opacity)
       .setLayoutProperty(id, 'visibility', visibility);
-  }, [layers, showLayers, mapBase]);
+  }, [layers, mapBase]);
 
   return (
     <div>

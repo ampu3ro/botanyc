@@ -13,7 +13,7 @@ export function fetchDistricts() {
   return async (dispatch) => {
     try {
       const data = await apiCall('get', '/api/districts');
-      return data;
+      return dispatch(setDistrict(data));
     } catch (err) {
       dispatch(setAlert({ message: err?.message }));
       return {};

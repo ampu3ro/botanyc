@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { filterFarms, collectFarms } from '../store/actions/munge';
 import Map from './map/Map';
 import Legend from './map/Legend';
 import Search from './map/Search';
@@ -21,8 +22,21 @@ const Homepage = () => {
 
   const currentUser = useSelector((state) => state.currentUser);
   const farm = useSelector((state) => state.farm);
+  const farmFiltered = useSelector((state) => state.farmFiltered);
+  const district = useSelector((state) => state.district);
+  const filters = useSelector((state) => state.filters);
   const display = useSelector((state) => state.display);
   const colorBy = useSelector((state) => state.colorBy);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(filterFarms({ farm, filters }));
+  }, [farm, filters, dispatch]);
+
+  useEffect(() => {
+    dispatch(collectFarms({ district, farm: farmFiltered }));
+  }, [district, farmFiltered, dispatch]);
 
   return (
     <div>

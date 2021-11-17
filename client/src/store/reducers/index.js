@@ -2,8 +2,10 @@ import { combineReducers } from 'redux';
 import currentUser from './currentUser';
 import alert from './alert';
 import farm from './farm';
+import farmFiltered from './farmFiltered';
 import market from './market';
 import district from './district';
+import districtCollected from './districtCollected';
 import geocoded from './geocoded';
 import edit from './edit';
 import bulkEdits from './bulkEdits';
@@ -23,8 +25,10 @@ const rootReducer = combineReducers({
   currentUser,
   alert,
   farm,
+  farmFiltered,
   market,
   district,
+  districtCollected,
   geocoded,
   edit,
   bulkEdits,

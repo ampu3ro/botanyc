@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import collect from '@turf/collect';
-import centroid from '@turf/centroid';
 import { fetchFarms } from '../store/actions/farms';
 import { fetchMarkets } from '../store/actions/markets';
-import { fetchDistricts, setDistrict } from '../store/actions/districts';
+import { fetchDistricts } from '../store/actions/districts';
 import { setAlert } from '../store/actions/alert';
 import { setFilters } from '../store/actions/filters';
 import { FILTER_DEFAULT } from '../components/data';
@@ -27,29 +25,8 @@ const Main = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchFarms()).then((farm) => {
-      dispatch(fetchDistricts()).then((district) => {
-        district = collect(district, farm, 'area', 'area');
-        district = collect(district, farm, 'production', 'production');
-        const add = (acc, v) => acc + (v || 0);
-
-        district.features.forEach((feature) => {
-          let { properties } = feature;
-          properties.centroid = centroid(feature).geometry.coordinates;
-
-          properties.count = properties.area.length;
-          properties.area = properties.area.reduce(add, 0);
-          properties.production = properties.production.reduce(add, 0);
-
-          const { count, area, production, population } = properties;
-          properties.countCapita = population > 0 ? count / population : 0;
-          properties.areaCapita = population > 0 ? area / population : 0;
-          properties.productionCapita =
-            population > 0 ? production / population : 0;
-        });
-        dispatch(setDistrict(district));
-      });
-    });
+    dispatch(fetchFarms());
+    dispatch(fetchDistricts());
     dispatch(fetchMarkets());
     dispatch(setFilters(FILTER_DEFAULT));
   }, [dispatch]);
