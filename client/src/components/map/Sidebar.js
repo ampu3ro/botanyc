@@ -145,7 +145,8 @@ const Sidebar = () => {
       (event.key === 'Tab' || event.key === 'Shift')
     )
       return;
-    document.getElementById('tooltip').remove();
+    const tip = document.getElementById('tooltip');
+    if (tip) tip.remove();
     dispatch(setSelected(null));
   };
 

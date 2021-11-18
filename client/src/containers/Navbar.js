@@ -45,10 +45,15 @@ const Navbar = () => {
     closeMenu();
   };
 
-  const clickLogout = () => {
+  const clickHome = () => {
+    dispatch(setSearch(''));
     history.push('/');
+  };
+
+  const clickLogout = () => {
     dispatch(setSearch(''));
     dispatch(logout());
+    history.push('/');
   };
 
   return (
@@ -64,7 +69,7 @@ const Navbar = () => {
             >
               <MenuIcon />
             </MenuButton>
-            <HomeButton variant="text" onClick={() => history.push('/')}>
+            <HomeButton variant="text" onClick={clickHome}>
               MAP NYC
             </HomeButton>
           </div>

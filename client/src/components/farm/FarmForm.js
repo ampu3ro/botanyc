@@ -9,6 +9,7 @@ import {
   editOne,
   submitOne,
   setSelected,
+  setSearch,
 } from '../../store/actions/farms';
 import { FARM_PROPS, FARM_DEFAULT, ENVIRONMENTS } from '../data';
 import Header from '../Header';
@@ -161,7 +162,7 @@ const FarmForm = () => {
     } else {
       dispatch(submitOne(data)).then(() => handleClear());
     }
-
+    dispatch(setSearch(''));
     history.push('/');
   }, [
     push,
