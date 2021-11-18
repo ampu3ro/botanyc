@@ -33,7 +33,7 @@ const AutoSearch = styled(Autocomplete)(({ theme }) => ({
     },
     [theme.breakpoints.down('sm')]: {
       '&:focus': {
-        width: '30ch',
+        width: '20ch',
       },
     },
   },
@@ -49,7 +49,8 @@ const Search = () => {
 
   const handleSearch = (event, value) => {
     dispatch(setSearch(value));
-    dispatch(setSelected({ ...value, fly: true }));
+    const selected = value ? { ...value, fly: true } : null;
+    dispatch(setSelected(selected));
   };
 
   const { features } = farm;
