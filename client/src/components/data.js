@@ -683,3 +683,202 @@ export const POI_PROPS = [
 ];
 
 export const SOCIOECONOMIC_URL = `${GIST_REPO}/34609e91dedb19591e3d57203c9b4162/raw/c9fc9c2bf756f3e160e2f865b2ceba16c79f10d8/nyc_socio_economic.geojson`;
+
+export const PROFILES = [
+  {
+    category: 'Development team',
+    people: [
+      { name: 'Nico Ampuero', href: 'https://www.linkedin.com/in/ampu3ro/' },
+      {
+        name: 'Jeremy Rucker',
+        href: 'https://www.linkedin.com/in/jeremyr327/',
+      },
+      { name: 'Xiaolin Li', href: '' },
+    ],
+    avatarWidth: 100,
+  },
+  {
+    category: 'Project sponsors',
+    people: [
+      { name: 'Whythe Marschall', href: 'https://www.linkedin.com/in/wythe/' },
+      {
+        name: 'Alice Reznickova',
+        href: 'https://www.linkedin.com/in/anna-alice-reznickova-09541379/',
+      },
+    ],
+    avatarWidth: 80,
+  },
+  {
+    category: 'Contributors',
+    people: [
+      {
+        name: 'Gianna White',
+        href: 'https://www.linkedin.com/in/gianna-white/',
+      },
+      {
+        name: 'Christina Curry',
+        href: 'https://www.linkedin.com/in/christina-curry/',
+      },
+    ],
+    avatarWidth: 70,
+  },
+  {
+    category: 'Advisory board',
+    people: [
+      {
+        name: 'Kubi Ackerman',
+        title: '​​Senior Content Strategist',
+        employer: 'Gallagher & Associates, LLC',
+      },
+      {
+        name: 'Samuel W. Anderson',
+        title: 'Urban Agriculture Specialist, Harvest New York',
+        employer: 'Cornell Cooperative Extension–NYC (CCE–NYC)',
+      },
+      {
+        name: 'Leah Butz',
+        title: 'Research assistant',
+        employer: 'Hunter College New York City Food Policy Center',
+      },
+      {
+        name: 'Alexina Cather',
+        title: 'Deputy Director',
+        employer: 'Hunter College New York City Food Policy Center',
+      },
+      {
+        name: 'Crystal Jane Eksi',
+        title: 'Urban Designer',
+        employer: 'New York City Department of City Planning (DCP)',
+      },
+      {
+        name: 'Kristin Fields',
+        title: 'Director',
+        employer: 'GrowNYC School Gardens',
+      },
+      {
+        name: 'Yolanda Gonzalez',
+        title: 'Urban Agriculture Specialist, Harvest New York',
+        employer: 'Cornell Cooperative Extension–NYC (CCE–NYC)',
+      },
+      {
+        name: 'Harrison Hillier',
+        title: 'President',
+        employer:
+          'NYC Agriculture Collective; also a senior tech at Teens For Food Justice',
+      },
+      {
+        name: 'Max Lerner',
+        title: 'Sustainability Project Development Coordinator',
+        employer: 'New York City Department of Parks & Recreation (Parks)',
+      },
+      {
+        name: 'Carlos Martinez',
+        title: 'Deputy Director and Acting Director',
+        employer:
+          'New York City Department of Parks & Recreation (Parks), GreenThumb',
+      },
+      {
+        name: 'Ian Marvy',
+        title:
+          'Consultant for community, corporations, civic actors, and governments',
+        employer: '',
+      },
+      {
+        name: 'Charles Platkin',
+        title: 'Executive Director',
+        employer: 'Hunter College New York City Food Policy Center',
+      },
+      {
+        name: 'Christa Perfit',
+        title: 'Senior Manager, Data & Insights',
+        employer: 'City Harvest',
+      },
+      {
+        name: 'Jacob Remes',
+        title: 'Clinical Associate Professor',
+        employer: 'NYU Gallatin',
+      },
+      {
+        name: 'Katherine Sacco',
+        title: 'Director of Partnerships',
+        employer: 'Urban Design Forum',
+      },
+      {
+        name: 'Mandu Sen',
+        title: 'Interim Deputy Director',
+        employer: "New York City Mayor's Office of Food Policy (MOFP)",
+      },
+      {
+        name: 'Jay Solly',
+        title: 'Co-Founder & CEO',
+        employer: 'Sustainable United Neighborhoods / Bushwick Generator',
+      },
+      {
+        name: 'Dr. John Zahina-Ramos',
+        title: 'Chair and Prof., Horticulture Department',
+        employer: 'College of Lake County, Illinois',
+      },
+      {
+        name: 'Bruce Zeines',
+        title: 'General Manager',
+        employer: 'Kelly Street Garden',
+      },
+    ],
+  },
+];
+export const DATA_SOURCES = [
+  {
+    name: 'GreenThumb',
+    href: 'https://data.cityofnewyork.us/browse?Data-Collection_Data-Collection=GreenThumb+Gardens&q=greenthumb',
+    description:
+      'GreenThumb is a Park Department program that provides support to over 550 community gardens in NYC',
+    use: 'Community garden names, locations, and attributes',
+  },
+  {
+    name: 'GrowNYC',
+    href: 'https://www.grownyc.org/gardens/our-community-gardens',
+    description: `GrowNYC has built more than 135 new gardens, including GreenThumb community gardens; 
+    gardens in public housing developments, daycares, and senior centers; and an urban farm on Governors Island`,
+    use: 'Community and school garden names and locations',
+  },
+  {
+    name: 'Brooklyn Queens Land Trust',
+    href: 'https://bqlt.org/',
+    description: `BQLT gardens provide opportunities for diverse groups of people to meet and work 
+    together cooperatively`,
+    use: 'Community garden names, locations, and attributes',
+  },
+  {
+    name: 'NYC DOHMH',
+    href: 'https://data.cityofnewyork.us/dataset/DOHMH-Farmers-Markets/8vwk-6iz2',
+    description: `The Department of Health and Mental Hygiene (DOHMH) is the NYC's public health agency`,
+    use: 'Farmers market vendor locations, products, and EBT acceptance',
+  },
+  {
+    name: '???',
+    href: '',
+    description: '',
+    use: 'Food pantry locations and schedules',
+  },
+  {
+    name: 'Mapbox',
+    href: 'https://www.mapbox.com/maps/streets',
+    description: `Mapbox Streets is a comprehensive, general-purpose map that emphasizes accurate, 
+    legible styling of road and transit networks`,
+    use: 'NYC Subway stops',
+  },
+  {
+    name: 'NYC DCP',
+    href: 'https://www1.nyc.gov/site/planning/data-maps/open-data/districts-download-metadata.page',
+    description:
+      'The Department of City Planning (DCP) is NYC’s primary land use agency',
+    use: 'Community District boundaries',
+  },
+  {
+    name: 'Data2Go',
+    href: 'https://data2go.nyc/map/#10/40.8276/-73.9588',
+    description: `DATA2GO.NYC brings together federal, state, and city data on a broad range of issues critical 
+      to the well-being of all New Yorkers`,
+    use: 'Select socioeconomic indicators originally sourced from the American Community Survey',
+  },
+];

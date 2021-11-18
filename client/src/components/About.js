@@ -7,77 +7,7 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
-
-const SOURCES = [
-  {
-    name: 'GreenThumb',
-    href: 'https://data.cityofnewyork.us/browse?Data-Collection_Data-Collection=GreenThumb+Gardens&q=greenthumb',
-    description:
-      'GreenThumb is a Park Department program that provides support to over 550 community gardens in NYC',
-    use: 'Community garden names, locations, and attributes',
-  },
-  {
-    name: 'GrowNYC',
-    href: 'https://www.grownyc.org/gardens/our-community-gardens',
-    description: `GrowNYC has built more than 135 new gardens, including GreenThumb community gardens; 
-    gardens in public housing developments, daycares, and senior centers; and an urban farm on Governors Island`,
-    use: 'Community and school garden names and locations',
-  },
-  {
-    name: 'Brooklyn Queens Land Trust',
-    href: 'https://bqlt.org/',
-    description: `BQLT gardens provide opportunities for diverse groups of people to meet and work 
-    together cooperatively`,
-    use: 'Community garden names, locations, and attributes',
-  },
-  {
-    name: 'NYC DOHMH',
-    href: 'https://data.cityofnewyork.us/dataset/DOHMH-Farmers-Markets/8vwk-6iz2',
-    description: `The Department of Health and Mental Hygiene (DOHMH) is the NYC's public health agency`,
-    use: 'Farmers market vendor locations, products, and EBT acceptance',
-  },
-  {
-    name: '???',
-    href: '',
-    description: '',
-    use: 'Food pantry locations and schedules',
-  },
-  {
-    name: 'Mapbox',
-    href: 'https://www.mapbox.com/maps/streets',
-    description: `Mapbox Streets is a comprehensive, general-purpose map that emphasizes accurate, 
-    legible styling of road and transit networks`,
-    use: 'NYC Subway stops',
-  },
-  {
-    name: 'NYC DCP',
-    href: 'https://www1.nyc.gov/site/planning/data-maps/open-data/districts-download-metadata.page',
-    description:
-      'The Department of City Planning (DCP) is NYC’s primary land use agency',
-    use: 'Community District boundaries',
-  },
-  {
-    name: 'Data2Go',
-    href: 'https://data2go.nyc/map/#10/40.8276/-73.9588',
-    description: `DATA2GO.NYC brings together federal, state, and city data on a broad range of issues critical 
-      to the well-being of all New Yorkers`,
-    use: 'Select socioeconomic indicators originally sourced from the American Community Survey',
-  },
-];
-
-const DEVELOPERS = [
-  { name: 'Jeremy Rucker', href: 'https://www.linkedin.com/in/jeremyr327/' },
-  { name: 'Nico Ampuero', href: 'https://www.linkedin.com/in/ampu3ro/' },
-  { name: 'Xiaolin Li', href: '' },
-];
-
-const SPONSORS = [
-  {
-    name: 'Alice Reznickova',
-    href: 'https://www.linkedin.com/in/anna-alice-reznickova-09541379/',
-  },
-  { name: 'Whythe Marschall', href: 'https://www.linkedin.com/in/wythe/' },
-];
+import { PROFILES, DATA_SOURCES } from './data';
 
 const Source = ({ name, href, use, description }) => {
   return (
@@ -93,7 +23,7 @@ const Source = ({ name, href, use, description }) => {
   );
 };
 
-const Profile = ({ name, href, width }) => {
+const AvatarProfile = ({ name, href, width }) => {
   return (
     <Stack spacing={2} alignItems="center">
       <IconButton href={href} sx={{ width, height: width }}>
@@ -101,7 +31,49 @@ const Profile = ({ name, href, width }) => {
           {name.substring(0, 1)}
         </Avatar>
       </IconButton>
-      <Typography>{name}</Typography>
+      <Typography align="center">{name}</Typography>
+    </Stack>
+  );
+};
+
+const SimpleProfile = ({ name, title, employer }) => {
+  const fontSize = '8pt';
+  return (
+    <Stack alignItems="center">
+      <Typography align="center" sx={{ fontSize }}>
+        <b>{name}</b>
+      </Typography>
+      <Typography align="center" sx={{ fontSize }}>
+        <em>{title}</em>
+      </Typography>
+      <Typography align="center" sx={{ fontSize }}>
+        {employer}
+      </Typography>
+    </Stack>
+  );
+};
+
+const Profile = ({ category, people, avatarWidth }) => {
+  return (
+    <Stack spacing={2} alignItems="center">
+      <Typography variant="h5">{category}</Typography>
+      <Grid container justifyContent="center">
+        {people.map(({ name, href, title, employer }) => {
+          if (avatarWidth) {
+            return (
+              <Grid item key={name} xs={4} sm={3} md={2}>
+                <AvatarProfile name={name} href={href} width={avatarWidth} />
+              </Grid>
+            );
+          } else {
+            return (
+              <Grid item key={name} sx={{ padding: 2 }}>
+                <SimpleProfile name={name} title={title} employer={employer} />
+              </Grid>
+            );
+          }
+        })}
+      </Grid>
     </Stack>
   );
 };
@@ -134,34 +106,13 @@ const About = () => {
           grow the blossoming ecosystem.
         </Typography>
         <Divider />
-        <Stack spacing={2} alignItems="center">
-          <Typography variant="h5">Development team</Typography>
-          <Grid container justifyContent="center">
-            {DEVELOPERS.map(({ name, href }) => (
-              <Grid item key={name} xs={4} sm={3} md={2}>
-                <Profile name={name} href={href} width={100} />
-              </Grid>
-            ))}
-          </Grid>
-        </Stack>
-        <Stack spacing={2} alignItems="center">
-          <Typography variant="h5">Project sponsors</Typography>
-          <Grid container justifyContent="center">
-            {SPONSORS.map(({ name, href }) => (
-              <Grid item key={name} xs={4} sm={3} md={2}>
-                <Profile name={name} href={href} width={80} />
-              </Grid>
-            ))}
-          </Grid>
-        </Stack>
-        <Stack spacing={2} alignItems="center">
-          <Typography variant="h5">Advisory board</Typography>
-          <Typography>...</Typography>
-        </Stack>
+        {PROFILES.map((d) => (
+          <Profile {...d} />
+        ))}
         <Divider />
         <Typography variant="h5">Data sources</Typography>
         <Stack spacing={2}>
-          {SOURCES.map((d) => (
+          {DATA_SOURCES.map((d) => (
             <Source {...d} />
           ))}
         </Stack>
