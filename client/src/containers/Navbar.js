@@ -52,7 +52,7 @@ const Navbar = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: 8 }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 9 }}>
       <AppBar position="fixed" sx={{ backgroundColor: 'white', opacity: 0.95 }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <div>
@@ -65,7 +65,7 @@ const Navbar = () => {
               <MenuIcon />
             </MenuButton>
             <HomeButton variant="text" onClick={() => history.push('/')}>
-              {'bot\u0101NYC'}
+              MAP NYC
             </HomeButton>
           </div>
           {currentUser.isAuthenticated ? (
@@ -92,6 +92,7 @@ const Navbar = () => {
                     Admin Settings
                   </MenuItem>
                 )}
+                <MenuItem onClick={() => clickMenu('/about')}>About</MenuItem>
               </Menu>
             </div>
           ) : (

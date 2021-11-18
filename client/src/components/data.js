@@ -48,8 +48,8 @@ export const AG_TYPES = [
       'Organization not specifically dedicated to urban ag that operates a farm or garden (e.g., nonprofit, hospital, culinary institution, prison)',
     select: true,
     label: 'Institutional Garden',
-    color: deepOrange[500],
-    checked: true,
+    color: brown[500],
+    checked: false,
   },
   {
     option: 'School farm or garden (including universities)',
@@ -555,18 +555,18 @@ export const FILTER_DEFAULT = {
 
 // could make this dynamic based on the data in the future
 export const LAYER_SLIDERS = [
-  {
-    name: 'cdc_mental',
-    label: 'Poor mental health',
-    max: 30,
-    marks: [11, 12.5, 14.6],
-  },
-  {
-    name: 'cdc_physical',
-    label: 'Poor physical health',
-    max: 30,
-    marks: [10, 11.8, 13.8],
-  },
+  // {
+  //   name: 'cdc_mental',
+  //   label: 'Poor mental health',
+  //   max: 30,
+  //   marks: [11, 12.5, 14.6],
+  // },
+  // {
+  //   name: 'cdc_physical',
+  //   label: 'Poor physical health',
+  //   max: 30,
+  //   marks: [10, 11.8, 13.8],
+  // },
   {
     name: 'acs_income',
     label: 'Median household income',
@@ -583,7 +583,7 @@ export const LAYER_SLIDERS = [
   },
   { name: 'acs_hs', label: 'At least high school', marks: [73.9, 83.4, 90.2] },
   { name: 'acs_foreign', label: 'Foreign born', marks: [25.7, 37.3, 47.9] },
-  { name: 'acs_white', label: 'White', marks: [4.4, 23.4, 58.6] },
+  // { name: 'acs_white', label: 'White', marks: [4.4, 23.4, 58.6] },
   { name: 'acs_child', label: 'Has child', marks: [23.5, 32.4, 39.6] },
   { name: 'acs_alone', label: 'Living alone', marks: [19.5, 27.3, 35.6] },
   {

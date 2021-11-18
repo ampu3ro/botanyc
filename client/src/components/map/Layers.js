@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLayers, clearLayers } from '../../store/actions/layers';
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
@@ -19,7 +20,7 @@ const SliderControl = ({ name, label, min, format, ...props }) => {
   const handleChange = (event, value) => dispatch(setLayers({ [name]: value }));
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth sx={{ paddingLeft: 2, paddingRight: 2 }}>
       <FormLabel>{label}</FormLabel>
       <Slider
         value={layers[name] || [min, min]}
@@ -44,13 +45,25 @@ const Layers = () => {
   };
 
   return (
-    <Box sx={{ padding: 2 }}>
-      <Grid container rowSpacing={1} columnSpacing={6}>
+    <Stack spacing={2} sx={{ padding: 2 }}>
+      <Typography variant="body2">
+        Urban agriculture is part of a complex food system. Use these layers to
+        explore spatial relationships between farm/garden locations and select
+        socioeconomic variables from the&nbsp;
+        <a href="https://www.census.gov/programs-surveys/acs/about.html">
+          American Community Survey
+        </a>
+        &nbsp;(all percent of Census tract populations)
+      </Typography>
+      <Grid container>
         {LAYER_SLIDERS.map((d) => (
           <Grid item key={d.name} xs={12} md={6} lg={3}>
             <SliderControl
               {...d}
-              marks={d.marks.map((v, i) => ({ value: v, label: `Q${i + 1}` }))}
+              marks={d.marks.map((v, i) => ({
+                value: v,
+                label: i === 1 ? '' : `Q${i + 1}`,
+              }))}
             />
           </Grid>
         ))}
@@ -80,7 +93,7 @@ const Layers = () => {
           </Button>
         </Grid>
       </Grid>
-    </Box>
+    </Stack>
   );
 };
 

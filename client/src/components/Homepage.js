@@ -42,7 +42,7 @@ const Homepage = () => {
     <div>
       {!currentUser.isAuthenticated && (
         <div>
-          <Header text={'Welcome to bot\u0101NYC'} />
+          <Header text={'Welcome to MAP NYC'} />
           <Typography variant="h5">
             A catalogue of urban farms and gardens in New York City
           </Typography>
@@ -70,7 +70,7 @@ const Homepage = () => {
                     onChange={() => setShowToggles(!showToggles)}
                   />
                 }
-                label="Show data toggles"
+                label="Show display options"
               />
             </Grid>
             <Grid item>
@@ -81,7 +81,7 @@ const Homepage = () => {
                     onChange={() => setShowFilters(!showFilters)}
                   />
                 }
-                label="Show farm/garden filters"
+                label="Show data filters"
               />
             </Grid>
             <Grid item>

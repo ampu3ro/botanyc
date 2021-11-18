@@ -12,6 +12,7 @@ import AuthForm from '../components/AuthForm';
 import BulkEdit from '../components/farm/BulkEdit';
 import FarmForm from '../components/farm/FarmForm';
 import AdminForm from '../components/AdminForm';
+import About from '../components/About';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
@@ -74,6 +75,9 @@ const Main = () => {
           </Route>
           <Route exact path="/admin">
             <AdminForm />
+          </Route>
+          <Route exact path="/about">
+            <About />
           </Route>
         </Box>
       </Switch>
