@@ -178,12 +178,6 @@ const FarmForm = () => {
     handleClear,
   ]);
 
-  // useEffect(() => {
-  //   if (done) {
-  //     handleClear();
-  //   }
-  // }, [done]);
-
   const floors = FARM_PROPS.floors.fields.filter((d) => {
     let re = new RegExp(d.pattern, 'i');
     return (
@@ -201,7 +195,7 @@ const FarmForm = () => {
     <div>
       <FormProvider {...methods}>
         <Header text=" Add New or Edit Existing Farm/Garden Location" />
-        {!!searchOptions.length && (
+        {searchOptions && searchOptions.length && (
           <FormControl fullWidth>
             <Autocomplete
               options={searchOptions}
