@@ -69,6 +69,29 @@ const Navbar = () => {
             >
               <MenuIcon />
             </MenuButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              open={menuOpen}
+              onClose={closeMenu}
+            >
+              {currentUser.isAuthenticated && (
+                <MenuItem onClick={() => clickMenu('/farm')}>
+                  Farm/Garden Form
+                </MenuItem>
+              )}
+              {currentUser.isAdmin && (
+                <MenuItem onClick={() => clickMenu('/bulk')}>
+                  Bulk Upload
+                </MenuItem>
+              )}
+              {currentUser.isAdmin && (
+                <MenuItem onClick={() => clickMenu('/admin')}>
+                  Admin Settings
+                </MenuItem>
+              )}
+              <MenuItem onClick={() => clickMenu('/about')}>About</MenuItem>
+            </Menu>
             <HomeButton variant="text" onClick={clickHome}>
               MAP NYC
             </HomeButton>
@@ -78,27 +101,6 @@ const Navbar = () => {
               <Button variant="text" onClick={clickLogout}>
                 Logout
               </Button>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                open={menuOpen}
-                onClose={closeMenu}
-              >
-                <MenuItem onClick={() => clickMenu('/farm')}>
-                  Farm/Garden Form
-                </MenuItem>
-                {currentUser.isAdmin && (
-                  <MenuItem onClick={() => clickMenu('/bulk')}>
-                    Bulk Upload
-                  </MenuItem>
-                )}
-                {currentUser.isAdmin && (
-                  <MenuItem onClick={() => clickMenu('/admin')}>
-                    Admin Settings
-                  </MenuItem>
-                )}
-                <MenuItem onClick={() => clickMenu('/about')}>About</MenuItem>
-              </Menu>
             </div>
           ) : (
             <div>

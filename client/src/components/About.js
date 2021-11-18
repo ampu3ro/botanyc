@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
+import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 
@@ -82,9 +83,9 @@ const Source = ({ name, href, use, description }) => {
   return (
     <Stack>
       <Typography variant="h6">
-        <a href={href} target="_blank">
+        <Link href={href} target="_blank">
           {name}
-        </a>
+        </Link>
       </Typography>
       <Typography variant="subtitle1">{use}</Typography>
       <Typography variant="body2">{description}</Typography>
@@ -113,18 +114,18 @@ const About = () => {
         <Typography>
           Mapping Aggricultural Production in NYC (MAP NYC) is a project led by
           the&nbsp;
-          <a
+          <Link
             href="https://www.stern.nyu.edu/experience-stern/about/departments-centers-initiatives/centers-of-research/center-sustainable-business"
             target="_blank"
           >
             NYU Stern Center for Sustainable Business
-          </a>
+          </Link>
           &nbsp;that aims to help the city and its partners reach equity and
           sustainability goals by cataloging all food growers within the city.
           This platform was created by graduate students at the&nbsp;
-          <a href="https://cusp.nyu.edu/" target="_blank">
+          <Link href="https://cusp.nyu.edu/" target="_blank">
             NYU Center for Urban Science and Progress
-          </a>
+          </Link>
           &nbsp;and is intended to serve as a centralized repository for
           crowdsourced data related to agriculutral production. The live,
           interative map offers a multi-facetted view of the current state of
