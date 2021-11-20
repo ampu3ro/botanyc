@@ -22,11 +22,11 @@ const AuthForm = ({ authType, buttonText, heading }) => {
   const resetToken = useParams().token;
 
   const handleSubmit = () => {
-    dispatch(authUser(authType, username, password, email, resetToken));
-  };
-
-  const handleReset = () => {
-    dispatch(forgotPassword(email));
+    if (authType === 'forgot') {
+      dispatch(forgotPassword(email));
+    } else {
+      dispatch(authUser(authType, username, password, email, resetToken));
+    }
   };
 
   useEffect(() => {
@@ -42,20 +42,22 @@ const AuthForm = ({ authType, buttonText, heading }) => {
     }
   }, [authType, currentUser, history]);
 
+  const signUpIn = ['signin', 'signup'].includes(authType);
+
   return (
     <div>
       <Header text={heading} />
       <Grid container spacing={2}>
         <Grid item xs={12} md={6} lg={4}>
           <Stack spacing={2}>
-            {authType !== 'reset' && (
+            {signUpIn && (
               <TextField
                 label="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
             )}
-            {authType !== 'reset' && (
+            {signUpIn && (
               <TextField
                 label="Password"
                 type="password"
@@ -86,9 +88,8 @@ const AuthForm = ({ authType, buttonText, heading }) => {
           <Button
             variant="contained"
             disabled={
+              (signUpIn && (username.length <= 3 || password.length <= 3)) ||
               (authType !== 'signin' && !validate(email)) ||
-              (authType !== 'reset' &&
-                (username.length <= 3 || password.length <= 3)) ||
               (authType === 'signup' && password !== passwordConfirm)
             }
             onClick={handleSubmit}
@@ -100,10 +101,10 @@ const AuthForm = ({ authType, buttonText, heading }) => {
           <Grid item>
             <Button
               size="small"
-              onClick={handleReset}
+              onClick={() => history.push('/forgot')}
               disabled={!validate(email)}
             >
-              Reset Password
+              Forgot Password
             </Button>
           </Grid>
         )}

@@ -54,13 +54,13 @@ exports.signUp = async (req, res, next) => {
 
 exports.forgotPassword = async (req, res, next) => {
   try {
-    const { username } = req.body;
+    const { email } = req.body;
     const resetToken = crypto.randomBytes(20).toString('hex');
     const update = {
       resetToken,
       resetExpires: new Date(Date.now() + 1000 * 60 * 60),
     };
-    let user = await db.User.findOneAndUpdate({ username }, update, {
+    let user = await db.User.findOneAndUpdate({ email }, update, {
       new: true,
     });
     if (!user) {
@@ -75,8 +75,8 @@ exports.forgotPassword = async (req, res, next) => {
     });
     const mailOptions = {
       from: keys.emailAddress,
-      to: user.email,
-      subject: 'Link to reset your botaNYC password',
+      to: email,
+      subject: 'Link to reset your M.A.P. NYC password',
       text: `You are receiving this because you have requested a password reset.
       Please click on the link below to complete the reset within one hour of receiving this email\n\n
       ${keys.redirectDomain}/reset/${resetToken}\n\n

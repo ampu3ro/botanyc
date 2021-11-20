@@ -60,6 +60,13 @@ const Main = () => {
               heading="Join the botaNYC community"
             />
           </Route>
+          <Route exact path="/forgot">
+            <AuthForm
+              authType="forgot"
+              buttonText="Reset"
+              heading="Forgot your password?"
+            />
+          </Route>
           <Route path="/reset/:token">
             <AuthForm
               authType="reset"
