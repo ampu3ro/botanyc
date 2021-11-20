@@ -93,7 +93,7 @@ const Navbar = () => {
               <MenuItem onClick={() => clickMenu('/about')}>About</MenuItem>
             </Menu>
             <HomeButton variant="text" onClick={clickHome}>
-              MAP NYC
+              M.A.P. NYC
             </HomeButton>
           </div>
           {currentUser.isAuthenticated ? (

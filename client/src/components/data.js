@@ -686,41 +686,48 @@ export const SOCIOECONOMIC_URL = `${GIST_REPO}/34609e91dedb19591e3d57203c9b4162/
 
 export const PROFILES = [
   {
-    category: 'Development team',
+    category: 'Research and development team',
     people: [
-      { name: 'Nico Ampuero', href: 'https://www.linkedin.com/in/ampu3ro/' },
+      {
+        name: 'Nico Ampuero',
+        profileUrl: 'https://www.linkedin.com/in/ampu3ro/',
+      },
       {
         name: 'Jeremy Rucker',
-        href: 'https://www.linkedin.com/in/jeremyr327/',
+        profileUrl: 'https://www.linkedin.com/in/jeremyr327/',
       },
-      { name: 'Xiaolin Li', href: '' },
+      { name: 'Xiaolin Li', profileUrl: '' },
     ],
     avatarWidth: 100,
   },
   {
-    category: 'Project sponsors',
+    category: 'Project leads',
     people: [
-      { name: 'Whythe Marschall', href: 'https://www.linkedin.com/in/wythe/' },
+      {
+        name: 'Whythe Marschall',
+        profileUrl: 'https://www.linkedin.com/in/wythe/',
+      },
       {
         name: 'Alice Reznickova',
-        href: 'https://www.linkedin.com/in/anna-alice-reznickova-09541379/',
+        profileUrl:
+          'https://www.linkedin.com/in/anna-alice-reznickova-09541379/',
       },
     ],
-    avatarWidth: 80,
+    avatarWidth: 100,
   },
   {
-    category: 'Contributors',
+    category: 'Research contributors',
     people: [
       {
         name: 'Gianna White',
-        href: 'https://www.linkedin.com/in/gianna-white/',
+        profileUrl: 'https://www.linkedin.com/in/gianna-white/',
       },
       {
         name: 'Christina Curry',
-        href: 'https://www.linkedin.com/in/christina-curry/',
+        profileUrl: 'https://www.linkedin.com/in/christina-curry/',
       },
     ],
-    avatarWidth: 70,
+    avatarWidth: 100,
   },
   {
     category: 'Advisory board',
@@ -764,7 +771,7 @@ export const PROFILES = [
         name: 'Harrison Hillier',
         title: 'President',
         employer:
-          'NYC Agriculture Collective; also a senior tech at Teens For Food Justice',
+          'NYC Agriculture Collective; Senior tech, Teens For Food Justice',
       },
       {
         name: 'Max Lerner',
@@ -779,9 +786,8 @@ export const PROFILES = [
       },
       {
         name: 'Ian Marvy',
-        title:
-          'Consultant for community, corporations, civic actors, and governments',
-        employer: '',
+        title: 'Consultant',
+        employer: 'Community, corporations, civic actors, and governments',
       },
       {
         name: 'Charles Platkin',
@@ -826,59 +832,107 @@ export const PROFILES = [
     ],
   },
 ];
+
 export const DATA_SOURCES = [
   {
-    name: 'GreenThumb',
-    href: 'https://data.cityofnewyork.us/browse?Data-Collection_Data-Collection=GreenThumb+Gardens&q=greenthumb',
-    description:
-      'GreenThumb is a Park Department program that provides support to over 550 community gardens in NYC',
-    use: 'Community garden names, locations, and attributes',
+    category: 'Urban agriculture data',
+    data: [
+      {
+        description: 'GreenThumb gardens',
+        sources: [
+          {
+            name: 'NYC OpenData (Green Thumb)',
+            href: 'https://data.cityofnewyork.us/browse?Data-Collection_Data-Collection=GreenThumb+Gardens&q=greenthumb',
+          },
+        ],
+      },
+      {
+        description: 'NYCHA gardens',
+        sources: [{ name: 'Provided by NYC Department of Parks' }],
+      },
+      {
+        description: 'School gardens',
+        sources: [{ name: 'Provided by GrowNYC' }],
+      },
+      {
+        description: 'Potential garden locations',
+        sources: [
+          {
+            name: 'NYC Open Data (Local Law 46, 2018)',
+            href: 'https://www.google.com/url?q=https://data.cityofnewyork.us/Environment/City-owned-sites-that-are-available-and-potentiall/qchy-end3&sa=D&source=docs&ust=1637446684312000&usg=AOvVaw1xVA8JzJizEZBqTSdxkCAx',
+          },
+        ],
+      },
+      {
+        description: 'Data from ~100 large farms and gardens',
+        sources: [
+          {
+            name: 'Survey responses with supplementary data from public websites and reports',
+          },
+        ],
+      },
+      {
+        description: 'Community garden list curated by CUSP team',
+        sources: [
+          {
+            name: 'GrowNYC',
+            href: 'https://www.grownyc.org/gardens/our-community-gardens',
+          },
+          { name: 'Brooklyn Queens Land Trust', href: 'https://bqlt.org/' },
+          { name: 'Bronx Land Trust', href: 'https://www.bronxlandtrust.org/' },
+          {
+            name: 'Manhattan Land Trust',
+            href: 'http://www.manhattanlandtrust.org/',
+          },
+        ],
+      },
+    ],
   },
   {
-    name: 'GrowNYC',
-    href: 'https://www.grownyc.org/gardens/our-community-gardens',
-    description: `GrowNYC has built more than 135 new gardens, including GreenThumb community gardens; 
-    gardens in public housing developments, daycares, and senior centers; and an urban farm on Governors Island`,
-    use: 'Community and school garden names and locations',
+    category: 'Food distribution data',
+    data: [
+      {
+        description: 'Food pantry locations',
+        sources: [{ name: 'Provided by City Harvest' }],
+      },
+      {
+        description: 'Farmers Markets',
+        sources: [
+          {
+            name: 'DOHMH via NYC Open Data',
+            href: 'https://www.google.com/url?q=https://data.cityofnewyork.us/dataset/DOHMH-Farmers-Markets/8vwk-6iz2&sa=D&source=docs&ust=1637446912086000&usg=AOvVaw3PGTzm_qEGV0_WCZo6ej5H',
+          },
+        ],
+      },
+    ],
   },
   {
-    name: 'Brooklyn Queens Land Trust',
-    href: 'https://bqlt.org/',
-    description: `BQLT gardens provide opportunities for diverse groups of people to meet and work 
-    together cooperatively`,
-    use: 'Community garden names, locations, and attributes',
-  },
-  {
-    name: 'NYC DOHMH',
-    href: 'https://data.cityofnewyork.us/dataset/DOHMH-Farmers-Markets/8vwk-6iz2',
-    description: `The Department of Health and Mental Hygiene (DOHMH) is the NYC's public health agency`,
-    use: 'Farmers market vendor locations, products, and EBT acceptance',
-  },
-  {
-    name: '???',
-    href: '',
-    description: '',
-    use: 'Food pantry locations and schedules',
-  },
-  {
-    name: 'Mapbox',
-    href: 'https://www.mapbox.com/maps/streets',
-    description: `Mapbox Streets is a comprehensive, general-purpose map that emphasizes accurate, 
-    legible styling of road and transit networks`,
-    use: 'NYC Subway stops',
-  },
-  {
-    name: 'NYC DCP',
-    href: 'https://www1.nyc.gov/site/planning/data-maps/open-data/districts-download-metadata.page',
-    description:
-      'The Department of City Planning (DCP) is NYC’s primary land use agency',
-    use: 'Community District boundaries',
-  },
-  {
-    name: 'Data2Go',
-    href: 'https://data2go.nyc/map/#10/40.8276/-73.9588',
-    description: `DATA2GO.NYC brings together federal, state, and city data on a broad range of issues critical 
-      to the well-being of all New Yorkers`,
-    use: 'Select socioeconomic indicators originally sourced from the American Community Survey',
+    category: 'Socioeconomic data',
+    data: [
+      {
+        description: '2018 NYC PLUTO tax lot sizes',
+        sources: [
+          {
+            name: 'NYC Department of City Planning',
+            href: 'https://www1.nyc.gov/site/planning/data-maps/open-data/districts-download-metadata.page',
+          },
+        ],
+      },
+      {
+        description: 'Health and demographic data',
+        sources: [
+          {
+            name: 'Data2Go (American Community Survey)',
+            href: 'https://data2go.nyc/map/#10/40.8276/-73.9588',
+          },
+        ],
+      },
+      {
+        description: 'NYC Subway stations',
+        sources: [
+          { name: 'Mapbox', href: 'https://www.mapbox.com/maps/streets' },
+        ],
+      },
+    ],
   },
 ];
