@@ -899,7 +899,7 @@ export const DATA_SOURCES = [
         description: 'Farmers Markets',
         sources: [
           {
-            name: 'DOHMH via NYC Open Data',
+            name: 'NYC Open Data (DOHMH)',
             href: 'https://www.google.com/url?q=https://data.cityofnewyork.us/dataset/DOHMH-Farmers-Markets/8vwk-6iz2&sa=D&source=docs&ust=1637446912086000&usg=AOvVaw3PGTzm_qEGV0_WCZo6ej5H',
           },
         ],
