@@ -686,32 +686,36 @@ export const SOCIOECONOMIC_URL = `${GIST_REPO}/34609e91dedb19591e3d57203c9b4162/
 
 export const PROFILES = [
   {
-    category: 'Research and development team',
-    people: [
-      {
-        name: 'Nico Ampuero',
-        profileUrl: 'https://www.linkedin.com/in/ampu3ro/',
-      },
-      {
-        name: 'Jeremy Rucker',
-        profileUrl: 'https://www.linkedin.com/in/jeremyr327/',
-      },
-      { name: 'Xiaolin Li', profileUrl: '' },
-    ],
-    avatarWidth: 100,
-  },
-  {
     category: 'Project leads',
     people: [
       {
         name: 'Whythe Marschall',
+        school: 'CSB',
         profileUrl: 'https://www.linkedin.com/in/wythe/',
       },
       {
         name: 'Alice Reznickova',
+        school: 'Tandon',
         profileUrl:
           'https://www.linkedin.com/in/anna-alice-reznickova-09541379/',
       },
+    ],
+    avatarWidth: 100,
+  },
+  {
+    category: 'Research and development team',
+    people: [
+      {
+        name: 'Nico Ampuero',
+        school: 'CUSP',
+        profileUrl: 'https://www.linkedin.com/in/ampu3ro/',
+      },
+      {
+        name: 'Jeremy Rucker',
+        school: 'CUSP',
+        profileUrl: 'https://www.linkedin.com/in/jeremyr327/',
+      },
+      { name: 'Xiaolin Li', school: 'CUSP', profileUrl: '' },
     ],
     avatarWidth: 100,
   },
@@ -720,10 +724,12 @@ export const PROFILES = [
     people: [
       {
         name: 'Gianna White',
+        school: 'Tandon',
         profileUrl: 'https://www.linkedin.com/in/gianna-white/',
       },
       {
         name: 'Christina Curry',
+        school: 'Tandon',
         profileUrl: 'https://www.linkedin.com/in/christina-curry/',
       },
     ],

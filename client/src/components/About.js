@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import { PROFILES, DATA_SOURCES } from './data';
 
-const AvatarProfile = ({ name, profileUrl, width }) => {
+const AvatarProfile = ({ name, school, profileUrl, width }) => {
   return (
     <Stack spacing={2} alignItems="center">
       <IconButton href={profileUrl} sx={{ width, height: width }}>
@@ -17,7 +17,12 @@ const AvatarProfile = ({ name, profileUrl, width }) => {
           {name.substring(0, 1)}
         </Avatar>
       </IconButton>
-      <Typography align="center">{name}</Typography>
+      <Stack>
+        <Typography align="center">{name}</Typography>
+        <Typography variant="body2" align="center">
+          {school}
+        </Typography>
+      </Stack>
     </Stack>
   );
 };
@@ -44,12 +49,13 @@ const ProfileSection = ({ category, people, avatarWidth }) => {
     <Stack spacing={2} alignItems="center">
       <Typography variant="h5">{category}</Typography>
       <Grid container justifyContent="center">
-        {people.map(({ name, profileUrl, title, employer }) => {
+        {people.map(({ name, school, profileUrl, title, employer }) => {
           if (avatarWidth) {
             return (
               <Grid item key={name} xs={4} sm={3} md={2}>
                 <AvatarProfile
                   name={name}
+                  school={school}
                   href={profileUrl}
                   width={avatarWidth}
                 />
@@ -174,11 +180,11 @@ const About = () => {
             </Link>
             .
             <p>
-              The project is led by Dr. Alice Reznickova (Tandon) and Wythe
-              Marschall (CSB) and developed by Nico Ampuero, with research
-              support from fellow CUSP graduate data science students Jeremy
-              Rucker and Xiaolin Li and Tandon undergraduate students who are
-              majoring in Sustainable Urban Environments.
+              The project is led by Dr. Alice Reznickova and Wythe Marschall.
+              The web application and map were developed by Nico Ampuero, with
+              supporting research from fellow CUSP graduate students Jeremy
+              Rucker and Xiaolin Li, and Tandon undergraduate students majoring
+              in Sustainable Urban Environments.
             </p>
           </Typography>
         </Stack>
