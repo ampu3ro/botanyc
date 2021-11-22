@@ -689,7 +689,7 @@ export const PROFILES = [
     category: 'Project leads',
     people: [
       {
-        name: 'Whythe Marschall',
+        name: 'Wythe Marschall',
         school: 'CSB',
         profileUrl: 'https://www.linkedin.com/in/wythe/',
       },
@@ -739,100 +739,64 @@ export const PROFILES = [
     category: 'Advisory board',
     people: [
       {
-        name: 'Kubi Ackerman',
-        title: '​​Senior Content Strategist',
-        employer: 'Gallagher & Associates, LLC',
+        name: 'Samuel W. Anderson and Yolanda Gonzalez',
+        employer: 'Cornell Cooperative Extension–Harvest New York',
       },
       {
-        name: 'Samuel W. Anderson',
-        title: 'Urban Agriculture Specialist, Harvest New York',
-        employer: 'Cornell Cooperative Extension–NYC (CCE–NYC)',
-      },
-      {
-        name: 'Leah Butz',
-        title: 'Research assistant',
-        employer: 'Hunter College New York City Food Policy Center',
-      },
-      {
-        name: 'Alexina Cather',
-        title: 'Deputy Director',
-        employer: 'Hunter College New York City Food Policy Center',
-      },
-      {
-        name: 'Crystal Jane Eksi',
-        title: 'Urban Designer',
-        employer: 'New York City Department of City Planning (DCP)',
+        name: 'Carlos Martinez and Max Lerner',
+        employer: 'New York City Department of Parks & Recreation',
       },
       {
         name: 'Kristin Fields',
-        title: 'Director',
         employer: 'GrowNYC School Gardens',
       },
       {
-        name: 'Yolanda Gonzalez',
-        title: 'Urban Agriculture Specialist, Harvest New York',
-        employer: 'Cornell Cooperative Extension–NYC (CCE–NYC)',
+        name: 'Mandu Sen',
+        employer: "New York City Mayor's Office of Food Policy",
       },
       {
-        name: 'Harrison Hillier',
-        title: 'President',
-        employer:
-          'NYC Agriculture Collective; Senior tech, Teens For Food Justice',
+        name: 'Crystal Jane Eksi',
+        employer: 'New York City Department of City Planning',
       },
       {
-        name: 'Max Lerner',
-        title: 'Sustainability Project Development Coordinator',
-        employer: 'New York City Department of Parks & Recreation (Parks)',
-      },
-      {
-        name: 'Carlos Martinez',
-        title: 'Deputy Director and Acting Director',
-        employer:
-          'New York City Department of Parks & Recreation (Parks), GreenThumb',
-      },
-      {
-        name: 'Ian Marvy',
-        title: 'Consultant',
-        employer: 'Community, corporations, civic actors, and governments',
-      },
-      {
-        name: 'Charles Platkin',
-        title: 'Executive Director',
+        name: 'Leah Butz, Alexina Cather, and Charles Platkin',
         employer: 'Hunter College New York City Food Policy Center',
       },
       {
         name: 'Christa Perfit',
-        title: 'Senior Manager, Data & Insights',
         employer: 'City Harvest',
       },
       {
-        name: 'Jacob Remes',
-        title: 'Clinical Associate Professor',
-        employer: 'NYU Gallatin',
-      },
-      {
         name: 'Katherine Sacco',
-        title: 'Director of Partnerships',
         employer: 'Urban Design Forum',
       },
       {
-        name: 'Mandu Sen',
-        title: 'Interim Deputy Director',
-        employer: "New York City Mayor's Office of Food Policy (MOFP)",
+        name: 'Kubi Ackerman',
+        employer: 'Gallagher & Associates, LLC',
+      },
+      {
+        name: 'Harrison Hillier',
+        employer: 'NYC Agriculture Collective/Teens For Food Justice',
+      },
+      {
+        name: 'Ian Marvy',
+        employer:
+          'Consultant; formerly, USDA Farm Service Agency/Red Hook Farms',
+      },
+      {
+        name: 'Jacob Remes',
+        employer: 'NYU Gallatin',
       },
       {
         name: 'Jay Solly',
-        title: 'Co-Founder & CEO',
-        employer: 'Sustainable United Neighborhoods / Bushwick Generator',
+        employer: 'Sustainable United Neighborhoods',
       },
       {
         name: 'Dr. John Zahina-Ramos',
-        title: 'Chair and Prof., Horticulture Department',
         employer: 'College of Lake County, Illinois',
       },
       {
         name: 'Bruce Zeines',
-        title: 'General Manager',
         employer: 'Kelly Street Garden',
       },
     ],

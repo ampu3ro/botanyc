@@ -43,11 +43,12 @@ const Homepage = () => {
       {!currentUser.isAuthenticated && (
         <div>
           <Header text={'Welcome to M.A.P. NYC'} />
-          <Typography variant="h5">
+          <Typography variant="h6">
             A catalogue of urban farms and gardens in New York City
           </Typography>
           <Typography paragraph>
-            Are you running a farm/garden in the city?{' '}
+            Read more about the project on the <Link to="/about">About</Link>{' '}
+            page. Are you running a farm/garden in the city?{' '}
             <Link to="/signup">Sign up</Link> to show the world what you grow!
           </Typography>
         </div>

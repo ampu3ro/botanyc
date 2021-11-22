@@ -27,17 +27,13 @@ const AvatarProfile = ({ name, school, profileUrl, width }) => {
   );
 };
 
-const SimpleProfile = ({ name, title, employer }) => {
-  const fontSize = '9pt';
+const SimpleProfile = ({ name, employer }) => {
   return (
     <Stack alignItems="center">
-      <Typography align="center" sx={{ fontSize }}>
-        <b>{name}</b>
+      <Typography align="center" sx={{ fontSize: '10pt' }}>
+        {name}
       </Typography>
-      <Typography align="center" sx={{ fontSize }}>
-        <em>{title}</em>
-      </Typography>
-      <Typography align="center" sx={{ fontSize }}>
+      <Typography align="center" sx={{ fontSize: '8pt' }}>
         {employer}
       </Typography>
     </Stack>
@@ -47,9 +43,11 @@ const SimpleProfile = ({ name, title, employer }) => {
 const ProfileSection = ({ category, people, avatarWidth }) => {
   return (
     <Stack spacing={2} alignItems="center">
-      <Typography variant="h5">{category}</Typography>
+      <Typography variant="h5" align="center">
+        {category}
+      </Typography>
       <Grid container justifyContent="center">
-        {people.map(({ name, school, profileUrl, title, employer }) => {
+        {people.map(({ name, school, profileUrl, employer }) => {
           if (avatarWidth) {
             return (
               <Grid item key={name} xs={4} sm={3} md={2}>
@@ -64,7 +62,7 @@ const ProfileSection = ({ category, people, avatarWidth }) => {
           } else {
             return (
               <Grid item key={name} sx={{ padding: 2 }}>
-                <SimpleProfile name={name} title={title} employer={employer} />
+                <SimpleProfile name={name} employer={employer} />
               </Grid>
             );
           }
@@ -149,8 +147,10 @@ const About = () => {
             You can submit changes without becoming a verified user, but those
             changes will not be made unless a project administrator can
             independently validate their accuracy.
-            <br />
-            To become a verified user for a farm or garden, please email [TBD].
+            <p style={{ marginBottom: 0 }}>
+              To become a verified user for a farm or garden, please email
+              [TBD].
+            </p>
           </Typography>
         </Stack>
         <Stack spacing={2}>
@@ -179,12 +179,14 @@ const About = () => {
               Cornell Cooperative Extension–Harvest New York (CCE)
             </Link>
             .
-            <p>
-              The project is led by Dr. Alice Reznickova and Wythe Marschall.
-              The web application and map were developed by Nico Ampuero, with
-              supporting research from fellow CUSP graduate students Jeremy
-              Rucker and Xiaolin Li, and Tandon undergraduate students majoring
-              in Sustainable Urban Environments.
+            <p style={{ marginBottom: 0 }}>
+              The project is led by Dr. Alice Reznickova (Tandon) and Wythe
+              Marschall (CSB) and developed by graduate data science students at
+              CUSP, with support from Tandon undergraduate students who are
+              majoring in Sustainable Urban Environments. The web application
+              and map were developed by Nico Ampuero (CUSP), with supporting
+              research from Jeremy Rucker and Xiaolin Li (CUSP), as well as
+              Gianna White and Christina Curry (Tandon).
             </p>
           </Typography>
         </Stack>
@@ -201,10 +203,15 @@ const About = () => {
             Financial support to create M.A.P. NYC came from the Mother Cabrini
             Health Foundation, The New York Community Trust, and NYU Tandon.
           </p>
+          M.A.P. NYC’s advisory board includes:
         </Typography>
         {PROFILES.filter(({ avatarWidth }) => !avatarWidth).map((d) => (
           <ProfileSection {...d} />
         ))}
+        <Typography>
+          If you would like to join the M.A.P. NYC advisory board, please email
+          [TBD].
+        </Typography>
         <Divider />
         <Stack spacing={2}>
           <Typography variant="h5">
