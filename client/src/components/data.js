@@ -6,7 +6,6 @@ import {
   cyan,
   green,
   lime,
-  yellow,
   amber,
   deepOrange,
   brown,
@@ -14,59 +13,53 @@ import {
   blueGrey,
 } from '@mui/material/colors';
 
+// select determines if it shows up as a dropdown option in the form
+// whether checked is defined determines if it shows up on the map
 export const AG_TYPES = [
   {
-    option: 'Commercial farm or garden',
-    select: true,
-    label: 'Commercial Farm',
+    label:
+      'Commercial farm or garden (i.e., selling $1000 or more of produce per year)',
+    value: 'Commercial',
     color: pink[500],
     checked: true,
   },
   {
-    option: 'Non-commercial farm or garden',
-    select: true,
-    label: 'Non-commercial Farm',
-    color: deepPurple[500],
-    checked: true,
-  },
-  {
-    option: 'Community farm or garden',
-    select: true,
-    label: 'Community Garden',
+    label: 'Community/non-commercial farm or garden',
+    value: 'Non-commercial',
     color: green[500],
     checked: true,
   },
   {
-    option: 'NYCHA farm or garden',
+    label: 'NYCHA farm or garden',
+    value: 'NYCHA',
     select: false,
-    label: 'NYCHA Garden',
     color: deepOrange[500],
     checked: true,
   },
   {
-    option:
+    label:
       'Organization not specifically dedicated to urban ag that operates a farm or garden (e.g., nonprofit, hospital, culinary institution, prison)',
+    value: 'Institutional',
     select: true,
-    label: 'Institutional Garden',
     color: brown[500],
     checked: false,
   },
   {
-    option: 'School farm or garden (including universities)',
+    label: 'School farm or garden (including universities)',
+    value: 'School',
     select: true,
-    label: 'School Garden',
     color: amber[500],
     checked: true,
   },
-  { option: 'Home garden', select: true, color: yellow[500] },
+  { label: 'Home garden', value: 'Home', select: true },
   {
-    option: 'Potential community farm or garden',
+    label: 'Potential community farm or garden  (LL48 of 2011)',
+    value: 'Potential',
     select: false,
-    label: 'Potential Community Garden',
     color: teal[500],
     checked: false,
   },
-  { option: 'Other', select: true, color: blueGrey[500] },
+  { label: 'Other', value: 'Other', select: true },
 ];
 
 export const ENVIRONMENTS = {
@@ -81,6 +74,15 @@ export const ENVIRONMENTS = {
   ],
 };
 
+const COUNT_RANGE = ['1-10', '11-20', '21-30', '31 or more'];
+const SALARY_RANGE = [
+  '$0–24,999',
+  '$25,000–49,999',
+  '$50,000–74,999',
+  '$75,000–99,999',
+  '$100,000 or more',
+];
+
 export const FARM_PROPS = {
   // order matters for sidebar display
   name: { label: 'Name', helpText: 'What is the name of the farm or garden?' },
@@ -88,10 +90,19 @@ export const FARM_PROPS = {
     label: 'Address',
     helpText: "What is the address of this farm or garden's location?",
   },
+  website: {
+    label: 'Website',
+    helpText: 'What is the primary website of your farm or garden?',
+  },
+  socials: {
+    label: 'Social Media',
+    helpText:
+      'What are the social media handles of your farm or garden? (comma separated)',
+  },
   type: {
     label: 'Type',
-    helpText: 'How would you describe your farm or garden?',
-    options: AG_TYPES.filter((d) => d.select).map((d) => d.option),
+    helpText: 'What is the best way to describe your farm or garden?',
+    options: AG_TYPES.filter((d) => d.select),
   },
   environments: {
     label: 'Environment',
@@ -114,7 +125,6 @@ export const FARM_PROPS = {
         label: 'Ground',
       },
       { pattern: 'indoor', name: 'areaFloor1', label: '1st floor' },
-      { pattern: 'indoor', name: 'areaFloor2', label: '2nd floor' },
       { pattern: '.', name: 'areaOther', label: 'Other' },
       { pattern: 'roof', name: 'areaRoof', label: 'Roof' },
     ],
@@ -125,11 +135,16 @@ export const FARM_PROPS = {
     helpText:
       'What is the name of the supporting organization, agency, or company (if not the same as the farm or garden)?',
   },
+  headquarters: {
+    label: 'Headquarters',
+    helpText:
+      'What is the address of this farm or garden’s headquarters (if separate from this farm or garden’s address)?',
+  },
   orgType: {
     label: 'Org structure',
     helpText:
       'What is the corporate or organizational structure of your farm or garden?',
-    options: ['C corp', 'S corp', 'LLC', 'Not-for-profit'],
+    options: ['C corp', 'S corp', 'LLC', 'Not-for-profit', 'Other'],
   },
   bCorp: { label: 'B corporation', default: false },
   priorities: {
@@ -138,7 +153,7 @@ export const FARM_PROPS = {
       "Please rank the following in order of priority based on the farm or garden's mission statement",
     options: [
       'Growing and selling food for profit',
-      'Training new farmers (entrepreneurship)',
+      'Training new farmers (entrepreneurship) or other green job training',
       'Improving local food insecurity',
       'Addressing food justice',
       'Spurring local economic development',
@@ -171,7 +186,7 @@ export const FARM_PROPS = {
     label: 'Methods',
     helpText: 'Which of the following methods do you use?',
     options: [
-      'Raised beds (soil)',
+      'Raised beds or in-ground (soil)',
       'Container (soil)',
       'Hydroponics/aeroponics (soil-free)',
       'Aquaculture (fish)',
@@ -204,11 +219,6 @@ export const FARM_PROPS = {
       'Other',
     ],
   },
-  waterType: {
-    label: 'Watering',
-    helpText: 'How do you water your plants?',
-    options: ['Surface	subsurface', 'Sprinklers', 'Drip'],
-  },
   iotTypes: {
     label: 'IoT',
     helpText:
@@ -226,11 +236,6 @@ export const FARM_PROPS = {
       "I don't know if we use them",
     ],
     multiple: true,
-  },
-  pestManagement: {
-    label: 'Pest management',
-    helpText: 'What pest management method do you use?',
-    options: ['Chemical', 'IPM (integrated pest management)', 'Technological'],
   },
   usdaOrganic: {
     label: 'Organic',
@@ -471,29 +476,53 @@ export const FARM_PROPS = {
     int: true,
     adorn: '$',
   },
-  positions: { default: [] },
-  wages: { default: [] },
   employees: {
     label: 'Employees',
-    helpText: 'How many people have you employed in the past three years?',
-    int: true,
+    helpText:
+      'How many people have worked full-time at your farm or garden, regardless of pay, in the past year? (I.e., how many full-time positions does your farm or garden have?)',
+    options: ['0 (no one works full-time, regardless of pay)', ...COUNT_RANGE],
+  },
+  farmHand: {
+    label: 'Farmhand salary',
+    helpText:
+      'Does your farm or garden have a position called farmhand, assistant grower, or something similar? (If yes, then:) What is the annual salary range at which this position is compensated?',
+    options: SALARY_RANGE,
+  },
+  farmManager: {
+    label: 'Farm manager salary',
+    helpText:
+      'Does your farm or garden have a position called farm manager, head grower, or something similar? (If yes, then:) What is the annual salary range at which this position is compensated?',
+    options: SALARY_RANGE,
+  },
+  opsManager: {
+    label: 'Operations manager salary',
+    helpText:
+      'Does your farm or garden have a position called operations manager, chief operations officer, or something similar? (If yes, then:) What is the annual salary range at which this position is compensated?',
+    options: SALARY_RANGE,
+  },
+  eventsManager: {
+    label: 'Events manager salary',
+    helpText:
+      'Does your farm or garden have a position called operations manager, chief operations officer, or something similar? (If yes, then:) What is the annual salary range at which this position is compensated?',
+    options: SALARY_RANGE,
+  },
+  partTime: {
+    label: 'Part-time employees',
+    helpText:
+      'How many part-time or seasonal staff members (not volunteers) worked at your farm or garden over the last year?',
+    options: ['0 (no one works part-time)', ...COUNT_RANGE],
   },
   volunteers: {
     label: 'Volunteers',
-    helpText: 'How many volunteers worked for you in the past three years?',
-    int: true,
+    helpText:
+      'How many volunteers have worked on your farm or garden in the past year?',
+    options: ['0 (no volunteers)', ...COUNT_RANGE],
   },
   volunteerHours: {
     label: 'Volunteer hours',
     helpText:
       'How many hours of labor were produced by volunteers in the past three years',
-    int: true,
-  },
-  outreachHours: {
-    label: 'Outreach hours',
-    helpText:
-      'How many hours annually farm or garden employees spend on unpaid community outreach',
-    int: true,
+    options: ['0', '1-39', '40-79', '80-159', '160-319', '320 or more'],
   },
   localWorkers: {
     label: 'Local workers',
@@ -531,6 +560,48 @@ export const FARM_PROPS = {
     ],
     multiple: true,
   },
+  outreachHours: {
+    label: 'Outreach hours',
+    helpText:
+      'Please estimate how many hours annually farm or garden employees spend on unpaid community outreach',
+    int: true,
+  },
+  incomeSources: {
+    label: 'Income sources',
+    helpText:
+      'Did you receive earned income from any of the following sources in the last 3 fiscal years?',
+    options: [
+      'Plot rentals',
+      'Tours',
+      'Classes/workshops',
+      'Weddings/other events',
+      'Other',
+    ],
+    multiple: true,
+  },
+  capInvestments: {
+    label: 'Capital investments',
+    helpText:
+      'Did you make any capital investments in the past 5 fiscal years (e.g., expansion, equipment, new space)? ',
+    options: [
+      'Yes, expansion',
+      'Yes, equipment',
+      'Yes, moving to a new space',
+      'No',
+    ],
+    multiple: true,
+  },
+  renewableEnergy: {
+    label: 'Renewable energy',
+    helpText:
+      'Energy costs can range widely, and food resilience may be served by electricity discounts for agriculture. We want to understand your energy use and future plans. Do you currently access energy from renewable sources?',
+    options: [
+      'Yes, 100%',
+      'Yes, we access some energy from renewable sources',
+      'No',
+      'I am not sure',
+    ],
+  },
   authUsers: {},
   updatedAt: { label: 'Last updated' },
 };
@@ -549,7 +620,7 @@ export const FARM_DEFAULT = Object.fromEntries(
 );
 
 export const FILTER_DEFAULT = {
-  types: AG_TYPES.filter((d) => d.checked).map((d) => d.option),
+  types: AG_TYPES.filter((d) => d.checked).map((d) => d.value),
   environments: Object.keys(ENVIRONMENTS),
 };
 
@@ -602,8 +673,8 @@ export const LAYER_SLIDERS = [
 ];
 
 export const PAINT_COLOR = {
-  type: AG_TYPES.filter((d) => d.label).map(
-    ({ option: name, color, label }) => ({
+  type: AG_TYPES.filter((d) => d.checked !== undefined).map(
+    ({ value: name, color, label }) => ({
       name,
       color,
       label,

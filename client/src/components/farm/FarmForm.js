@@ -226,6 +226,9 @@ const FarmForm = () => {
           <TextForm name="address" />
           <TextForm name="name" />
           <TextForm name="orgName" />
+          <TextForm name="headquarters" />
+          <TextForm name="website" />
+          <TextForm name="socials" />
           <SelectForm name="type" />
           <SelectForm name="environments" />
           {!!watchEnviro.length && (
@@ -284,11 +287,7 @@ const FarmForm = () => {
           {watchGrowMethods.join(',').includes('ponics') && (
             <SelectForm name="ponicType" />
           )}
-          {watchGrowMethods.join(',').includes('soil)') && (
-            <SelectForm name="waterType" />
-          )}
           <SelectForm name="iotTypes" />
-          <SelectForm name="pestManagement" />
           <SelectForm name="usdaOrganic" />
           <SelectForm name="compost" />
           {watchCompost === 'Off-site' && <SelectForm name="compostOffsite" />}
@@ -301,6 +300,8 @@ const FarmForm = () => {
           <SelectForm name="distroRegion" />
           <SectionHeader text="Land ownership and use" />
           <DateForm name="founding" views={['year']} sx={{ width: '50%' }} />
+          <SelectForm name="ownership" />
+          <SelectForm name="zoning" />
           <FormControl>
             <FormLabel sx={{ marginBottom: 1 }}>
               What is the start and end date of your current lease agreement?
@@ -368,14 +369,22 @@ const FarmForm = () => {
               </IconButton>
             </Stack>
           </FormControl>
-          <TextForm name="employees" />
-          <TextForm name="volunteers" />
-          <TextForm name="volunteerHours" />
+          <SelectForm name="employees" />
+          <SelectForm name="farmHand" />
+          <SelectForm name="farmManager" />
+          <SelectForm name="opsManager" />
+          <SelectForm name="eventsManager" />
+          <SelectForm name="partTime" />
+          <SelectForm name="volunteers" />
+          <SelectForm name="volunteerHours" />
           <SelectForm name="localWorkers" />
           <SectionHeader text="Enrichment opportunities" />
           <SelectForm name="studentPrograms" />
           <SelectForm name="skillsPrograms" />
           <TextForm name="outreachHours" />
+          <SelectForm name="incomeSources" />
+          <SelectForm name="capInvestments" />
+          <SelectForm name="renewableEnergy" />
           {currentUser.isAdmin && (
             <Stack spacing={2}>
               <SectionHeader text="Database Admin" />

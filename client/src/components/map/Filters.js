@@ -42,15 +42,15 @@ const Filters = () => {
         <Grid item>
           <FormControl>
             <FormLabel>Producer type selection</FormLabel>
-            {AG_TYPES.filter((d) => d.label).map((d) => (
+            {AG_TYPES.filter((d) => d.checked !== undefined).map((d) => (
               <FormControlLabel
-                key={d.option}
+                key={d.value}
                 label={d.label}
                 control={
                   <Checkbox
-                    name={d.option}
+                    name={d.value}
                     checked={
-                      filters.types ? filters.types.includes(d.option) : false
+                      filters.types ? filters.types.includes(d.value) : false
                     }
                     sx={{ '&.Mui-checked': { color: d.color }, height: 35 }}
                     onChange={(e) => handleChecks(e, 'types')}
