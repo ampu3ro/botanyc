@@ -114,7 +114,7 @@ const farmSchema = new Schema(
     leaseEnd: Date,
     rent: Number,
     landValue: Number,
-    employees: String,
+    fullTime: String,
     farmHand: String,
     farmManager: String,
     opsManager: String,

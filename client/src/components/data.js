@@ -100,15 +100,17 @@ export const FARM_PROPS = {
       'What are the social media handles of your farm or garden? (comma separated)',
   },
   type: {
-    label: 'Type',
+    label: 'Farm or garden type',
     helpText: 'What is the best way to describe your farm or garden?',
     options: AG_TYPES.filter((d) => d.select),
+    filter: true,
   },
   environments: {
     label: 'Environment',
     helpText: 'Where is your farm or garden situated?',
     options: Object.keys(ENVIRONMENTS),
     multiple: true,
+    filter: true,
   },
   enviroDetails: { label: 'Environment detail', default: [] },
   area: { label: 'Area (sqft)', int: true },
@@ -161,6 +163,7 @@ export const FARM_PROPS = {
       'Other',
     ],
     multiple: true,
+    filter: true,
   },
   accessibility: {
     label: 'Accessibility',
@@ -170,6 +173,7 @@ export const FARM_PROPS = {
       'Yes, by tour/reservation only',
       'No, only for workers/managers',
     ],
+    filter: true,
   },
   adModes: {
     label: 'Publicity',
@@ -196,6 +200,7 @@ export const FARM_PROPS = {
       'Other (e.g., ranching, silviculture)',
     ],
     multiple: true,
+    filter: true,
   },
   aquaType: {
     label: 'Aquaculture',
@@ -251,6 +256,7 @@ export const FARM_PROPS = {
     label: 'Compost',
     helpText: 'How do you compost?',
     options: ['On-site', 'Off-site', 'Do not compost'],
+    filter: true,
   },
   compostOffsite: {
     label: 'Compost arrangement',
@@ -293,8 +299,9 @@ export const FARM_PROPS = {
     ],
   },
   crops: {
-    label: 'Production',
+    label: 'Crops produced',
     adorn: 'lbs',
+    filter: true,
     title:
       'How many pounds of each product/crop below were harvested in the past 3 years?',
     fields: [
@@ -394,8 +401,9 @@ export const FARM_PROPS = {
     ],
   },
   distros: {
-    label: 'Distribution',
+    label: 'Distribution channels',
     adorn: 'lbs',
+    filter: true,
     title:
       'How many pounds did you sell or distribute through the following market channels in the last three years?',
     fields: [
@@ -476,11 +484,12 @@ export const FARM_PROPS = {
     int: true,
     adorn: '$',
   },
-  employees: {
-    label: 'Employees',
+  fullTime: {
+    label: 'Full-time employees',
     helpText:
       'How many people have worked full-time at your farm or garden, regardless of pay, in the past year? (I.e., how many full-time positions does your farm or garden have?)',
     options: ['0 (no one works full-time, regardless of pay)', ...COUNT_RANGE],
+    filter: true,
   },
   farmHand: {
     label: 'Farmhand salary',
@@ -543,6 +552,7 @@ export const FARM_PROPS = {
       'Other',
     ],
     multiple: true,
+    filter: true,
   },
   skillsPrograms: {
     label: 'Skills programs',
@@ -559,6 +569,7 @@ export const FARM_PROPS = {
       'Other',
     ],
     multiple: true,
+    filter: true,
   },
   outreachHours: {
     label: 'Outreach hours',
@@ -578,6 +589,7 @@ export const FARM_PROPS = {
       'Other',
     ],
     multiple: true,
+    filter: true,
   },
   capInvestments: {
     label: 'Capital investments',
@@ -601,6 +613,7 @@ export const FARM_PROPS = {
       'No',
       'I am not sure',
     ],
+    filter: true,
   },
   authUsers: {},
   updatedAt: { label: 'Last updated' },
@@ -620,8 +633,7 @@ export const FARM_DEFAULT = Object.fromEntries(
 );
 
 export const FILTER_DEFAULT = {
-  types: AG_TYPES.filter((d) => d.checked).map((d) => d.value),
-  environments: Object.keys(ENVIRONMENTS),
+  type: AG_TYPES.filter((d) => d.checked).map((d) => d.value),
 };
 
 // could make this dynamic based on the data in the future

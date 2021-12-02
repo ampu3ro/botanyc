@@ -369,7 +369,7 @@ const FarmForm = () => {
               </IconButton>
             </Stack>
           </FormControl>
-          <SelectForm name="employees" />
+          <SelectForm name="fullTime" />
           <SelectForm name="farmHand" />
           <SelectForm name="farmManager" />
           <SelectForm name="opsManager" />
