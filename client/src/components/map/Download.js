@@ -8,6 +8,8 @@ import Grid from '@mui/material/Grid';
 const Download = () => {
   const farmFiltered = useSelector((state) => state.farmFiltered);
 
+  if (!farmFiltered.features) return <div />;
+
   const features = farmFiltered.features.map((feature) => {
     const { authUsers, modifiedBy, needsApproval, distro1, ...properties } =
       feature.properties;
