@@ -150,7 +150,7 @@ export const FARM_PROPS = {
   },
   bCorp: { label: 'B corporation', default: false },
   priorities: {
-    label: 'Priorities',
+    label: 'Socioeconomic priorities',
     helpText:
       "Please rank the following in order of priority based on the farm or garden's mission statement",
     options: [
@@ -187,7 +187,7 @@ export const FARM_PROPS = {
     multiple: true,
   },
   growMethods: {
-    label: 'Methods',
+    label: 'Grow methods',
     helpText: 'Which of the following methods do you use?',
     options: [
       'Raised beds or in-ground (soil)',
@@ -253,7 +253,7 @@ export const FARM_PROPS = {
     ],
   },
   compost: {
-    label: 'Compost',
+    label: 'Composting',
     helpText: 'How do you compost?',
     options: ['On-site', 'Off-site', 'Do not compost'],
     filter: true,

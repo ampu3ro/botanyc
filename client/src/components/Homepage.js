@@ -8,6 +8,7 @@ import Search from './map/Search';
 import Display from './map/Display';
 import Filters from './map/Filters';
 import Layers from './map/Layers';
+import Download from './map/Download';
 import Sidebar from './map/Sidebar';
 import Header from './Header';
 import Grid from '@mui/material/Grid';
@@ -97,6 +98,11 @@ const Homepage = () => {
           {showDisplay && <Display />}
           {showFilters && <Filters />}
           {showLayers && <Layers />}
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Download />
+            </Grid>
+          </Grid>
         </div>
       )}
     </div>
