@@ -86,6 +86,11 @@ const SALARY_RANGE = [
 export const FARM_PROPS = {
   // order matters for sidebar display
   name: { label: 'Name', helpText: 'What is the name of the farm or garden?' },
+  orgName: {
+    label: 'Organization',
+    helpText:
+      'What is the name of the supporting organization, agency, or company (if not the same as the farm or garden)?',
+  },
   address: {
     label: 'Address',
     helpText: "What is the address of this farm or garden's location?",
@@ -130,11 +135,6 @@ export const FARM_PROPS = {
     ],
   },
   percentFood: { label: 'Food share', default: 80 },
-  orgName: {
-    label: 'Organization',
-    helpText:
-      'What is the name of the supporting organization, agency, or company (if not the same as the farm or garden)?',
-  },
   headquarters: {
     label: 'Headquarters',
     helpText:

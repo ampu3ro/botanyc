@@ -7,6 +7,7 @@ const farmSchema = new Schema(
       type: String,
       required: true,
     },
+    orgName: String,
     lat: {
       type: Number,
       required: true,
