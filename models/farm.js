@@ -48,7 +48,7 @@ const farmSchema = new Schema(
       default: undefined,
     },
     accessibility: String,
-    adModes: {
+    publicity: {
       type: [String],
       default: undefined,
     },
@@ -56,9 +56,9 @@ const farmSchema = new Schema(
       type: [String],
       default: undefined,
     },
-    aquaType: String,
-    ponicType: String,
-    iotTypes: {
+    aquaculture: String,
+    aquaponics: String,
+    iot: {
       type: [String],
       default: undefined,
     },
@@ -66,7 +66,7 @@ const farmSchema = new Schema(
     compost: String,
     compostOffsite: String,
     compostOnsite: String,
-    dischargeMethods: {
+    wastewater: {
       type: [String],
       default: undefined,
     },

@@ -274,21 +274,21 @@ const FarmForm = () => {
           </Grid>
           <SelectForm name="priorities" />
           <SelectForm name="accessibility" />
-          <SelectForm name="adModes" />
+          <SelectForm name="publicity" />
           <SectionHeader text="Food Production" />
           <SelectForm name="growMethods" />
           {watchGrowMethods.join(',').includes('Aqua') && (
-            <SelectForm name="aquaType" />
+            <SelectForm name="aquaculture" />
           )}
           {watchGrowMethods.join(',').includes('ponics') && (
-            <SelectForm name="ponicType" />
+            <SelectForm name="aquaponics" />
           )}
-          <SelectForm name="iotTypes" />
+          <SelectForm name="iot" />
           <SelectForm name="usdaOrganic" />
           <SelectForm name="compost" />
           {watchCompost === 'Off-site' && <SelectForm name="compostOffsite" />}
           {watchCompost === 'On-site' && <SelectForm name="compostOnsite" />}
-          <SelectForm name="dischargeMethods" />
+          <SelectForm name="wastewater" />
           <SelectForm name="dischargePermit" />
           <SectionHeader text="Harvest, processing, and distribution" />
           <NumericGridForm name="crops" adorn="lbs" />

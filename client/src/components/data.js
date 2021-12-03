@@ -146,11 +146,15 @@ export const FARM_PROPS = {
       'What is the corporate or organizational structure of your farm or garden?',
     options: ['C corp', 'S corp', 'LLC', 'Not-for-profit', 'Other'],
   },
-  bCorp: { label: 'B corporation', default: false },
+  bCorp: {
+    label: 'B corporation',
+    helpText: 'Are you a certified B corp (benefit corporation)?',
+    options: ['Yes', 'No'],
+  },
   priorities: {
     label: 'Socioeconomic priorities',
     helpText:
-      "Please rank the following in order of priority based on the farm or garden's mission statement",
+      "Please rank your top 3 priorities based on the farm or garden's mission statement",
     options: [
       'Growing and selling food for profit',
       'Training new farmers (entrepreneurship) or other green job training',
@@ -171,7 +175,7 @@ export const FARM_PROPS = {
       'No, only for workers/managers',
     ],
   },
-  adModes: {
+  publicity: {
     label: 'Publicity',
     helpText: 'How can members of the community find your farm or garden?',
     options: [
@@ -197,7 +201,7 @@ export const FARM_PROPS = {
     ],
     multiple: true,
   },
-  aquaType: {
+  aquaculture: {
     label: 'Aquaculture',
     helpText:
       'Does the farm or garden uses a recirculating aquaculture system (RAS) or non-recirculating system?',
@@ -206,7 +210,7 @@ export const FARM_PROPS = {
       'Non-recirculating system',
     ],
   },
-  ponicType: {
+  aquaponics: {
     label: 'Aquaponics',
     helpText:
       'Which of the following technologies are used for food production?',
@@ -219,8 +223,8 @@ export const FARM_PROPS = {
       'Other',
     ],
   },
-  iotTypes: {
-    label: 'IoT',
+  iot: {
+    label: 'IoT sensors',
     helpText:
       "What kinds of 'smart' (Internet-of-Things enabled) sensors do you use if any?",
     options: [
