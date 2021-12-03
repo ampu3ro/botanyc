@@ -264,18 +264,14 @@ const FarmForm = () => {
               </FormControl>
             )}
           />
-          <SelectForm name="orgType" />
-          <Controller
-            name="bCorp"
-            control={control}
-            defaultValue={false}
-            render={({ field }) => (
-              <FormControlLabel
-                control={<Switch {...field} />}
-                label="Toggle on if you are you a certified B corp (benefit corporation)"
-              />
-            )}
-          />
+          <Grid container spacing={2}>
+            <Grid item sx={12} md={6}>
+              <SelectForm name="orgType" />
+            </Grid>
+            <Grid item sx={12} md={6}>
+              <SelectForm name="bCorp" />
+            </Grid>
+          </Grid>
           <SelectForm name="priorities" />
           <SelectForm name="accessibility" />
           <SelectForm name="adModes" />

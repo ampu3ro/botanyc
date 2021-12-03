@@ -32,7 +32,7 @@ const farmSchema = new Schema(
     },
     orgType: String,
     headquarters: String,
-    bCorp: Boolean,
+    bCorp: String,
     website: String,
     socials: String,
     area: Number,
