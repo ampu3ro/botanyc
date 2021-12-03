@@ -1,9 +1,6 @@
 import { FILTER_FARMS } from '../actionTypes';
-import { FARM_PROPS } from '../../components/data';
 
 // filter for mapping and csv/json outputs
-const FILTER_KEYS = Object.keys(FARM_PROPS).filter((k) => FARM_PROPS[k].filter);
-
 const farmFiltered = (state = {}, action) => {
   switch (action.type) {
     case FILTER_FARMS:
@@ -11,15 +8,19 @@ const farmFiltered = (state = {}, action) => {
       if (!farm.features) return {};
 
       const features = farm.features.filter(({ properties }) => {
-        return FILTER_KEYS.map((k) => {
-          const f = filters[k];
-          const p = properties[k];
-          return !f || !f.length
-            ? true
-            : Array.isArray(p)
-            ? p.some((d) => f.includes(d))
-            : f.includes(p);
-        }).every((d) => d);
+        return Object.keys(filters)
+          .map((k) => {
+            let f = filters[k];
+            if (!f.length) return true;
+            if (f[0].name) {
+              f = f.map(({ name }) => name);
+            }
+            const p = properties[k];
+            return Array.isArray(p)
+              ? p.some((d) => f.includes(d))
+              : f.includes(p);
+          })
+          .every((d) => d);
       });
 
       return { ...farm, features };

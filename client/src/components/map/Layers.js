@@ -49,11 +49,11 @@ const Layers = () => {
       <Typography variant="body2">
         Urban agriculture is part of a complex food system. Use these layers to
         explore spatial relationships between farm/garden locations and select
-        socioeconomic variables from the&nbsp;
+        socioeconomic variables from the{' '}
         <a href="https://www.census.gov/programs-surveys/acs/about.html">
           American Community Survey
-        </a>
-        &nbsp;(all percent of Census tract populations)
+        </a>{' '}
+        (all percent of Census tract populations, except income)
       </Typography>
       <Grid container>
         {LAYER_SLIDERS.map((d) => (
