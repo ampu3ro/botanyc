@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
@@ -8,7 +9,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { styled, alpha } from '@mui/material/styles';
-import { PAINT_COLOR } from '../data';
+import { PAINT_COLOR, COLOR_BY, DENSITY_BY } from '../data';
 
 const LegendPaper = styled(Paper)(({ theme }) => ({
   position: 'absolute',
@@ -22,11 +23,20 @@ const LegendPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1.5),
 }));
 
-const Legend = ({ colorId }) => {
+const Legend = () => {
   const [expanded, setExpanded] = useState(true);
 
-  const colors = PAINT_COLOR[colorId];
-  const variant = colorId === 'density' ? 'square' : 'circle';
+  const display = useSelector((state) => state.display);
+  const colorBy = useSelector((state) => state.colorBy);
+  const densityBy = useSelector((state) => state.densityBy);
+
+  const density = display === 'district';
+  const name = density ? 'density' : colorBy;
+  const colors = PAINT_COLOR[name];
+  const variant = density ? 'square' : 'circle';
+  const title = density
+    ? DENSITY_BY.filter((d) => d.name === densityBy).map((d) => d.label)
+    : COLOR_BY.filter((d) => d.name === colorBy).map((d) => d.label);
 
   if (!colors || colors.length <= 1) return <div />;
 
@@ -40,7 +50,7 @@ const Legend = ({ colorId }) => {
         </Grid>
         {expanded && (
           <Grid item>
-            <Typography variant="h6">Legend</Typography>
+            <Typography variant="subtitle">{title}</Typography>
           </Grid>
         )}
       </Grid>

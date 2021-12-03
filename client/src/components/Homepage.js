@@ -5,7 +5,7 @@ import { filterFarms, collectFarms } from '../store/actions/munge';
 import Map from './map/Map';
 import Legend from './map/Legend';
 import Search from './map/Search';
-import Toggles from './map/Toggles';
+import Display from './map/Display';
 import Filters from './map/Filters';
 import Layers from './map/Layers';
 import Sidebar from './map/Sidebar';
@@ -18,15 +18,13 @@ import Switch from '@mui/material/Switch';
 const Homepage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showLayers, setShowLayers] = useState(false);
-  const [showToggles, setShowToggles] = useState(false);
+  const [showDisplay, setShowDisplay] = useState(false);
 
   const currentUser = useSelector((state) => state.currentUser);
   const farm = useSelector((state) => state.farm);
   const farmFiltered = useSelector((state) => state.farmFiltered);
   const district = useSelector((state) => state.district);
   const filters = useSelector((state) => state.filters);
-  const display = useSelector((state) => state.display);
-  const colorBy = useSelector((state) => state.colorBy);
 
   const dispatch = useDispatch();
 
@@ -57,7 +55,7 @@ const Homepage = () => {
         <div>
           <div style={{ position: 'relative' }}>
             <Map {...{ showLayers, showFilters }} />
-            <Legend colorId={display === 'farm' ? colorBy : 'density'} />
+            <Legend />
             <Search />
             <Sidebar />
           </div>
@@ -66,8 +64,8 @@ const Homepage = () => {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={showToggles}
-                    onChange={() => setShowToggles(!showToggles)}
+                    checked={showDisplay}
+                    onChange={() => setShowDisplay(!showDisplay)}
                   />
                 }
                 label="Show display options"
@@ -96,7 +94,7 @@ const Homepage = () => {
               />
             </Grid>
           </Grid>
-          {showToggles && <Toggles />}
+          {showDisplay && <Display />}
           {showFilters && <Filters />}
           {showLayers && <Layers />}
         </div>

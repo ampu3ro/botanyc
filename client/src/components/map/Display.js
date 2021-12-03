@@ -41,7 +41,7 @@ const RadioGroupControl = ({ label, value, options, setter }) => {
   );
 };
 
-const Toggles = () => {
+const Display = () => {
   const display = useSelector((state) => state.display);
   const colorBy = useSelector((state) => state.colorBy);
   const sizeBy = useSelector((state) => state.sizeBy);
@@ -64,7 +64,7 @@ const Toggles = () => {
         {display === 'farm' && (
           <Grid item>
             <RadioGroupControl
-              label="Color farms/gardens by"
+              label="Color by"
               value={colorBy}
               options={COLOR_BY}
               setter={setColorBy}
@@ -74,7 +74,7 @@ const Toggles = () => {
         {display === 'farm' && (
           <Grid item>
             <RadioGroupControl
-              label="Size farms/gardens by"
+              label="Size by"
               value={sizeBy}
               options={SIZE_BY}
               setter={setSizeBy}
@@ -115,4 +115,4 @@ const Toggles = () => {
   );
 };
 
-export default Toggles;
+export default Display;

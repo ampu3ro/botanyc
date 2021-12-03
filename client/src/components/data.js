@@ -686,10 +686,10 @@ export const LAYER_SLIDERS = [
 
 export const PAINT_COLOR = {
   type: AG_TYPES.filter((d) => d.checked !== undefined).map(
-    ({ value: name, color, label }) => ({
-      name,
+    ({ value, color }) => ({
+      name: value,
       color,
-      label,
+      label: value,
     })
   ),
   distro1: FARM_PROPS.distros.fields,
@@ -706,7 +706,7 @@ export const DISPLAY = [
 ];
 
 export const COLOR_BY = [
-  { name: 'type', label: 'Type' },
+  { name: 'type', label: 'Farm or garden type' },
   { name: 'distro1', label: 'Primary distribution channel' },
   { name: 'none', label: 'None' },
 ];
