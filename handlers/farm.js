@@ -1,5 +1,6 @@
 const db = require('../models');
 const mongoose = require('mongoose');
+const FARM_FIELDS = require('../models/data');
 
 exports.fetchFarms = async (req, res, next) => {
   try {
@@ -31,63 +32,69 @@ exports.fetchFarms = async (req, res, next) => {
 
 exports.bulkFarms = async (req, res, next) => {
   try {
-    const bulkOps = req.body.data.map((d) => {
-      let {
-        id,
-        remove,
-        name,
-        lat,
-        lon,
-        address,
-        type,
-        environments,
-        enviroDetails,
-        area,
-        authUsers,
-      } = d;
-      if (id === '') {
-        id = undefined;
-      }
-      const filter = { _id: id ? mongoose.Types.ObjectId(id) : '' };
-      if (remove && id) {
-        return { deleteOne: { filter } };
-      }
-      const fromString = (x) => {
-        return x ? x.replace(' ', '').split(',') : undefined;
-      };
-      let document = {
-        name,
-        type,
-        environments: fromString(environments),
-        enviroDetails: fromString(enviroDetails),
-        area: area ? parseFloat(area) : undefined,
-        authUsers: fromString(authUsers),
-        modifiedBy: req.body.currentUser.user.email,
-        needsApproval: false,
-      };
-      if (lat && lon) {
-        lat = parseFloat(lat);
-        lon = parseFloat(lon);
-        if ((isNaN(lat) || isNaN(lon)) && address !== '') {
+    const bulkOps = req.body.data
+      .map((d) => {
+        let { id, remove } = d;
+        if (id === '') {
+          id = undefined;
+        }
+        const filter = { _id: id ? mongoose.Types.ObjectId(id) : '' };
+        if (remove && id) {
+          return { deleteOne: { filter } };
+        }
+
+        const doc = Object.keys(FARM_FIELDS)
+          .map((k) => {
+            let v = d[k];
+            if (!v) return;
+            const f = FARM_FIELDS[k].type || FARM_FIELDS[k];
+            if (Array.isArray(f)) {
+              v = v
+                .replace(/,\s/, ';;')
+                .split(',')
+                .map((d) => d.replace(';;', ', '));
+            } else if (f() === Number()) {
+              v = parseFloat(v);
+            }
+            return [k, v];
+          })
+          .filter((d) => d);
+
+        if (!doc.length) return;
+
+        let document = {
+          ...Object.fromEntries(doc),
+          modifiedBy: req.body.currentUser.user.email,
+          needsApproval: false,
+        };
+
+        let { lat, lon, address } = document;
+        if (
+          lat &&
+          lon &&
+          address &&
+          (isNaN(lat) || isNaN(lon)) &&
+          address !== ''
+        ) {
           const g = geocode(address); // could get expensive
           if (g.length) {
             address = g[0].formattedAddress;
             lat = g[0].latitude;
             lon = g[0].longitude;
           }
+          document = { ...document, address, lat, lon };
         }
-        document = { ...document, address, lat, lon };
-      }
-      if (!id) {
-        return { insertOne: { document } };
-      }
-      return {
-        updateOne: {
-          filter,
-          update: { $set: document },
-        },
-      };
-    });
+        if (!id) {
+          return { insertOne: { document } };
+        }
+        return {
+          updateOne: {
+            filter,
+            update: { $set: document },
+          },
+        };
+      })
+      .filter((d) => d);
     const result = await db.Farm.bulkWrite(bulkOps);
     return res.status(200).json(result);
   } catch (err) {

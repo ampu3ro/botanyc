@@ -123,14 +123,6 @@ const FarmForm = () => {
       data.area = area; // filtering fields with 0 length below
     }
 
-    data.positions = Object.values(positions).filter((d) => d !== '');
-
-    data.wages = Object.values(wages)
-      .map(parseFloat)
-      .filter((d) => !isNaN(d));
-
-    data.modifiedBy = currentUser.user.email;
-
     if (geocoded.length && verified !== '') {
       const g = geocoded.filter((d) => d.formattedAddress === verified)[0];
       data = {
@@ -140,6 +132,9 @@ const FarmForm = () => {
         lon: g.longitude,
       };
     }
+
+    data.socials = data.socials.split(',');
+    data.modifiedBy = currentUser.user.email;
 
     // only update fields with data
     data = Object.keys(data)

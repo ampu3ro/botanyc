@@ -32,7 +32,7 @@ export const AG_TYPES = [
   {
     label: 'NYCHA farm or garden',
     value: 'NYCHA',
-    select: false,
+    select: true,
     color: deepOrange[500],
     checked: true,
   },
@@ -76,10 +76,10 @@ export const ENVIRONMENTS = {
 
 const COUNT_RANGE = ['1-10', '11-20', '21-30', '31 or more'];
 const SALARY_RANGE = [
-  '$0–24,999',
-  '$25,000–49,999',
-  '$50,000–74,999',
-  '$75,000–99,999',
+  '$0-24,999',
+  '$25,000-49,999',
+  '$50,000-74,999',
+  '$75,000-99,999',
   '$100,000 or more',
 ];
 
@@ -123,7 +123,7 @@ export const FARM_PROPS = {
     adorn: 'sqft',
     title: 'What is the horizontal area of your farm or garden by floor?',
     fields: [
-      { pattern: 'indoor', name: 'areaCellar', label: 'Cellar' },
+      { pattern: 'indoor', name: 'areaCellar', label: 'Basement/cellar' },
       {
         pattern: 'ground|garden-specific|other',
         name: 'areaGround',
@@ -271,7 +271,7 @@ export const FARM_PROPS = {
     helpText: 'What type of composting system do you use?',
     options: ['Aerobic', 'Anaerobic', 'Vermicomposting', 'Other'],
   },
-  dischargeMethods: {
+  wastewater: {
     label: 'Wastewater',
     helpText: 'How do you manage any wastewater?',
     options: [
@@ -537,9 +537,9 @@ export const FARM_PROPS = {
   studentPrograms: {
     label: 'Student programs',
     helpText:
-      'Do you offer programming for K–12 students? If yes, what services or programs do you offer?',
+      'Do you offer programming for K-12 students? If yes, what services or programs do you offer?',
     options: [
-      'No, we do not offer any K–12 student programming',
+      'No, we do not offer any K-12 student programming',
       'Field trips/tours',
       'Extracurricular',
       'Special events',
@@ -826,7 +826,7 @@ export const PROFILES = [
     people: [
       {
         name: 'Samuel W. Anderson and Yolanda Gonzalez',
-        employer: 'Cornell Cooperative Extension–Harvest New York',
+        employer: 'Cornell Cooperative Extension-Harvest New York',
       },
       {
         name: 'Carlos Martinez and Max Lerner',
