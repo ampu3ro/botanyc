@@ -108,7 +108,10 @@ const FARM_FIELDS = {
   distroOther: Number,
   distroRegion: String,
   founding: Number,
-  ownership: String,
+  ownership: {
+    type: [String],
+    default: undefined,
+  },
   zoning: String,
   leaseStart: Date,
   leaseEnd: Date,

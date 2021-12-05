@@ -8,10 +8,13 @@ import Bar from './Bar';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
+import LanguageIcon from '@mui/icons-material/Language';
+import Tooltip from '@mui/material/Tooltip';
 
 const FarmContent = ({ selected }) => {
   const currentUser = useSelector((state) => state.currentUser);
@@ -26,7 +29,7 @@ const FarmContent = ({ selected }) => {
   return (
     <Stack spacing={2}>
       {Object.keys(FARM_PROPS)
-        .filter((k) => k !== 'floors')
+        .filter((k) => !['floors', 'website', 'socials'].includes(k))
         .map((k) => {
           const { label, fields, adorn, int } = FARM_PROPS[k];
           const { properties } = selected;
@@ -46,38 +49,54 @@ const FarmContent = ({ selected }) => {
           let v = properties[k];
           if (!label || !v) return undefined;
           if (k === 'name') {
+            const { website } = properties;
             return (
-              <Typography variant="h4" key={k}>
-                {v}
-                {currentUser.isAdmin && (
-                  <IconButton
-                    sx={{
-                      display: 'inline-flex',
-                      verticalAlign: 'middle',
-                    }}
-                    onClick={handleEdit}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                )}
-              </Typography>
+              <div>
+                <Typography variant="h4" key={k}>
+                  {v}
+                </Typography>
+                <Grid container>
+                  {currentUser.isAdmin && (
+                    <Grid item>
+                      <Tooltip title="Edit">
+                        <IconButton onClick={handleEdit}>
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                  )}
+                  {website && (
+                    <Grid item>
+                      <Tooltip title="Website">
+                        <IconButton href={website}>
+                          <LanguageIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                  )}
+                </Grid>
+              </div>
             );
           }
-          if (Array.isArray(v)) {
-            v = v.join(', ');
+          if (!Array.isArray(v)) {
+            v = [v];
           }
           const time = k === 'updatedAt';
           return (
             <Stack key={k}>
               {time && <Divider sx={{ marginBottom: 2 }} />}
-              <Typography>{label}</Typography>
-              <Typography variant="h6">
-                {time
-                  ? new Date(v).toDateString()
-                  : int
-                  ? parseInt(v).toLocaleString()
-                  : v}
-              </Typography>
+              <Typography variant="subtitle2">{label}</Typography>
+              {v.map((x) => (
+                <Typography>
+                  {k === 'percentFood'
+                    ? `${parseInt(x) * 100}%`
+                    : time
+                    ? new Date(x).toDateString()
+                    : int
+                    ? parseInt(x).toLocaleString()
+                    : x}
+                </Typography>
+              ))}
             </Stack>
           );
         })}
@@ -160,7 +179,7 @@ const Sidebar = () => {
       BackdropProps={{ invisible: true }}
       sx={{ opacity: 0.8 }}
     >
-      <Box sx={{ width: 300, padding: '2ch' }} onClick={closeDrawer}>
+      <Box sx={{ width: 400, padding: '2ch' }}>
         {selected.properties.boroName ? (
           <DistrictContent district={district} selected={selected} />
         ) : (
