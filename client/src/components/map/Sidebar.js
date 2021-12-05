@@ -86,8 +86,8 @@ const FarmContent = ({ selected }) => {
             <Stack key={k}>
               {time && <Divider sx={{ marginBottom: 2 }} />}
               <Typography variant="subtitle2">{label}</Typography>
-              {v.map((x) => (
-                <Typography>
+              {v.map((x, i) => (
+                <Typography key={i}>
                   {k === 'percentFood'
                     ? `${parseInt(x) * 100}%`
                     : time
