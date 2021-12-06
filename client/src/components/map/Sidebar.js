@@ -87,12 +87,12 @@ const FarmContent = ({ selected }) => {
               <Typography variant="subtitle2">{label}</Typography>
               {v.map((x, i) => (
                 <Typography key={i}>
-                  {k === 'percentFood'
-                    ? `${parseInt(x) * 100}%`
-                    : ['updatedAt', 'leaseStart', 'leaseEnd'].includes(k)
+                  {['updatedAt', 'leaseStart', 'leaseEnd'].includes(k)
                     ? new Date(x).toDateString()
                     : int
-                    ? parseInt(x).toLocaleString()
+                    ? `${parseInt(x).toLocaleString()}${
+                        k === 'percentFood' ? '%' : ''
+                      }`
                     : x}
                 </Typography>
               ))}

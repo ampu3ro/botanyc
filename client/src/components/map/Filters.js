@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
   useFormContext,
@@ -76,6 +76,11 @@ const Filters = () => {
 
   const filters = watch();
 
+  const handleReset = () => {
+    reset();
+    dispatch(setFilters(FILTER_DEFAULT));
+  };
+
   return (
     <FormProvider {...methods}>
       <Stack sx={{ padding: 2 }} spacing={2}>
@@ -103,11 +108,7 @@ const Filters = () => {
             </Button>
           </Grid>
           <Grid item>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={() => reset()}
-            >
+            <Button variant="outlined" color="secondary" onClick={handleReset}>
               Reset
             </Button>
           </Grid>

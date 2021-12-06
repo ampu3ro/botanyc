@@ -19,7 +19,7 @@ const Bar = ({ data, condensed }) => {
     const dataBar = data.sort((a, b) => d3.descending(a.value, b.value));
 
     const dimsBar = {
-      margin: { top: 10, right: 30, bottom: 0, left: 0 },
+      margin: { top: 20, right: 30, bottom: 10, left: 0 },
       width: dims.width,
       height: dims.height,
     };

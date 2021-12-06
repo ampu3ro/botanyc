@@ -16,9 +16,14 @@ const farmFiltered = (state = {}, action) => {
               f = f.map(({ name }) => name);
             }
             const p = properties[k];
-            return Array.isArray(p)
-              ? p.some((d) => f.includes(d))
-              : f.includes(p);
+            if (p) {
+              return Array.isArray(p)
+                ? p.some((d) => f.includes(d))
+                : f.includes(p);
+            } else {
+              // distros and crops need different handling
+              return f.every((d) => properties[d] & (properties[d] > 0));
+            }
           })
           .every((d) => d);
       });
