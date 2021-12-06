@@ -19,7 +19,7 @@ const Bar = ({ data, condensed }) => {
     const dataBar = data.sort((a, b) => d3.descending(a.value, b.value));
 
     const dimsBar = {
-      margin: { top: 0, right: 0, bottom: 10, left: 0 },
+      margin: { top: 10, right: 30, bottom: 0, left: 0 },
       width: dims.width,
       height: dims.height,
     };
@@ -96,7 +96,12 @@ const Bar = ({ data, condensed }) => {
         .attr('class', 'xLabel')
         .attr('x', (d) => x(d.value) + 3)
         .attr('y', (d) => y(d.label) + y.bandwidth() / 2 + 4)
-        .text((d) => parseInt(d.value).toLocaleString())
+        .text(
+          (d) =>
+            `${(d.value * (d.value < 1 ? 100 : 1)).toLocaleString()}${
+              d.value < 1 ? '%' : ''
+            }`
+        )
         .style('font-size', '8pt')
         .style('fill', fill);
     }

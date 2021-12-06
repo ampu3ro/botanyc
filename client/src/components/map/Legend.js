@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import { styled, alpha } from '@mui/material/styles';
 import { PAINT_COLOR, COLOR_BY, DENSITY_BY } from '../data';
 
@@ -44,9 +45,14 @@ const Legend = () => {
     <LegendPaper elevation={0}>
       <Grid container alignItems="center">
         <Grid item>
-          <IconButton size="small" onClick={() => setExpanded(!expanded)}>
-            {expanded ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
+          <Tooltip
+            title={expanded ? 'Hide legend' : 'Show legend'}
+            placement="top"
+          >
+            <IconButton size="small" onClick={() => setExpanded(!expanded)}>
+              {expanded ? <RemoveIcon /> : <AddIcon />}
+            </IconButton>
+          </Tooltip>
         </Grid>
         {expanded && (
           <Grid item>

@@ -81,16 +81,15 @@ const FarmContent = ({ selected }) => {
           if (!Array.isArray(v)) {
             v = [v];
           }
-          const time = k === 'updatedAt';
           return (
             <Stack key={k}>
-              {time && <Divider sx={{ marginBottom: 2 }} />}
+              {k === 'updatedAt' && <Divider sx={{ marginBottom: 2 }} />}
               <Typography variant="subtitle2">{label}</Typography>
               {v.map((x, i) => (
                 <Typography key={i}>
                   {k === 'percentFood'
                     ? `${parseInt(x) * 100}%`
-                    : time
+                    : ['updatedAt', 'leaseStart', 'leaseEnd'].includes(k)
                     ? new Date(x).toDateString()
                     : int
                     ? parseInt(x).toLocaleString()
@@ -123,7 +122,7 @@ const DistrictContent = ({ district, selected }) => {
       {DENSITY_BY.map(({ name, label, title, scale }) => {
         if (!title) {
           return (
-            <Stack>
+            <Stack key={name}>
               <Typography>{label}</Typography>
               <Typography variant="h6">
                 {parseInt(selected.properties[name]).toLocaleString()}
@@ -139,6 +138,7 @@ const DistrictContent = ({ district, selected }) => {
             }))
             .filter(({ value }) => value > 0);
 
+          console.log(data);
           if (!data.length) return <div />;
 
           return (

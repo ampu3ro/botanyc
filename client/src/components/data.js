@@ -42,7 +42,7 @@ export const AG_TYPES = [
     value: 'Institutional',
     select: true,
     color: brown[500],
-    checked: false,
+    checked: true,
   },
   {
     label: 'School farm or garden (including universities)',
@@ -467,7 +467,7 @@ export const FARM_PROPS = {
       'Manufacturing (begins with M)',
     ],
   },
-  leaseStart: { label: 'Start date', default: null },
+  leaseStart: { label: 'Lease start date', default: null },
   leaseEnd: { label: 'End date', default: null },
   rent: {
     label: 'Rent/mortgage',
