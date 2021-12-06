@@ -98,8 +98,8 @@ const Bar = ({ data, condensed }) => {
         .attr('y', (d) => y(d.label) + y.bandwidth() / 2 + 4)
         .text(
           (d) =>
-            `${(d.value * (d.value < 1 ? 100 : 1)).toLocaleString()}${
-              d.value < 1 ? '%' : ''
+            `${(d.value * (d.value <= 1 ? 100 : 1)).toLocaleString()}${
+              d.value <= 1 ? '%' : ''
             }`
         )
         .style('font-size', '8pt')

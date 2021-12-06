@@ -399,9 +399,9 @@ export const FARM_PROPS = {
   },
   distros: {
     label: 'Distribution channels',
-    adorn: 'lbs',
+    adorn: 'lbs/%',
     title:
-      'How many pounds did you sell or distribute through the following market channels in the last three years?',
+      'How many pounds did you sell or distribute through the following market channels in the last three years? (values <= 1 are treated as percentages)',
     fields: [
       {
         name: 'distroBox',
