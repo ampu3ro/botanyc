@@ -26,6 +26,7 @@ const Homepage = () => {
   const farmFiltered = useSelector((state) => state.farmFiltered);
   const district = useSelector((state) => state.district);
   const filters = useSelector((state) => state.filters);
+  const display = useSelector((state) => state.display);
 
   const dispatch = useDispatch();
 
@@ -57,7 +58,7 @@ const Homepage = () => {
           <div style={{ position: 'relative' }}>
             <Map {...{ showLayers, showFilters }} />
             <Legend />
-            <Search />
+            {display === 'farm' && <Search />}
             <Sidebar />
           </div>
           <Grid container spacing={2} sx={{ marginTop: 2 }}>
