@@ -21,12 +21,14 @@ export const AG_TYPES = [
       'Commercial farm or garden (i.e., selling $1000 or more of produce per year)',
     value: 'Commercial',
     color: pink[500],
+    select: true,
     checked: true,
   },
   {
     label: 'Community/non-commercial farm or garden',
     value: 'Non-commercial',
     color: green[500],
+    select: true,
     checked: true,
   },
   {
