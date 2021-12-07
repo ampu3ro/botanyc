@@ -9,20 +9,22 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import { PROFILES, DATA_SOURCES } from './data';
 
-const AvatarProfile = ({ name, school, profileUrl, width }) => {
+const AvatarProfile = ({ name, school, src, profileUrl, width }) => {
   return (
-    <Stack spacing={2} alignItems="center">
+    <Stack alignItems="center">
       <IconButton href={profileUrl} sx={{ width, height: width }}>
-        <Avatar sx={{ width: width * 0.85, height: width * 0.85 }}>
+        <Avatar
+          src={src}
+          alt={name}
+          sx={{ width: width * 0.85, height: width * 0.85 }}
+        >
           {name.substring(0, 1)}
         </Avatar>
       </IconButton>
-      <Stack>
-        <Typography align="center">{name}</Typography>
-        <Typography variant="body2" align="center">
-          {school}
-        </Typography>
-      </Stack>
+      <Typography align="center">{name}</Typography>
+      <Typography variant="body2" align="center">
+        {school}
+      </Typography>
     </Stack>
   );
 };
@@ -47,14 +49,15 @@ const ProfileSection = ({ category, people, avatarWidth }) => {
         {category}
       </Typography>
       <Grid container justifyContent="center">
-        {people.map(({ name, school, profileUrl, employer }) => {
+        {people.map(({ name, school, src, profileUrl, employer }) => {
           if (avatarWidth) {
             return (
               <Grid item key={name} xs={4} sm={3} md={2}>
                 <AvatarProfile
                   name={name}
                   school={school}
-                  href={profileUrl}
+                  src={src}
+                  profileUrl={profileUrl}
                   width={avatarWidth}
                 />
               </Grid>
@@ -114,7 +117,7 @@ const About = () => {
             not only points out farm and garden locations, but also provides
             information on food production and distribution, technologies,
             labor, services to the community, and other information. M.A.P. NYC
-            is also crowdsourced, meaning that each entry is editable by growers
+            is crowdsourced, meaning that each entry is editable by growers
             themselves. (To become a verified user for a specific farm or
             garden, see below.) In addition, the map can also display layers of
             basic socioeconomic data, to aid food-systems research.
@@ -122,13 +125,15 @@ const About = () => {
               M.A.P. NYC aims to help New York City reach its equity and
               sustainability goals by cataloging all food grown in the city in
               dedicated agricultural spaces (i.e., not backyards or window
-              sills). Specifically, M.A.P. NYC was created to help inform policy
-              recommendations concerning urban agriculture, including a baseline
-              for the city’s local food production. While this project is
-              focused on food, M.A.P. NYC recognizes that urban agriculture
-              plays many vital roles beyond food production, including
-              education, the creation of safe and inclusive community spaces,
-              and ecosystem services.
+              sills). Specifically, M.A.P. NYC was created to understand how
+              much food is being produced in the Five Boroughs, where, by whom,
+              and for what purpose. Creating this baseline of the city’s food
+              production will help inform policy recommendations, stimulate
+              local food production, and promote interest in urban agriculture.
+              While this project is focused on food, M.A.P. NYC recognizes that
+              urban agriculture plays many vital roles beyond food production,
+              including education, the creation of safe and inclusive community
+              spaces, and ecosystem services.
             </p>
             As a public data tool, M.A.P. NYC is designed to support growers
             (commercial, non-profit, community, and school-based), policymakers,
@@ -149,7 +154,8 @@ const About = () => {
             independently validate their accuracy.
             <p style={{ marginBottom: 0 }}>
               To become a verified user for a farm or garden, please email
-              [TBD].
+              <Link href="mailto:mapnycapp@gmail.com">mapnycapp@gmail.com</Link>
+              .
             </p>
           </Typography>
         </Stack>

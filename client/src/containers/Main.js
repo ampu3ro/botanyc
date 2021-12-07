@@ -18,9 +18,9 @@ import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
-import cuspLogo from '../images/cusp_logo.png';
-import csbLogo from '../images/csb_logo.png';
-import tandonLogo from '../images/tandon_logo.png';
+import logoCUSP from '../images/logos/CUSP.png';
+import logoCSB from '../images/logos/CSB.png';
+import logoTandon from '../images/logos/Tandon.png';
 
 const Main = () => {
   const alert = useSelector((state) => state.alert);
@@ -97,21 +97,21 @@ const Main = () => {
       >
         <Grid item>
           <Button
-            startIcon={<img src={csbLogo} alt="CSB logo" width="200" />}
+            startIcon={<img src={logoCSB} alt="CSB logo" width="200" />}
             href="https://www.stern.nyu.edu/experience-stern/about/departments-centers-initiatives/centers-of-research/center-sustainable-business"
             target="_blank"
           />
         </Grid>
         <Grid item>
           <Button
-            startIcon={<img src={cuspLogo} alt="CUSP logo" width="200" />}
+            startIcon={<img src={logoCUSP} alt="CUSP logo" width="200" />}
             href="https://cusp.nyu.edu/"
             target="_blank"
           />
         </Grid>
         <Grid item>
           <Button
-            startIcon={<img src={tandonLogo} alt="CUSP logo" width="200" />}
+            startIcon={<img src={logoTandon} alt="CUSP logo" width="200" />}
             href="https://engineering.nyu.edu/"
             target="_blank"
           />

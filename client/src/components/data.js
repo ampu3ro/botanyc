@@ -12,6 +12,11 @@ import {
   teal,
   blueGrey,
 } from '@mui/material/colors';
+import profileNico from '../images/profile/Nico.jpg';
+import profileJeremy from '../images/profile/Jeremy.jpg';
+import profileXiaolin from '../images/profile/Xiaolin.jpg';
+import profileChristina from '../images/profile/Christina.jpg';
+import profileWythe from '../images/profile/Wythe.jpg';
 
 // select determines if it shows up as a dropdown option in the form
 // whether checked is defined determines if it shows up on the map
@@ -780,6 +785,7 @@ export const PROFILES = [
       {
         name: 'Wythe Marschall',
         school: 'CSB',
+        src: profileWythe,
         profileUrl: 'https://www.linkedin.com/in/wythe/',
       },
       {
@@ -789,7 +795,7 @@ export const PROFILES = [
           'https://www.linkedin.com/in/anna-alice-reznickova-09541379/',
       },
     ],
-    avatarWidth: 100,
+    avatarWidth: 150,
   },
   {
     category: 'Research and development team',
@@ -797,16 +803,23 @@ export const PROFILES = [
       {
         name: 'Nico Ampuero',
         school: 'CUSP',
+        src: profileNico,
         profileUrl: 'https://www.linkedin.com/in/ampu3ro/',
       },
       {
         name: 'Jeremy Rucker',
         school: 'CUSP',
+        src: profileJeremy,
         profileUrl: 'https://www.linkedin.com/in/jeremyr327/',
       },
-      { name: 'Xiaolin Li', school: 'CUSP', profileUrl: '' },
+      {
+        name: 'Xiaolin Li',
+        src: profileXiaolin,
+        school: 'CUSP',
+        profileUrl: '',
+      },
     ],
-    avatarWidth: 100,
+    avatarWidth: 150,
   },
   {
     category: 'Research contributors',
@@ -819,10 +832,11 @@ export const PROFILES = [
       {
         name: 'Christina Curry',
         school: 'Tandon',
+        src: profileChristina,
         profileUrl: 'https://www.linkedin.com/in/christina-curry/',
       },
     ],
-    avatarWidth: 100,
+    avatarWidth: 150,
   },
   {
     category: 'Advisory board',
