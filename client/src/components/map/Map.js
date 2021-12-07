@@ -298,7 +298,7 @@ const Map = () => {
   }, [market, mapBase]);
 
   useEffect(() => {
-    if (!mapBase || !selected) return;
+    if (!mapBase || !selected || !selected.properties) return;
     const { properties, geometry, fly } = selected;
     const { id } = properties;
     if (id) {
