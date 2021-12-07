@@ -143,7 +143,7 @@ const FarmForm = () => {
       dispatch(editOne({ currentUser, data })).then(({ features }) => {
         const feature = features.filter((d) => {
           const { name, updatedAt } = d.properties;
-          return name === data.name && updatedAt > timestamp.toISOString();
+          return name === data.name && Date.parse(updatedAt) > timestamp;
         })[0];
         dispatch(setSelected({ ...feature, fly: true }));
         handleClear();
