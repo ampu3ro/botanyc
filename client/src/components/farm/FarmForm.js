@@ -35,9 +35,6 @@ const FarmForm = () => {
   const [openVerify, setOpenVerify] = useState(false);
   const [push, setPush] = useState(false); // push edit/submission to db
   const [openDelete, setOpenDelete] = useState(false);
-  const [positions, setPositions] = useState({});
-  const [wages, setWages] = useState({});
-  const [jobsCount, setJobsCount] = useState(1);
 
   const currentUser = useSelector((state) => state.currentUser);
   const farm = useSelector((state) => state.farm);
@@ -65,7 +62,6 @@ const FarmForm = () => {
     setPush(false);
     dispatch(setEdit(''));
     dispatch(setGeocoded([]));
-    setJobsCount(1);
     reset();
   }, [dispatch, reset]);
 
@@ -162,8 +158,6 @@ const FarmForm = () => {
     getValues,
     edit,
     currentUser,
-    wages,
-    positions,
     geocoded,
     verified,
     dispatch,
@@ -257,14 +251,16 @@ const FarmForm = () => {
               </FormControl>
             )}
           />
-          <Grid container spacing={2}>
-            <Grid item sx={12} md={6}>
-              <SelectForm name="orgType" />
+          <FormControl>
+            <Grid container spacing={2}>
+              <Grid item sx={12} md={6}>
+                <SelectForm name="orgType" />
+              </Grid>
+              <Grid item sx={12} md={6}>
+                <SelectForm name="bCorp" />
+              </Grid>
             </Grid>
-            <Grid item sx={12} md={6}>
-              <SelectForm name="bCorp" />
-            </Grid>
-          </Grid>
+          </FormControl>
           <SelectForm name="priorities" />
           <SelectForm name="accessibility" />
           <SelectForm name="publicity" />
@@ -307,57 +303,6 @@ const FarmForm = () => {
           <TextForm name="rent" />
           <TextForm name="landValue" />
           <SectionHeader text="Labor" />
-          <FormControl>
-            <FormLabel sx={{ marginBottom: 1 }}>
-              Please list the positions you offer and estimated hourly wages for
-              each.
-            </FormLabel>
-            <Grid container spacing={2}>
-              {Array(jobsCount)
-                .fill()
-                .map((d, i) => {
-                  return (
-                    <Fragment key={i}>
-                      <Grid item xs={12} sm={8}>
-                        <TextField
-                          label="Position"
-                          value={positions[i] || ''}
-                          onChange={(e) =>
-                            setPositions({
-                              ...positions,
-                              [i]: e.target.value,
-                            })
-                          }
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <TextField
-                          label="Wage"
-                          value={wages[i] || ''}
-                          onChange={(e) =>
-                            setWages({ ...wages, [i]: e.target.value })
-                          }
-                          fullWidth
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                $/hr
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </Grid>
-                    </Fragment>
-                  );
-                })}
-            </Grid>
-            <Stack direction="row" spacing={1}>
-              <IconButton onClick={() => setJobsCount(jobsCount + 1)}>
-                <AddIcon />
-              </IconButton>
-            </Stack>
-          </FormControl>
           <SelectForm name="fullTime" />
           <SelectForm name="farmHand" />
           <SelectForm name="farmManager" />
