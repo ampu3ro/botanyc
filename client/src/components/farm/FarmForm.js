@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, Fragment } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
@@ -23,10 +23,7 @@ import FormLabel from '@mui/material/FormLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
 import Slider from '@mui/material/Slider';
 
 const FarmForm = () => {
@@ -116,6 +113,9 @@ const FarmForm = () => {
     if (area > 0) {
       data.area = area; // filtering fields with 0 length below
     }
+    if (!Array.isArray(data.socials)) {
+      data.socials = data.socials.split(',');
+    }
 
     if (geocoded.length && verified !== '') {
       const g = geocoded.filter((d) => d.formattedAddress === verified)[0];
@@ -127,7 +127,6 @@ const FarmForm = () => {
       };
     }
 
-    data.socials = data.socials.split(',');
     data.modifiedBy = currentUser.user.email;
 
     // only update fields with data
@@ -143,8 +142,9 @@ const FarmForm = () => {
       dispatch(editOne({ currentUser, data })).then(({ features }) => {
         const feature = features.filter((d) => {
           const { name, updatedAt } = d.properties;
-          return name === data.name && Date.parse(updatedAt) > timestamp;
+          return name === data.name; // && Date.parse(updatedAt) > timestamp
         })[0];
+        console.log(feature);
         dispatch(setSelected({ ...feature, fly: true }));
         handleClear();
       });
@@ -153,6 +153,8 @@ const FarmForm = () => {
     }
     dispatch(setSearch(''));
     history.push('/');
+
+    return () => setPush(false);
   }, [
     push,
     getValues,
