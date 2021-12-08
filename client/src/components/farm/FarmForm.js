@@ -64,7 +64,7 @@ const FarmForm = () => {
 
   const handleDelete = () => {
     const data = getValues();
-    dispatch(deleteOne({ data }));
+    dispatch(deleteOne({ data })).then(() => dispatch(setSelected(null)));
     handleClear();
     setOpenDelete(false);
   };
@@ -113,8 +113,9 @@ const FarmForm = () => {
     if (area > 0) {
       data.area = area; // filtering fields with 0 length below
     }
-    if (!Array.isArray(data.socials)) {
-      data.socials = data.socials.split(',');
+    const { socials } = data;
+    if (socials && !Array.isArray(socials)) {
+      data.socials = socials.split(',');
     }
 
     if (geocoded.length && verified !== '') {
@@ -134,7 +135,7 @@ const FarmForm = () => {
       .filter((k) => typeof data[k] === 'number' || (data[k] && data[k].length))
       .reduce((a, k) => Object.assign(a, { [k]: data[k] }), {});
 
-    const timestamp = new Date();
+    const timestamp = new Date().toISOString();
     if (
       currentUser.isAdmin ||
       (edit && edit.properties.authUsers.includes(currentUser.user.username))
@@ -142,9 +143,9 @@ const FarmForm = () => {
       dispatch(editOne({ currentUser, data })).then(({ features }) => {
         const feature = features.filter((d) => {
           const { name, updatedAt } = d.properties;
-          return name === data.name; // && Date.parse(updatedAt) > timestamp
+          return name === data.name; // updatedAt > timestamp
         })[0];
-        console.log(feature);
+        console.log(feature, timestamp);
         dispatch(setSelected({ ...feature, fly: true }));
         handleClear();
       });
