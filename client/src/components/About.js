@@ -154,7 +154,9 @@ const About = () => {
             independently validate their accuracy.
             <p style={{ marginBottom: 0 }}>
               To become a verified user for a farm or garden, please email
-              <Link href="mailto:mapnycapp@gmail.com">mapnycapp@gmail.com</Link>
+              <Link href="mailto:mapnyc@stern.nyu.edu">
+                mapnyc@stern.nyu.edu
+              </Link>
               .
             </p>
           </Typography>
