@@ -51,10 +51,8 @@ const FarmContent = ({ selected }) => {
           if (k === 'name') {
             const { website } = properties;
             return (
-              <div>
-                <Typography variant="h4" key={k}>
-                  {v}
-                </Typography>
+              <div key={k}>
+                <Typography variant="h4">{v}</Typography>
                 <Grid container>
                   {currentUser.isAdmin && (
                     <Grid item>

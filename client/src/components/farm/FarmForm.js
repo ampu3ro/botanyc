@@ -135,19 +135,23 @@ const FarmForm = () => {
       .filter((k) => typeof data[k] === 'number' || (data[k] && data[k].length))
       .reduce((a, k) => Object.assign(a, { [k]: data[k] }), {});
 
-    const timestamp = new Date().toISOString();
     if (
       currentUser.isAdmin ||
       (edit && edit.properties.authUsers.includes(currentUser.user.username))
     ) {
-      dispatch(editOne({ currentUser, data })).then(({ features }) => {
-        const feature = features.filter((d) => {
-          const { name, updatedAt } = d.properties;
-          return name === data.name; // updatedAt > timestamp
-        })[0];
-        console.log(feature, timestamp);
-        dispatch(setSelected({ ...feature, fly: true }));
-        handleClear();
+      const setClock = new Promise((resolve) => {
+        resolve(new Date().toISOString());
+      });
+
+      setClock.then((clock) => {
+        dispatch(editOne({ currentUser, data })).then(({ features }) => {
+          const feature = features.filter((d) => {
+            const { name, updatedAt } = d.properties;
+            return name === data.name && updatedAt > clock;
+          })[0];
+          dispatch(setSelected({ ...feature, fly: true }));
+          handleClear();
+        });
       });
     } else {
       dispatch(submitOne(data)).then(() => handleClear());
@@ -256,10 +260,10 @@ const FarmForm = () => {
           />
           <FormControl>
             <Grid container spacing={2}>
-              <Grid item sx={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <SelectForm name="orgType" />
               </Grid>
-              <Grid item sx={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <SelectForm name="bCorp" />
               </Grid>
             </Grid>
