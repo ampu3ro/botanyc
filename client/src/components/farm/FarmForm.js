@@ -139,20 +139,16 @@ const FarmForm = () => {
       currentUser.isAdmin ||
       (edit && edit.properties.authUsers.includes(currentUser.user.username))
     ) {
-      const setClock = new Promise((resolve) => {
-        resolve(new Date().toISOString());
-      });
-
-      setClock.then((clock) => {
-        dispatch(editOne({ currentUser, data })).then(({ features }) => {
-          const feature = features.filter((d) => {
-            const { name, updatedAt } = d.properties;
-            return name === data.name; //&& updatedAt > clock
-          })[0];
-          console.log(clock, feature.updatedAt);
-          dispatch(setSelected({ ...feature, fly: true }));
-          handleClear();
-        });
+      dispatch(editOne({ currentUser, data })).then(({ features }) => {
+        const feature = features
+          .filter((d) => d.properties.name === data.name)
+          .sort(
+            (a, b) =>
+              Date.parse(b.properties.updatedAt) -
+              Date.parse(a.properties.updatedAt)
+          )[0];
+        dispatch(setSelected({ ...feature, fly: true }));
+        handleClear();
       });
     } else {
       dispatch(submitOne(data)).then(() => handleClear());
