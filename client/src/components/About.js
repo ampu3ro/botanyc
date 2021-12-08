@@ -153,7 +153,7 @@ const About = () => {
             changes will not be made unless a project administrator can
             independently validate their accuracy.
             <p style={{ marginBottom: 0 }}>
-              To become a verified user for a farm or garden, please email
+              To become a verified user for a farm or garden, please email{' '}
               <Link href="mailto:mapnyc@stern.nyu.edu">
                 mapnyc@stern.nyu.edu
               </Link>
