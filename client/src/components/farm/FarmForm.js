@@ -50,8 +50,10 @@ const FarmForm = () => {
 
   let searchOptions = farm.features;
   if (!currentUser.isAdmin && searchOptions) {
-    searchOptions = searchOptions.filter(({ properties }) =>
-      properties.authUsers.includes(currentUser.user.username)
+    searchOptions = searchOptions.filter(
+      ({ properties }) =>
+        properties.authUsers &&
+        properties.authUsers.includes(currentUser.user.username)
     );
   }
 
@@ -186,7 +188,7 @@ const FarmForm = () => {
     <div>
       <FormProvider {...methods}>
         <Header text=" Add New or Edit Existing Farm/Garden Location" />
-        {searchOptions && searchOptions.length && (
+        {!!searchOptions && searchOptions.length > 0 && (
           <FormControl fullWidth>
             <Autocomplete
               options={searchOptions}
