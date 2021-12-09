@@ -342,8 +342,8 @@ const Map = () => {
     const fallback = sizeBy === 'area' ? 10000 : 64;
     const root = ['sqrt', ['number', ['get', sizeBy], fallback]];
     if (sizeBy === 'area') {
-      step1 = ['/', root, 15];
-      step2 = ['/', root, 7];
+      step1 = ['/', root, 16];
+      step2 = ['/', root, 6];
     } else if (sizeBy === 'production') {
       step1 = ['/', root, 4];
       step2 = ['/', root, 2];

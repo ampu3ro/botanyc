@@ -17,6 +17,8 @@ import profileJeremy from '../images/profile/Jeremy.jpg';
 import profileXiaolin from '../images/profile/Xiaolin.jpg';
 import profileChristina from '../images/profile/Christina.jpg';
 import profileWythe from '../images/profile/Wythe.jpg';
+import profileGianna from '../images/profile/Gianna.jpg';
+import profileAlice from '../images/profile/Alice.jpg';
 
 // select determines if it shows up as a dropdown option in the form
 // whether checked is defined determines if it shows up on the map
@@ -791,6 +793,7 @@ export const PROFILES = [
       {
         name: 'Alice Reznickova',
         school: 'Tandon',
+        src: profileAlice,
         profileUrl:
           'https://www.linkedin.com/in/anna-alice-reznickova-09541379/',
       },
@@ -816,7 +819,7 @@ export const PROFILES = [
         name: 'Xiaolin Li',
         src: profileXiaolin,
         school: 'CUSP',
-        profileUrl: '',
+        profileUrl: 'https://www.linkedin.com/in/xiaolin-li-molly',
       },
     ],
     avatarWidth: 150,
@@ -826,6 +829,7 @@ export const PROFILES = [
     people: [
       {
         name: 'Gianna White',
+        src: profileGianna,
         school: 'Tandon',
         profileUrl: 'https://www.linkedin.com/in/gianna-white/',
       },
