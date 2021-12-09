@@ -9,8 +9,22 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
+import Link from '@mui/material/Link';
 import { styled, alpha } from '@mui/material/styles';
 import { PAINT_COLOR, COLOR_BY, DENSITY_BY } from '../data';
+
+const TypeHelp = (
+  <Typography>
+    Per Local Law 46 (2018), the Primary Land Use Tax Lot Output (“PLUTO”)
+    database is changing: GreenThumb community gardens will no longer be
+    classified as vacant lots, but as community gardens. (More information from{' '}
+    <Link href="https://www.citylandnyc.org/community-gardens-to-be-classified-as-open-space-on-city-planning-database/">
+      New York Law School
+    </Link>
+    .) Sites listed as "potential" are lots to be developed as community
+    gardens.
+  </Typography>
+);
 
 const LegendPaper = styled(Paper)(({ theme }) => ({
   position: 'absolute',
@@ -79,7 +93,22 @@ const Legend = () => {
                 </Avatar>
               </Grid>
               <Grid item>
-                <Typography sx={{ fontSize: '10pt' }}>{label}</Typography>
+                {name === 'Potential' && (
+                  <Tooltip title={TypeHelp} placement="right">
+                    <Link
+                      color="textPrimary"
+                      sx={{
+                        fontSize: '10pt',
+                        textDecorationStyle: 'dotted',
+                      }}
+                    >
+                      {label}
+                    </Link>
+                  </Tooltip>
+                )}
+                {name !== 'Potential' && (
+                  <Typography sx={{ fontSize: '10pt' }}>{label}</Typography>
+                )}
               </Grid>
             </Grid>
           ))}
