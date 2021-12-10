@@ -15,6 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import LanguageIcon from '@mui/icons-material/Language';
 import Tooltip from '@mui/material/Tooltip';
+import { useTheme } from '@mui/styles';
 
 const FarmContent = ({ selected }) => {
   const currentUser = useSelector((state) => state.currentUser);
@@ -155,6 +156,7 @@ const Sidebar = () => {
   const district = useSelector((state) => state.district);
   const selected = useSelector((state) => state.selected);
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const closeDrawer = (event) => {
     if (
@@ -177,7 +179,13 @@ const Sidebar = () => {
       BackdropProps={{ invisible: true }}
       sx={{ opacity: 0.8 }}
     >
-      <Box sx={{ width: 400, padding: '2ch' }}>
+      <Box
+        sx={{
+          padding: '2ch',
+          width: 400,
+          [theme.breakpoints.down('md')]: { width: 350 },
+        }}
+      >
         {selected.properties.boroName ? (
           <DistrictContent district={district} selected={selected} />
         ) : (
