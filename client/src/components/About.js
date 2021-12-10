@@ -232,7 +232,7 @@ const About = () => {
         ))}
         <Typography>
           If you would like to join the M.A.P. NYC advisory board, please email
-          [TBD].
+          wm2251@stern.nyu.edu.
         </Typography>
         <Divider />
         <Stack spacing={2}>

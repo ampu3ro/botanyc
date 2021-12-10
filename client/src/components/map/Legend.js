@@ -21,8 +21,7 @@ const TypeHelp = (
     <Link href="https://www.citylandnyc.org/community-gardens-to-be-classified-as-open-space-on-city-planning-database/">
       New York Law School
     </Link>
-    .) Sites listed as "potential" are lots to be developed as community
-    gardens.
+    ) Sites listed as "potential" are lots to be developed as community gardens.
   </Typography>
 );
 
