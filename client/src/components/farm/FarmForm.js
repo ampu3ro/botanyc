@@ -214,141 +214,158 @@ const FarmForm = () => {
             </Button>
           </Grid>
         </Grid>
-        <Stack spacing={2} sx={{ maxWidth: '90%' }}>
-          <SectionHeader text="Farm/Garden Characteristics" />
-          <TextForm name="address" />
-          <TextForm name="name" />
-          <TextForm name="orgName" />
-          <TextForm name="headquarters" />
-          <TextForm name="website" />
-          <TextForm name="socials" />
-          <SelectForm name="type" />
-          <SelectForm name="environments" />
-          {!!watchEnviro.length && (
-            <SelectForm
-              name="enviroDetails"
-              label="Location detail"
-              options={watchEnviro.map((d) => ENVIRONMENTS[d]).flat()}
-              multiple
-            />
-          )}
-          {!!floors.length && (
-            <NumericGridForm name="floors" fields={floors} adorn="sqft" />
-          )}
-          <Controller
-            name="percentFood"
-            control={control}
-            defaultValue={80}
-            render={({ field }) => (
-              <FormControl>
-                <FormLabel>
-                  How much of your space is dedicated to food production?
-                </FormLabel>
-                <Slider
-                  step={1}
-                  min={0}
-                  max={100}
-                  valueLabelDisplay="auto"
-                  valueLabelFormat={(v) => `${v}%`}
-                  marks={marks}
-                  sx={{ width: '50%' }}
-                  {...field}
-                />
-              </FormControl>
-            )}
-          />
-          <FormControl>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <SelectForm name="orgType" />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <SelectForm name="bCorp" />
-              </Grid>
-            </Grid>
-          </FormControl>
-          <SelectForm name="priorities" />
-          <SelectForm name="accessibility" />
-          <SelectForm name="publicity" />
-          <SectionHeader text="Food Production" />
-          <SelectForm name="growMethods" />
-          {watchGrowMethods.join(',').includes('Aqua') && (
-            <SelectForm name="aquaculture" />
-          )}
-          {watchGrowMethods.join(',').includes('ponics') && (
-            <SelectForm name="aquaponics" />
-          )}
-          <SelectForm name="iot" />
-          <SelectForm name="usdaOrganic" />
-          <SelectForm name="compost" />
-          {watchCompost === 'Off-site' && <SelectForm name="compostOffsite" />}
-          {watchCompost === 'On-site' && <SelectForm name="compostOnsite" />}
-          <SelectForm name="wastewater" />
-          <SelectForm name="dischargePermit" />
-          <SectionHeader text="Harvest, processing, and distribution" />
-          <NumericGridForm name="crops" adorn="lbs" />
-          <NumericGridForm name="distros" adorn="lbs" />
-          <SelectForm name="distroRegion" />
-          <SectionHeader text="Land ownership and use" />
-          <DateForm name="founding" views={['year']} sx={{ width: '50%' }} />
-          <SelectForm name="ownership" />
-          <SelectForm name="zoning" />
-          <FormControl>
-            <FormLabel sx={{ marginBottom: 1 }}>
-              What is the start and end date of your current lease agreement?
-            </FormLabel>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <DateForm name="leaseStart" />
-              </Grid>
-              <Grid item xs={6}>
-                <DateForm name="leaseEnd" />
-              </Grid>
-            </Grid>
-          </FormControl>
-          <TextForm name="rent" />
-          <TextForm name="landValue" />
-          <SectionHeader text="Labor" />
-          <SelectForm name="fullTime" />
-          <SelectForm name="farmHand" />
-          <SelectForm name="farmManager" />
-          <SelectForm name="opsManager" />
-          <SelectForm name="eventsManager" />
-          <SelectForm name="partTime" />
-          <SelectForm name="volunteers" />
-          <SelectForm name="volunteerHours" />
-          <SelectForm name="localWorkers" />
-          <SectionHeader text="Enrichment opportunities" />
-          <SelectForm name="studentPrograms" />
-          <SelectForm name="skillsPrograms" />
-          <TextForm name="outreachHours" />
-          <SelectForm name="incomeSources" />
-          <SelectForm name="capInvestments" />
-          <SelectForm name="renewableEnergy" />
-          {currentUser.isAdmin && (
+        <Grid container>
+          <Grid item md={11}>
             <Stack spacing={2}>
-              <SectionHeader text="Database Admin" />
-              <TextForm name="authUsers" label="Users Authorized to Edit" />
+              <SectionHeader text="Farm/Garden Characteristics" />
+              <TextForm name="address" />
+              <TextForm name="name" />
+              <TextForm name="orgName" />
+              <TextForm name="headquarters" />
+              <TextForm name="website" />
+              <TextForm name="socials" />
+              <SelectForm name="type" />
+              <SelectForm name="environments" />
+              {!!watchEnviro.length && (
+                <SelectForm
+                  name="enviroDetails"
+                  label="Location detail"
+                  options={watchEnviro.map((d) => ENVIRONMENTS[d]).flat()}
+                  multiple
+                />
+              )}
+              {!!floors.length && (
+                <NumericGridForm name="floors" fields={floors} adorn="sqft" />
+              )}
+              <Controller
+                name="percentFood"
+                control={control}
+                defaultValue={80}
+                render={({ field }) => (
+                  <FormControl>
+                    <Grid container>
+                      <Grid item md={6}>
+                        <FormLabel>
+                          How much of your space is dedicated to food
+                          production?
+                        </FormLabel>
+                        <Slider
+                          step={1}
+                          min={0}
+                          max={100}
+                          valueLabelDisplay="auto"
+                          valueLabelFormat={(v) => `${v}%`}
+                          marks={marks}
+                          {...field}
+                        />
+                      </Grid>
+                    </Grid>
+                  </FormControl>
+                )}
+              />
+              <FormControl>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <SelectForm name="orgType" />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <SelectForm name="bCorp" />
+                  </Grid>
+                </Grid>
+              </FormControl>
+              <SelectForm name="priorities" />
+              <SelectForm name="accessibility" />
+              <SelectForm name="publicity" />
+              <SectionHeader text="Food Production" />
+              <SelectForm name="growMethods" />
+              {watchGrowMethods.join(',').includes('Aqua') && (
+                <SelectForm name="aquaculture" />
+              )}
+              {watchGrowMethods.join(',').includes('ponics') && (
+                <SelectForm name="aquaponics" />
+              )}
+              <SelectForm name="iot" />
+              <SelectForm name="usdaOrganic" />
+              <SelectForm name="compost" />
+              {watchCompost === 'Off-site' && (
+                <SelectForm name="compostOffsite" />
+              )}
+              {watchCompost === 'On-site' && (
+                <SelectForm name="compostOnsite" />
+              )}
+              <SelectForm name="wastewater" />
+              <SelectForm name="dischargePermit" />
+              <SectionHeader text="Harvest, processing, and distribution" />
+              <NumericGridForm name="crops" adorn="lbs" />
+              <NumericGridForm name="distros" adorn="lbs" />
+              <SelectForm name="distroRegion" />
+              <SectionHeader text="Land ownership and use" />
+              <Grid container>
+                <Grid item md={6}>
+                  <DateForm name="founding" views={['year']} />
+                </Grid>
+              </Grid>
+              <SelectForm name="ownership" />
+              <SelectForm name="zoning" />
+              <FormControl>
+                <FormLabel sx={{ marginBottom: 1 }}>
+                  What is the start and end date of your current lease
+                  agreement?
+                </FormLabel>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <DateForm name="leaseStart" />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <DateForm name="leaseEnd" />
+                  </Grid>
+                </Grid>
+              </FormControl>
+              <TextForm name="rent" />
+              <TextForm name="landValue" />
+              <SectionHeader text="Labor" />
+              <SelectForm name="fullTime" />
+              <SelectForm name="farmHand" />
+              <SelectForm name="farmManager" />
+              <SelectForm name="opsManager" />
+              <SelectForm name="eventsManager" />
+              <SelectForm name="partTime" />
+              <SelectForm name="volunteers" />
+              <SelectForm name="volunteerHours" />
+              <SelectForm name="localWorkers" />
+              <SectionHeader text="Enrichment opportunities" />
+              <SelectForm name="studentPrograms" />
+              <SelectForm name="skillsPrograms" />
+              <TextForm name="outreachHours" />
+              <SelectForm name="incomeSources" />
+              <SelectForm name="capInvestments" />
+              <SelectForm name="renewableEnergy" />
+              {currentUser.isAdmin && (
+                <Stack spacing={2}>
+                  <SectionHeader text="Database Admin" />
+                  <TextForm name="authUsers" label="Users Authorized to Edit" />
+                </Stack>
+              )}
+              <Stack direction="row" spacing={2}>
+                {!!edit && (
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => setOpenDelete(true)}
+                  >
+                    Delete
+                  </Button>
+                )}
+                <Button
+                  variant="contained"
+                  onClick={methods.handleSubmit(onSubmit)}
+                >
+                  Submit
+                </Button>
+              </Stack>
             </Stack>
-          )}
-          <Stack direction="row" spacing={2}>
-            {!!edit && (
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => setOpenDelete(true)}
-              >
-                Delete
-              </Button>
-            )}
-            <Button
-              variant="contained"
-              onClick={methods.handleSubmit(onSubmit)}
-            >
-              Submit
-            </Button>
-          </Stack>
-        </Stack>
+          </Grid>
+        </Grid>
       </FormProvider>
 
       <VerifyDialog
