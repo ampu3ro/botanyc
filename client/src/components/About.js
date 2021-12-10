@@ -7,16 +7,36 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
+import { useTheme } from '@mui/styles';
 import { PROFILES, DATA_SOURCES } from './data';
 
 const AvatarProfile = ({ name, school, src, profileUrl, width }) => {
+  const theme = useTheme();
+  const widthSm = width * 0.75;
+  const widthAv = width * 0.85;
+  const widthSmAv = widthAv * 0.75;
+
   return (
     <Stack alignItems="center">
-      <IconButton href={profileUrl} sx={{ width, height: width }}>
+      <IconButton
+        href={profileUrl}
+        sx={{
+          width,
+          height: width,
+          [theme.breakpoints.down('sm')]: { width: widthSm, height: widthSm },
+        }}
+      >
         <Avatar
           src={src}
           alt={name}
-          sx={{ width: width * 0.85, height: width * 0.85 }}
+          sx={{
+            width: widthAv,
+            height: widthAv,
+            [theme.breakpoints.down('sm')]: {
+              width: widthSmAv,
+              height: widthSmAv,
+            },
+          }}
         >
           {name.substring(0, 1)}
         </Avatar>
@@ -81,20 +101,14 @@ const SourcesSection = ({ category, data }) => {
       <Typography variant="h6">
         <b>{category}</b>
       </Typography>
-      {data.map(({ description, sources }) => (
-        <Stack>
+      {data.map(({ description, sources }, i) => (
+        <Stack key={i}>
           <Typography variant="subtitle1">{description}</Typography>
           <Typography variant="body2">
             {sources.map(({ name, href }, i) => (
-              <span>
+              <span key={i}>
                 {i > 0 && ', '}
-                {href ? (
-                  <Link href={href} key={href}>
-                    {name}
-                  </Link>
-                ) : (
-                  <div key={name}>{name}</div>
-                )}
+                {href ? <Link href={href}>{name}</Link> : name}
               </span>
             ))}
           </Typography>
@@ -198,8 +212,8 @@ const About = () => {
             </p>
           </Typography>
         </Stack>
-        {PROFILES.filter(({ avatarWidth }) => avatarWidth).map((d) => (
-          <ProfileSection {...d} />
+        {PROFILES.filter(({ avatarWidth }) => avatarWidth).map((d, i) => (
+          <ProfileSection key={i} {...d} />
         ))}
         <Divider />
         <Typography>
@@ -213,8 +227,8 @@ const About = () => {
           </p>
           M.A.P. NYC’s advisory board includes:
         </Typography>
-        {PROFILES.filter(({ avatarWidth }) => !avatarWidth).map((d) => (
-          <ProfileSection {...d} />
+        {PROFILES.filter(({ avatarWidth }) => !avatarWidth).map((d, i) => (
+          <ProfileSection key={i} {...d} />
         ))}
         <Typography>
           If you would like to join the M.A.P. NYC advisory board, please email
@@ -229,8 +243,8 @@ const About = () => {
             The current datasets that power M.A.P. NYC include:
           </Typography>
           <Stack spacing={4}>
-            {DATA_SOURCES.map((d) => (
-              <SourcesSection {...d} />
+            {DATA_SOURCES.map((d, i) => (
+              <SourcesSection key={i} {...d} />
             ))}
           </Stack>
         </Stack>
