@@ -32,7 +32,7 @@ const Map = () => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapRef.current,
-      style: 'mapbox://styles/ampu3ro/cktki8cej537c17mikqn1tp1n',
+      style: 'mapbox://styles/mapnycapp/ckxggz9jehtx514lgxr9hinab',
       center: [-73.98, 40.7],
       zoom: 10,
     });
