@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import DownloadIcon from '@mui/icons-material/Download';
 import { CSVDownloader } from 'react-papaparse';
 import Grid from '@mui/material/Grid';
+import { FARM_DEFAULT } from '../data';
 
 const Download = () => {
   const farmFiltered = useSelector((state) => state.farmFiltered);
@@ -16,7 +17,10 @@ const Download = () => {
     return { ...feature, properties };
   });
 
-  const properties = features.map((d) => d.properties);
+  const fields = ['id', 'createdAt', 'updatedAt', ...Object.keys(FARM_DEFAULT)];
+  const properties = features
+    .map((d) => d.properties)
+    .map((p) => Object.fromEntries(fields.map((d) => [d, p[d] || ''])));
 
   return (
     <Grid container spacing={2}>
